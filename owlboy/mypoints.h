@@ -4,6 +4,9 @@
 // PTINT, PTFLOAT 만들어 쓰자
 //=============================================================
 
+//PTINT의 PTFLOAT 형변환을 위한 PTFLOAT 구조체 전방선언
+struct PTFLOAT;
+
 struct PTINT
 {
 	int x;
@@ -45,6 +48,8 @@ struct PTINT
 	{
 		return !(x == pt.x && y == pt.y);
 	}
+
+	operator PTFLOAT();
 };
 
 struct PTFLOAT
@@ -84,6 +89,7 @@ struct PTFLOAT
 	{
 		return (x == pt.x && y == pt.y);
 	}
+
 	bool operator!= (const PTFLOAT &pt)
 	{
 		return !(x == pt.x && y == pt.y);
@@ -100,4 +106,6 @@ struct PTFLOAT
 		this->y -= pt.y;
 		return *this;
 	}
+
+	operator PTINT();
 };

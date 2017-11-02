@@ -57,7 +57,11 @@ void otus::move()
 {
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
-		movePos(-10, 0);
+		//movePos(-10, 0);
+
+		PTFLOAT ff(-10, 0);
+		PTINT ii = ff;
+		movePos(ii);
 	}
 	if (KEYMANAGER->isStayKeyDown('D'))
 	{

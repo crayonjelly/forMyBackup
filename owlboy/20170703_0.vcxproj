@@ -133,6 +133,7 @@
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="loading.cpp" />
     <ClCompile Include="loadingScene.cpp" />
+    <ClCompile Include="mypoints.cpp" />
     <ClCompile Include="otus.cpp" />
     <ClCompile Include="owlboyScene.cpp" />
     <ClCompile Include="playGround.cpp" />

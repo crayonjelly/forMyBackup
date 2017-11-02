@@ -275,5 +275,8 @@
     <ClCompile Include="otus.cpp">
       <Filter>playGround\world</Filter>
     </ClCompile>
+    <ClCompile Include="mypoints.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
