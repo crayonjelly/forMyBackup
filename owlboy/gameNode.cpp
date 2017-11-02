@@ -61,7 +61,7 @@ void gameNode::release(void)
 //업데이트(갱신)
 void gameNode::update(void)
 {
-	
+	KEYMANAGER->update();
 }
 
 //그리기

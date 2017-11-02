@@ -9,26 +9,20 @@ using namespace std;
 class keyManager : public singletonBase<keyManager>
 {
 private:
-	bitset<KEYMAX> _keyUp;
-	bitset<KEYMAX> _keyDown;
+	bitset<KEYMAX> _keyPast;
+	bitset<KEYMAX> _keyCurrent;
 
 public:
 	HRESULT init();
 	void release();
+	void update();
 
 	bool isOnceKeyDown(int key);
 	bool isOnceKeyUp(int key);
 	bool isStayKeyDown(int key);
 	bool isToggleKey(int key);
 
-	bitset<KEYMAX> getKeyUp() { return _keyUp; }
-	bitset<KEYMAX> getKeyDown() { return _keyDown; }
 
-	void setKeyDown(int key, bool state) { _keyDown.set(key, state); }
-	void setKeyUp(int key, bool state) { _keyUp.set(key, state); }
-
-
-	keyManager();
-	~keyManager();
+	keyManager() {}
+	~keyManager() {}
 };
-
