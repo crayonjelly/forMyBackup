@@ -35,6 +35,8 @@ namespace OBJECT
 	{
 		OTUS,
 		GEDDY,
-		FRUIT
+		FRUIT_BLUE,
+		CLOUD,
+		BACKGROUND
 	};
 }
