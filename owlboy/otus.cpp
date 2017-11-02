@@ -28,19 +28,8 @@ void otus::update()
 }
 void otus::render()
 {
-	//static int frame = 0;
-	//++frame;
-	//static int saveFrame = 0;
-	//static int frameX = 0;
-	//if (frame - saveFrame >= 5)
-	//{
-	//	saveFrame = frame;
-	//	if (frameX < 10) ++frameX;
-	//	else frameX = 0;
-	//}
-
 	static float timeSave = TIMEMANAGER->getWorldTime();
-	if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08)
+	if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08f)
 	{
 		timeSave = TIMEMANAGER->getWorldTime();
 		if (_frame.x < 10) ++_frame.x;

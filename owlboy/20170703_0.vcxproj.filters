@@ -180,6 +180,9 @@
     <ClInclude Include="otus.h">
       <Filter>playGround\world</Filter>
     </ClInclude>
+    <ClInclude Include="worldNode.h">
+      <Filter>playGround</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
