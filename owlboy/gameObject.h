@@ -14,7 +14,7 @@ protected:
 	PTINT _frame;
 
 public:
-	virtual HRESULT init();
+	virtual HRESULT init(PTFLOAT pos);
 	virtual void release();
 	virtual void update();
 	virtual void render();

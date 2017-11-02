@@ -4,9 +4,7 @@
 
 HRESULT otus::init(PTFLOAT pos)
 {
-	gameObject::init();
-
-	_pos = pos;
+	gameObject::init(pos);
 
 	changeImage("hero");
 	_imageSize = PTINT(_image->getFrameWidth(), _image->getFrameHeight());

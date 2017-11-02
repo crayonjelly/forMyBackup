@@ -7,10 +7,9 @@ HRESULT playGround::init(void)
 {
 	gameNode::init(true);
 
+	IMAGEMANAGER->addImage("cloudBack", "resource/(x2)cloudBack(1180,378).bmp", 1180, 378, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("bomboShop", "resource/(x2)bomboShop(674,402).bmp", 674, 402, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("saunaFront", "resource/(x2)saunaFront(896,724).bmp", 896, 724, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("cloudMiddle", "resource/sprCloudMiddle(590,172).bmp", 590, 172, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("otusDeathSpin", "resource/sprOtusDeathSpin(2016,192).bmp", 2016, 192, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("hero", "resource/(x2)hero(3136,2688,14,14).bmp", 3136, 2688, 14, 14, true, RGB(255, 0, 255));
 
 	SCENEMANAGER->addScene("아울보이씬", new owlboyScene);

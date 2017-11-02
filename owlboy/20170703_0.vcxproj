@@ -82,6 +82,7 @@
     <ClInclude Include="button.h" />
     <ClInclude Include="cameraManager.h" />
     <ClInclude Include="characterSelectScene.h" />
+    <ClInclude Include="cloud.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="database.h" />
@@ -121,6 +122,7 @@
     <ClCompile Include="button.cpp" />
     <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="characterSelectScene.cpp" />
+    <ClCompile Include="cloud.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="database.cpp" />
     <ClCompile Include="effect.cpp" />

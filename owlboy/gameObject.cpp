@@ -2,9 +2,10 @@
 #include "gameObject.h"
 
 
-HRESULT gameObject::init()
+HRESULT gameObject::init(PTFLOAT pos)
 {
-	_rc = RectMakeCenter(_pos.x, _pos.y, 10, 10);
+	_pos = pos;
+	_rc = RectMakeCenter(pos.x, pos.y, 10, 10);
 
 	_image = NULL;
 	_imageKey = "";

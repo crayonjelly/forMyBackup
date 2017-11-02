@@ -1,13 +1,22 @@
 #include "stdafx.h"
 #include "owlboyScene.h"
 #include "otus.h"
+#include "cloud.h"
 
 
 HRESULT owlboyScene::init()
 {
-	auto temp = new otus;
-	WORLD->addObject(temp);
-	temp->init(PTFLOAT(150, 150));
+	{
+		auto temp = new otus;
+		WORLD->addObject(temp);
+		temp->init(PTFLOAT(150, 150));
+	}
+	{
+		auto temp = new cloud;
+		WORLD->addObject(temp);
+		temp->init(PTFLOAT(0, 400));
+		temp->changeImage("cloudBack");
+	}
 
 	return S_OK;
 }
@@ -38,7 +47,7 @@ void owlboyScene::update()
 }
 void owlboyScene::render()
 {
-	IMAGEMANAGER->findImage("cloudMiddle")->render(getMemDC(), 400, 500);
+	IMAGEMANAGER->findImage("cloudBack")->render(getMemDC(), 0, 0);
 	
 	IMAGEMANAGER->findImage("bomboShop")->render(getMemDC(), -CAMX + 500, -CAMY + 500);
 	IMAGEMANAGER->findImage("saunaFront")->render(getMemDC(), -CAMX + 1000, -CAMY + 500);

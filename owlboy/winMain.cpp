@@ -4,7 +4,7 @@
 HINSTANCE	_hInstance;		//APP 고유번호
 HWND		_hWnd;			//조작질
 
-LPTSTR _lpszClass = TEXT("Omicron API");
+LPTSTR _lpszClass = TEXT("Final Portfolio <Owlboy> - Jericho");
 
 POINT _ptMouse;
 playGround _pg;

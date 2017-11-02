@@ -36,7 +36,7 @@ using namespace OMICRON_UTIL;
 // ## 디파인 문 ## 17.07.03 ##
 //========================================
 
-#define WINNAME (LPTSTR)(TEXT("Omicron API"))
+#define WINNAME (LPTSTR)(TEXT("Final Portfolio <Owlboy> - Jericho"))
 #define WINSTARTX 80
 #define WINSTARTY 10
 #define WINSIZEX 1200
@@ -83,6 +83,7 @@ extern HWND _hWnd;
 extern POINT _ptMouse;
 extern BOOL _leftButtonDown;
 
-//world 에 필요한 것들
+//전역화 시킬 헤더들
+#include "worldNode.h"
 #include "gameObject.h"
 #include "world.h"

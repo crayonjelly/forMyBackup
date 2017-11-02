@@ -183,6 +183,9 @@
     <ClInclude Include="worldNode.h">
       <Filter>playGround</Filter>
     </ClInclude>
+    <ClInclude Include="cloud.h">
+      <Filter>playGround\world</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -280,6 +283,9 @@
     </ClCompile>
     <ClCompile Include="mypoints.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cloud.cpp">
+      <Filter>playGround\world</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
