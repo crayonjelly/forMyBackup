@@ -16,37 +16,50 @@ struct PTINT
 	PTINT(int X, int Y) : x(X), y(Y) {}
 
 	//연산자 오버로딩
-	PTINT operator+ (PTINT pt)
+	PTINT operator+ (const PTINT &pt)
 	{
 		return PTINT(x + pt.x, y + pt.y);
 	}
-	PTINT operator- (PTINT pt)
+	PTINT operator- (const PTINT &pt)
 	{
 		return PTINT(x - pt.x, y - pt.y);
 	}
-	PTINT operator* (int scalar)
+	PTINT operator* (const int &scalar)
 	{
 		return PTINT(x * scalar, y * scalar);
 	}
-	PTINT operator* (float scalar)
+	PTINT operator* (const float &scalar)
 	{
 		return PTINT(x * scalar, y * scalar);
 	}
-	PTINT operator/ (int scalar)
+	PTINT operator/ (const int &scalar)
 	{
 		return PTINT(x / scalar, y / scalar);
 	}
-	PTINT operator/ (float scalar)
+	PTINT operator/ (const float &scalar)
 	{
 		return PTINT(x / scalar, y / scalar);
 	}
-	bool operator== (PTINT pt)
+	bool operator== (const PTINT &pt)
 	{
 		return (x == pt.x && y == pt.y);
 	}
-	bool operator!= (PTINT pt)
+	bool operator!= (const PTINT &pt)
 	{
 		return !(x == pt.x && y == pt.y);
+	}
+
+	PTINT& operator+= (const PTINT &pt)
+	{
+		x += pt.x;
+		y += pt.y;
+		return *this;
+	}
+	PTINT& operator-= (const PTINT &pt)
+	{
+		x -= pt.x;
+		y -= pt.y;
+		return *this;
 	}
 
 	operator PTFLOAT();
@@ -89,11 +102,11 @@ struct PTFLOAT
 	{
 		return (x == pt.x && y == pt.y);
 	}
-
 	bool operator!= (const PTFLOAT &pt)
 	{
 		return !(x == pt.x && y == pt.y);
 	}
+
 	PTFLOAT& operator+= (const PTFLOAT &pt)
 	{
 		x += pt.x;
@@ -102,8 +115,8 @@ struct PTFLOAT
 	}
 	PTFLOAT& operator-= (const PTFLOAT &pt)
 	{
-		this->x -= pt.x;
-		this->y -= pt.y;
+		x -= pt.x;
+		y -= pt.y;
 		return *this;
 	}
 
