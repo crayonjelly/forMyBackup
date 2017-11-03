@@ -23,22 +23,28 @@ void gameObject::update()
 {
 
 }
-void gameObject::render()
+void gameObject::render(float depthScale)
 {
-	
+	//기본적으로는 이미지 있으면 기본렌더로 렌더하기
+	if (_image)
+	{
+		_image->render(getMemDC(), -CAMX * depthScale + _pos.x, -CAMY * depthScale + _pos.y);
+	}
 }
 
 
-void gameObject::debugRender()
+void gameObject::debugRender(float depthScale)
 {
-	EllipseMakeCenter(getMemDC(), _pos.x, _pos.y, 10, 10);
-	LineMake(getMemDC(), _rc.left, _rc.top, _rc.right, _rc.top);
-	LineMake(getMemDC(), _rc.right, _rc.top, _rc.right, _rc.bottom);
-	LineMake(getMemDC(), _rc.right, _rc.bottom, _rc.left, _rc.bottom);
-	LineMake(getMemDC(), _rc.left, _rc.bottom, _rc.left, _rc.top);
+	EllipseMakeCenter(getMemDC(), -CAMX * depthScale + _pos.x, -CAMY * depthScale + _pos.y, 10, 10);
+	LineMake(getMemDC(), -CAMX * depthScale + _rc.left, -CAMY * depthScale + _rc.top, -CAMX * depthScale + _rc.right, -CAMY * depthScale + _rc.top);
+	LineMake(getMemDC(), -CAMX * depthScale + _rc.right, -CAMY * depthScale + _rc.top, -CAMX * depthScale + _rc.right, -CAMY * depthScale + _rc.bottom);
+	LineMake(getMemDC(), -CAMX * depthScale + _rc.right, -CAMY * depthScale + _rc.bottom, -CAMX * depthScale + _rc.left, -CAMY * depthScale + _rc.bottom);
+	LineMake(getMemDC(), -CAMX * depthScale + _rc.left, -CAMY * depthScale + _rc.bottom, -CAMX * depthScale + _rc.left, -CAMY * depthScale + _rc.top);
 }
 void gameObject::changeImage(string imageKey)
 {
 	_imageKey = imageKey;
 	_image = IMAGEMANAGER->findImage(imageKey);
+	_imageSize.x = _image->getWidth();
+	_imageSize.y = _image->getHeight();
 }

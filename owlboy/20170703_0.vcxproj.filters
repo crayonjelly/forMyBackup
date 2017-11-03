@@ -67,6 +67,9 @@
     <Filter Include="playGround\owlboyScene">
       <UniqueIdentifier>{d2227bca-f0cb-44b2-8487-e7c3f2f68bab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="playGround\objects">
+      <UniqueIdentifier>{bdbb3c89-c9af-487b-aac9-69d45f8ea9a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -177,13 +180,19 @@
     <ClInclude Include="mypoints.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="cloud.h">
+      <Filter>playGround\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="backGround.h">
+      <Filter>playGround\objects</Filter>
+    </ClInclude>
     <ClInclude Include="otus.h">
-      <Filter>playGround\world</Filter>
+      <Filter>playGround\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="terrain.h">
+      <Filter>playGround\objects</Filter>
     </ClInclude>
     <ClInclude Include="worldNode.h">
-      <Filter>playGround</Filter>
-    </ClInclude>
-    <ClInclude Include="cloud.h">
       <Filter>playGround\world</Filter>
     </ClInclude>
   </ItemGroup>
@@ -278,14 +287,20 @@
     <ClCompile Include="cameraManager.cpp">
       <Filter>2DGameFramework\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="otus.cpp">
-      <Filter>playGround\world</Filter>
-    </ClCompile>
     <ClCompile Include="mypoints.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="backGround.cpp">
+      <Filter>playGround\objects</Filter>
+    </ClCompile>
     <ClCompile Include="cloud.cpp">
-      <Filter>playGround\world</Filter>
+      <Filter>playGround\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="otus.cpp">
+      <Filter>playGround\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="terrain.cpp">
+      <Filter>playGround\objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

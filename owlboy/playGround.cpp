@@ -29,6 +29,9 @@ void playGround::update(void)
 	gameNode::update();
 
 	SCENEMANAGER->update();
+
+	//업데이트 다 돌리고 카메라 포커스 맞춰준다
+	CAMERA->putCameraCenterToTarget();
 }
 
 void playGround::render(void)

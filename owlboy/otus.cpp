@@ -11,6 +11,7 @@ HRESULT otus::init(PTFLOAT pos)
 	_rc = RectMakeCenter(pos.x, pos.y, _imageSize.x, _imageSize.y);
 	_frame.x = 0;
 	_frame.y = 2;
+	_layer = LAYER::OTUS;
 
 	return S_OK;
 }
@@ -24,8 +25,9 @@ void otus::update()
 
 	move();
 }
-void otus::render()
+void otus::render(float depthScale)
 {
+	//날개짓 프레임 돌림
 	static float timeSave = TIMEMANAGER->getWorldTime();
 	if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08f)
 	{
@@ -34,9 +36,7 @@ void otus::render()
 		else _frame.x = 0;
 	}
 
-	_image->frameRender(getMemDC(), _pos.x - _imageSize.x / 2, _pos.y - _imageSize.y / 2, _frame.x, _frame.y);
-
-	debugRender();
+	_image->frameRender(getMemDC(), -CAMX + _pos.x - _imageSize.x / 2, -CAMY + _pos.y - _imageSize.y / 2, _frame.x, _frame.y);
 }
 
 

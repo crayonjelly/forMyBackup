@@ -6,7 +6,7 @@ HRESULT cloud::init(PTFLOAT pos)
 {
 	gameObject::init(pos);
 
-	_layer = LAYER::BACKGROUND1;
+	_layer = LAYER::CLOUD;
 
 	return S_OK;
 }
@@ -18,10 +18,7 @@ void cloud::update()
 {
 	gameObject::update();
 }
-void cloud::render()
+void cloud::render(float depthScale)
 {
-	if (_image)
-	{
-		_image->render(getMemDC(), _pos.x, _pos.y);
-	}
+	gameObject::render(depthScale);
 }

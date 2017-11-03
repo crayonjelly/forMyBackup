@@ -2,6 +2,8 @@
 #include "owlboyScene.h"
 #include "otus.h"
 #include "cloud.h"
+#include "terrain.h"
+#include "backGround.h"
 
 
 HRESULT owlboyScene::init()
@@ -10,11 +12,25 @@ HRESULT owlboyScene::init()
 		auto temp = new otus;
 		temp->init(PTFLOAT(150, 150));
 		WORLD->addObject(temp);
+
+		CAMERA->setTarget(temp);
 	}
 	{
-		auto temp = new cloud;
+		auto temp = new backGround;
 		temp->init(PTFLOAT(0, 400));
 		temp->changeImage("cloudBack");
+		WORLD->addObject(temp);
+	}
+	{
+		auto temp = new terrain;
+		temp->init(PTFLOAT(500, 500));
+		temp->changeImage("bomboShop");
+		WORLD->addObject(temp);
+	}
+	{
+		auto temp = new terrain;
+		temp->init(PTFLOAT(1000, 500));
+		temp->changeImage("saunaFront");
 		WORLD->addObject(temp);
 	}
 
@@ -47,20 +63,5 @@ void owlboyScene::update()
 }
 void owlboyScene::render()
 {
-	IMAGEMANAGER->findImage("bomboShop")->render(getMemDC(), -CAMX + 500, -CAMY + 500);
-	IMAGEMANAGER->findImage("saunaFront")->render(getMemDC(), -CAMX + 1000, -CAMY + 500);
-	
 	WORLD->render();
-
-	static int frame = 0;
-	++frame;
-	static int saveFrame = 0;
-	static int frameX = 0;
-	if (frame - saveFrame >= 5)
-	{
-		saveFrame = frame;
-		if (frameX < 10) ++frameX;
-		else frameX = 0;
-	}
-	IMAGEMANAGER->findImage("hero")->frameRender(getMemDC(), 500, 300, frameX, 2);
 }
