@@ -17,8 +17,9 @@ HRESULT owlboyScene::init()
 	}
 	{
 		auto temp = new backGround;
-		temp->init(PTFLOAT(0, 400));
+		temp->init(PTFLOAT(0, 0));
 		temp->changeImage("cloudBack");
+		temp->setPos(PTFLOAT(0, WINSIZEY - temp->getImage()->getHeight()));
 		WORLD->addObject(temp);
 	}
 	{
