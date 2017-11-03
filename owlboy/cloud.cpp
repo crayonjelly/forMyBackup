@@ -6,6 +6,8 @@ HRESULT cloud::init(PTFLOAT pos)
 {
 	gameObject::init(pos);
 
+	_layer = LAYER::BACKGROUND1;
+
 	return S_OK;
 }
 void cloud::release()

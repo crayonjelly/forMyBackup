@@ -39,10 +39,10 @@ void playGround::render(void)
 
 	TIMEMANAGER->render(getMemDC());
 
-	////카메라 좌표 표시
-	//char str[64];
-	//sprintf_s(str, "(%d, %d)", CAMX, CAMY);
-	//TextOut(getMemDC(), 2, 2, str, strlen(str));
+	//카메라 좌표 표시
+	char str[64];
+	sprintf_s(str, "(%d, %d)", CAMX, CAMY);
+	TextOut(getMemDC(), 2, 60, str, strlen(str));
 
 	//=================== 손 대 지 마 ===================
 	this->getBackBuffer()->render(getHDC(), 0, 0);

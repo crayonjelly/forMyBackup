@@ -8,14 +8,14 @@ HRESULT owlboyScene::init()
 {
 	{
 		auto temp = new otus;
-		WORLD->addObject(temp);
 		temp->init(PTFLOAT(150, 150));
+		WORLD->addObject(temp);
 	}
 	{
 		auto temp = new cloud;
-		WORLD->addObject(temp);
 		temp->init(PTFLOAT(0, 400));
 		temp->changeImage("cloudBack");
+		WORLD->addObject(temp);
 	}
 
 	return S_OK;
@@ -47,8 +47,6 @@ void owlboyScene::update()
 }
 void owlboyScene::render()
 {
-	IMAGEMANAGER->findImage("cloudBack")->render(getMemDC(), 0, 0);
-	
 	IMAGEMANAGER->findImage("bomboShop")->render(getMemDC(), -CAMX + 500, -CAMY + 500);
 	IMAGEMANAGER->findImage("saunaFront")->render(getMemDC(), -CAMX + 1000, -CAMY + 500);
 	

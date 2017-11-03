@@ -11,6 +11,8 @@ HRESULT gameObject::init(PTFLOAT pos)
 	_imageKey = "";
 	_frame.x = _frame.y = 0;
 
+	_layer = LAYER::FRUIT;
+
 	return S_OK;
 }
 void gameObject::release()

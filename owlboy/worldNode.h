@@ -37,7 +37,8 @@ namespace OBJECT
 		TERRAIN,
 		OTUS,
 		GEDDY,
-		FRUIT_BLUE
+		FRUIT_BLUE,
+		END
 	};
 }
 
@@ -45,7 +46,9 @@ namespace LAYER
 {
 	enum Enum
 	{
-		BACKGROUND,
+		BACKGROUND1,
+		BACKGROUND2,
+		BACKGROUND3,
 		CLOUD,
 		TERRAIN,
 		FRUIT,
@@ -61,6 +64,7 @@ namespace LAYER
 		FRONT_GROUND,
 		FOG,
 		MASK,
-		UI
+		UI,
+		END
 	};
 }

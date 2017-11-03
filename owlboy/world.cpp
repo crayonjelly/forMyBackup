@@ -21,9 +21,16 @@ void world::update()
 }
 void world::render()
 {
+	//렌더 순서 정렬하기 - 멀티맵
+	multimap<int, gameObject*> mRenderOrder;
 	for (int i = 0; i < _vObject.size(); ++i)
 	{
-		_vObject[i]->render();
+		auto obj = _vObject[i];
+		mRenderOrder.insert(make_pair((int)obj->getLayer(), obj));
+	}
+	for (auto iter = mRenderOrder.begin(); iter != mRenderOrder.end(); ++iter)
+	{
+		iter->second->render();
 	}
 }
 

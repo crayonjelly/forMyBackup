@@ -13,6 +13,8 @@ protected:
 	PTINT _imageSize;
 	PTINT _frame;
 
+	LAYER::Enum _layer;
+
 public:
 	virtual HRESULT init(PTFLOAT pos);
 	virtual void release();
@@ -54,14 +56,18 @@ public:
 	inline RECT getRect() { return _rc; }
 	inline image* getImage() { return _image; }
 	inline string getImageKey() { return _imageKey; }
+	inline PTINT getImageSize() { return _imageSize; }
 	inline PTINT getFrame() { return _frame; }
+	inline auto getLayer() { return _layer; }
 
 	//¼³Á¤ÀÚ
 	inline void setPos(PTFLOAT pos) { _pos = pos; }
 	inline void setRect(RECT rc) { _rc = rc; }
 	inline void setImage(image* image) { _image = image; }
 	inline void setImageKey(string imageKey) { _imageKey = imageKey; }
+	inline void setImageSize(PTINT imageSize) { _imageSize = imageSize; }
 	inline void setFrame(PTINT frame) { _frame = frame; }
+	inline void setLayer(LAYER::Enum layerEnum) { _layer = layerEnum; }
 
 	gameObject() {}
 	virtual ~gameObject() {}
