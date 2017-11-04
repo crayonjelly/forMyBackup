@@ -6,7 +6,7 @@ HRESULT backGround::init(PTFLOAT pos)
 {
 	gameObject::init(pos);
 
-	_layer = LAYER::BACKGROUND1;
+	_layer = LAYER::SKY3;
 
 	return S_OK;
 }

@@ -38,17 +38,23 @@ void world::render()
 
 		switch ((LAYER::Enum)iter->first)
 		{
-		case LAYER::BACKGROUND1:
+		case LAYER::SKY3:
 			depthScale = 0;
 			break;
-		case LAYER::BACKGROUND2:
+		case LAYER::SKY2:
 			depthScale = 0;
 			break;
-		case LAYER::BACKGROUND3:
+		case LAYER::SKY1:
 			depthScale = 0;
 			break;
-		case LAYER::CLOUD:
+		case LAYER::BACK3:
 			depthScale = 0.5f;
+			break;
+		case LAYER::BACK2:
+			depthScale = 0.6f;
+			break;
+		case LAYER::BACK1:
+			depthScale = 0.8f;
 			break;
 		case LAYER::TERRAIN: case LAYER::FRUIT:
 		case LAYER::TEAM: case LAYER::NPC:
@@ -59,7 +65,7 @@ void world::render()
 			//얘네들은 기본값 1.0f
 			break;
 		case LAYER::FRONT_GROUND:
-			depthScale = 1.1f;
+			depthScale = 1.2f;
 			break;
 		case LAYER::FOG:
 			depthScale = 0;

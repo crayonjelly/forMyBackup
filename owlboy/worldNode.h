@@ -46,10 +46,13 @@ namespace LAYER
 {
 	enum Enum
 	{
-		BACKGROUND1,
-		BACKGROUND2,
-		BACKGROUND3,
-		CLOUD,
+		SKY3,
+		SKY2,
+		SKY1,
+		BACK3,
+		BACK2,
+		BACK1,
+		//---
 		TERRAIN,
 		FRUIT,
 		TEAM,
@@ -61,6 +64,7 @@ namespace LAYER
 		GRAB_TEAM,
 		COINBOX,
 		FRONT_TERRAIN,
+		//---
 		FRONT_GROUND,
 		FOG,
 		MASK,
