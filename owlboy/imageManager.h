@@ -17,6 +17,8 @@ public:
 	void release(void);
 
 	image* addImage(string strKey, int width, int height);
+	//맵버퍼를 위해서 만듭니당
+	image* addImage(string strKey, int width, int height, COLORREF transColor);
 
 	image* addImage(string strKey, const char* fileName, int width, int height, bool trans, COLORREF transColor);
 	image* addImage(string strKey, const char* fileName, float x, float y, int width, int height, bool trans, COLORREF transColor);

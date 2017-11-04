@@ -22,16 +22,30 @@ HRESULT owlboyScene::init()
 		temp->setPos(PTFLOAT(0, WINSIZEY - temp->getImage()->getHeight()));
 		WORLD->addObject(temp);
 	}
+	//{
+	//	auto temp = new terrain;
+	//	temp->init(PTFLOAT(500, 500));
+	//	temp->changeImage("bomboShop");
+	//	WORLD->addObject(temp);
+	//}
+	//{
+	//	auto temp = new terrain;
+	//	temp->init(PTFLOAT(1000, 500));
+	//	temp->changeImage("saunaFront");
+	//	WORLD->addObject(temp);
+	//}
 	{
-		auto temp = new terrain;
-		temp->init(PTFLOAT(500, 500));
-		temp->changeImage("bomboShop");
-		WORLD->addObject(temp);
-	}
-	{
-		auto temp = new terrain;
-		temp->init(PTFLOAT(1000, 500));
-		temp->changeImage("saunaFront");
+		HBRUSH oldBrush = (HBRUSH)SelectObject(getMapDC(), CreateSolidBrush(RGB(255, 0, 255)));
+		RectangleMake(getMapDC(), -10, -10, getMapBuffer()->getWidth() + 10, getMapBuffer()->getHeight() + 10);
+		DeleteObject(SelectObject(getMapDC(), oldBrush));
+
+		IMAGEMANAGER->findImage("bomboShop")->render(getMapDC(), 500, 500);
+		IMAGEMANAGER->findImage("saunaFront")->render(getMapDC(), 1000, 500);
+
+		auto temp = new gameObject;
+		temp->init(PTFLOAT(0, 0));
+		temp->changeImage("mapBuffer");
+		temp->setLayer(LAYER::TERRAIN);
 		WORLD->addObject(temp);
 	}
 	for (int i = 0; i < 40; ++i)

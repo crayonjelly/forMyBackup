@@ -70,6 +70,8 @@ public:
 
 	//빈 비트맵 이미지 초기화
 	HRESULT init(int width, int height);
+	//맵버퍼 초기화를 위해서 만듭니당
+	HRESULT init(int width, int height, COLORREF transColor);
 	//파일 이미지 초기화
 	HRESULT init(const char* fileName, int width, int height,
 		BOOL trans = FALSE, COLORREF transColor = FALSE);

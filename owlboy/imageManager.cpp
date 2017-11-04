@@ -44,6 +44,27 @@ image* imageManager::addImage(string strKey, int width, int height)
 
 	return img;
 }
+//맵버퍼를 위해서 만듭니당
+image* imageManager::addImage(string strKey, int width, int height, COLORREF transColor)
+{
+	image* img = findImage(strKey);
+
+	//만약 이미지가 있으면 그냥 그 이미지를 쓴다
+	if (img) return img;
+
+	img = new image;
+
+	if (FAILED(img->init(width, height, transColor)))
+	{
+		SAFE_DELETE(img);
+
+		return NULL;
+	}
+
+	_mImageList.insert(make_pair(strKey, img));
+
+	return img;
+}
 
 
 image* imageManager::addImage(string strKey, const char* fileName, int width, int height, bool trans, COLORREF transColor)

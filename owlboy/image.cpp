@@ -69,6 +69,54 @@ HRESULT image::init(int width, int height)
 
 	return S_OK;
 }
+//맵버퍼 초기화를 위해서 만듭니당
+HRESULT image::init(int width, int height, COLORREF transColor)
+{
+	//이미지 정보에 뭔가 있다!? 면 해제를 해라
+	if (_imageInfo != NULL) release();
+
+	HDC hdc = GetDC(_hWnd);
+
+	_imageInfo = new IMAGE_INFO;
+	_imageInfo->loadType = LOAD_EMPTY;
+	_imageInfo->resID = 0;
+	_imageInfo->hMemDC = CreateCompatibleDC(hdc);//빈 DC영역을 생성
+	_imageInfo->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, width, height);//크기 만큼의 빈 비트맵 영역 생성
+	_imageInfo->hOBit = (HBITMAP)SelectObject(_imageInfo->hMemDC, _imageInfo->hBit);
+	_imageInfo->width = width;
+	_imageInfo->height = height;
+
+	_fileName = NULL;
+
+	_trans = TRUE;
+	_transColor = transColor;
+
+	//알파블렌드 셋팅
+	_blendFunc.BlendFlags = 0;
+	_blendFunc.AlphaFormat = 0;
+	_blendFunc.BlendOp = AC_SRC_OVER;
+
+	_blendImage = new IMAGE_INFO;
+	_blendImage->loadType = LOAD_EMPTY;
+	_blendImage->resID = 0;
+	_blendImage->hMemDC = CreateCompatibleDC(hdc);
+	_blendImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, WINSIZEX, WINSIZEY);
+	_blendImage->hOBit = (HBITMAP)SelectObject(_blendImage->hMemDC, _blendImage->hBit);
+	_blendImage->width = WINSIZEX;
+	_blendImage->height = WINSIZEY;
+
+
+	if (_imageInfo->hBit == NULL)
+	{
+		release();
+
+		return E_FAIL;
+	}
+
+	ReleaseDC(_hWnd, hdc);
+
+	return S_OK;
+}
 //파일 이미지 초기화
 HRESULT image::init(const char* fileName, int width, int height,
 	BOOL trans, COLORREF transColor)
