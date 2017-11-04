@@ -34,26 +34,6 @@ HRESULT owlboyScene::init()
 		temp->changeImage("saunaFront");
 		WORLD->addObject(temp);
 	}
-	{
-		auto temp = new cloud;
-		temp->init(PTFLOAT(500, 500));
-		temp->changeImage("cloud01");
-		temp->setLayer(LAYER::BACK3);
-		WORLD->addObject(temp);
-	}
-	{
-		auto temp = new cloud;
-		temp->init(PTFLOAT(700, 500));
-		temp->changeImage("cloud02");
-		temp->setLayer(LAYER::BACK2);
-		WORLD->addObject(temp);
-	}
-	{
-		auto temp = new cloud;
-		temp->init(PTFLOAT(300, 700));
-		temp->changeImage("cloud03");
-		WORLD->addObject(temp);
-	}
 	for (int i = 0; i < 40; ++i)
 	{
 		auto temp = new cloud;
