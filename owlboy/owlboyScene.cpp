@@ -20,6 +20,7 @@ HRESULT owlboyScene::init()
 		temp->init(PTFLOAT(0, 0));
 		temp->changeImage("cloudBack");
 		temp->setPos(PTFLOAT(0, WINSIZEY - temp->getImage()->getHeight()));
+		temp->rcResetByImage();
 		WORLD->addObject(temp);
 	}
 	//{
@@ -35,13 +36,16 @@ HRESULT owlboyScene::init()
 	//	WORLD->addObject(temp);
 	//}
 	{
+		//맵버퍼 마젠타로 싹 밀기
 		HBRUSH oldBrush = (HBRUSH)SelectObject(getMapDC(), CreateSolidBrush(RGB(255, 0, 255)));
 		RectangleMake(getMapDC(), -10, -10, getMapBuffer()->getWidth() + 10, getMapBuffer()->getHeight() + 10);
 		DeleteObject(SelectObject(getMapDC(), oldBrush));
 
+		//맵버퍼에 지형 그리기
 		IMAGEMANAGER->findImage("bomboShop")->render(getMapDC(), 500, 500);
 		IMAGEMANAGER->findImage("saunaFront")->render(getMapDC(), 1000, 500);
 
+		//맵버퍼 오브젝트로 만들어서 월드에 추가하기
 		auto temp = new gameObject;
 		temp->init(PTFLOAT(0, 0));
 		temp->changeImage("mapBuffer");
@@ -53,16 +57,19 @@ HRESULT owlboyScene::init()
 		auto temp = new cloud;
 		temp->init(PTFLOAT(RND->getFromIntTo(0, 4000), RND->getFromIntTo(0, 4000)));
 		temp->changeImage("cloud01");
+		temp->rcResetByImage();
 		temp->setLayer((LAYER::Enum)RND->getFromIntTo(3, 5));
 		WORLD->addObject(temp);
 		temp = new cloud;
 		temp->init(PTFLOAT(RND->getFromIntTo(0, 4000), RND->getFromIntTo(0, 4000)));
 		temp->changeImage("cloud02");
+		temp->rcResetByImage();
 		temp->setLayer((LAYER::Enum)RND->getFromIntTo(3, 5));
 		WORLD->addObject(temp);
 		temp = new cloud;
 		temp->init(PTFLOAT(RND->getFromIntTo(0, 4000), RND->getFromIntTo(0, 4000)));
 		temp->changeImage("cloud03");
+		temp->rcResetByImage();
 		temp->setLayer((LAYER::Enum)RND->getFromIntTo(3, 5));
 		WORLD->addObject(temp);
 	}

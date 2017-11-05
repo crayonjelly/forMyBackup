@@ -39,6 +39,7 @@ public:
 		_pos.y = _rc.top + (_rc.bottom - _rc.top) / 2;
 	}
 	void changeImage(string imageKey);
+	void rcResetByImage();
 
 	//inline ÇÔ¼ö
 	inline void movePos(PTFLOAT dPos)

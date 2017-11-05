@@ -48,3 +48,16 @@ void gameObject::changeImage(string imageKey)
 	_imageSize.x = _image->getWidth();
 	_imageSize.y = _image->getHeight();
 }
+void gameObject::rcResetByImage()
+{
+	if (!_image) return;
+
+	if (_image->getMaxFrameX() >= 2 || _image->getMaxFrameY() >= 2)
+	{
+		_rc = RectMake(_pos.x, _pos.y, _image->getFrameWidth(), _image->getFrameHeight());
+	}
+	else
+	{
+		_rc = RectMake(_pos.x, _pos.y, _image->getWidth(), _image->getHeight());
+	}
+}

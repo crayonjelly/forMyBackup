@@ -64,8 +64,11 @@ void world::render()
 		case LAYER::FRONT_TERRAIN:
 			//얘네들은 기본값 1.0f
 			break;
-		case LAYER::FRONT_GROUND:
+		case LAYER::FRONT1:
 			depthScale = 1.2f;
+			break;
+		case LAYER::FRONT2:
+			depthScale = 1.3f;
 			break;
 		case LAYER::FOG:
 			depthScale = 0;
