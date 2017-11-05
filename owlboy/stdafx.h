@@ -18,6 +18,7 @@ using namespace std;
 #include "randomFunction.h"
 #include "imageManager.h"
 #include "keyManager.h"
+#include "lever.h"		//키매니저 인클루드. 레버 네임스페이스 이넘하고 레버 계산함수.
 #include "soundManager.h"
 #include "timeManager.h"
 #include "effectManager.h"

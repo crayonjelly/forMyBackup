@@ -13,6 +13,7 @@ protected:
 	PTINT _imageSize;
 	PTINT _frame;
 
+	OBJKIND::Enum _kind;
 	LAYER::Enum _layer;
 
 public:

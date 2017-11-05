@@ -3,7 +3,7 @@
 
 static image* _backBuffer = IMAGEMANAGER->addImage("backBuffer", WINSIZEX, WINSIZEY);
 static image* _mapBuffer = IMAGEMANAGER->addImage("mapBuffer", 10000, 10000, RGB(255, 0, 255));
-static image* _pixelBuffer = IMAGEMANAGER->addImage("pixelBuffer", 10000, 10000);
+static image* _pixelBuffer = IMAGEMANAGER->addImage("pixelBuffer", 10000, 10000, RGB(255, 0, 255));
 
 
 class gameNode

@@ -36,20 +36,34 @@ HRESULT owlboyScene::init()
 	//	WORLD->addObject(temp);
 	//}
 	{
-		//맵버퍼 마젠타로 싹 밀기
+		//맵버퍼, 픽셀버퍼 마젠타로 싹 밀기
 		HBRUSH oldBrush = (HBRUSH)SelectObject(getMapDC(), CreateSolidBrush(RGB(255, 0, 255)));
 		RectangleMake(getMapDC(), -10, -10, getMapBuffer()->getWidth() + 10, getMapBuffer()->getHeight() + 10);
 		DeleteObject(SelectObject(getMapDC(), oldBrush));
+		oldBrush = (HBRUSH)SelectObject(getPixelDC(), CreateSolidBrush(RGB(255, 0, 255)));
+		RectangleMake(getPixelDC(), -10, -10, getPixelBuffer()->getWidth() + 10, getPixelBuffer()->getHeight() + 10);
+		DeleteObject(SelectObject(getPixelDC(), oldBrush));
 
 		//맵버퍼에 지형 그리기
 		IMAGEMANAGER->findImage("bomboShop")->render(getMapDC(), 500, 500);
 		IMAGEMANAGER->findImage("saunaFront")->render(getMapDC(), 1000, 500);
+
+		//픽셀버퍼에 픽셀 그리기
+		IMAGEMANAGER->findImage("bomboShop_pixel")->render(getPixelDC(), 500, 500);
+		IMAGEMANAGER->findImage("saunaFront_pixel")->render(getPixelDC(), 1000, 500);
 
 		//맵버퍼 오브젝트로 만들어서 월드에 추가하기
 		auto temp = new gameObject;
 		temp->init(PTFLOAT(0, 0));
 		temp->changeImage("mapBuffer");
 		temp->setLayer(LAYER::TERRAIN);
+		WORLD->addObject(temp);
+
+		//픽셀버퍼 월드에 추가해본다
+		temp = new gameObject;
+		temp->init(PTFLOAT(0, 0));
+		temp->changeImage("pixelBuffer");
+		temp->setLayer((LAYER::Enum)(LAYER::TERRAIN + 1));
 		WORLD->addObject(temp);
 	}
 	for (int i = 0; i < 40; ++i)

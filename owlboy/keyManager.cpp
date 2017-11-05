@@ -55,8 +55,13 @@ bool keyManager::isOnceKeyUp(int key)
 
 bool keyManager::isStayKeyDown(int key)
 {
-	if (GetAsyncKeyState(key) & 0x8000) return true;
+	if (GetAsyncKeyState(key) & 0x8000)
+	{
+		_keyCurrent.set(key, true);
+		return true;
+	}
 
+	_keyCurrent.set(key, false);
 	return false;
 }
 

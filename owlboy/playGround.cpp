@@ -12,7 +12,9 @@ HRESULT playGround::init(void)
 
 	IMAGEMANAGER->addImage("cloudBack", "resource/(x2)cloudBack(1180,378).bmp", 1180, 378, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("bomboShop", "resource/(x2)bomboShop(674,402).bmp", 674, 402, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("bomboShop_pixel", "resource/(x2)bomboShop(674,402)_pixel.bmp", 674, 402, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("saunaFront", "resource/(x2)saunaFront(896,724).bmp", 896, 724, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("saunaFront_pixel", "resource/(x2)saunaFront(896,724)_pixel.bmp", 896, 724, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("backRockFar1", "resource/(x2)back_rock_far1(82,92).bmp", 82, 92, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("backRockFar2", "resource/(x2)back_rock_far2(96,120).bmp", 96, 120, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("backRockFar3", "resource/(x2)back_rock_far3(90,82).bmp", 90, 82, true, RGB(255, 0, 255));

@@ -1,10 +1,11 @@
 #pragma once
 
 
-namespace OBJECT
+namespace OBJKIND
 {
 	enum Enum
 	{
+		NONE,
 		BACKGROUND,
 		CLOUD,
 		TERRAIN,

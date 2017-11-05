@@ -117,6 +117,7 @@
     <ClInclude Include="utils.h" />
     <ClInclude Include="world.h" />
     <ClInclude Include="worldNode.h" />
+    <ClInclude Include="lever.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="action.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="iniDataManager.cpp" />
     <ClCompile Include="keyAniManager.cpp" />
     <ClCompile Include="keyManager.cpp" />
+    <ClCompile Include="lever.cpp" />
     <ClCompile Include="loading.cpp" />
     <ClCompile Include="loadingScene.cpp" />
     <ClCompile Include="mypoints.cpp" />
