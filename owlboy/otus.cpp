@@ -61,7 +61,7 @@ void otus::move()
 	//	movePos(0, 10);
 	//}
 
-	//switch (LEVER::Enum inputLever = makingSomethingPerfectLever('A','D','W','S'))
+	//switch (LEVER::Enum inputLever = LEVER::makingSomethingPerfectLever('A','D','W','S'))
 	//{
 	//case LEVER::NONE:
 	//	break;
@@ -110,7 +110,7 @@ void otus::move()
 	//	break;
 	//}
 
-	PTINT lever = letsReturnAsPTINTforHorizonAndVertical('A', 'D', 'W', 'S');
+	PTINT lever = LEVER::letsReturnAsPTINTforHorizonAndVertical('A', 'D', 'W', 'S');
 	if (lever.x == 4 && lever.y == 4);
 	else if (lever.x == 4)
 	{
@@ -156,7 +156,7 @@ void otus::move()
 	{
 		_lever = (LEVER::Enum)(5 + lever.x + lever.y * 3);
 	}
-	LEVER::leverToPTINT(_lever);
+	
 	//레버에 따라서 이동
 	switch (_lever)
 	{

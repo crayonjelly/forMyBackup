@@ -23,7 +23,7 @@
 //}
 
 //엄격 버전
-LEVER::Enum calculateLever(int left, int right, int up, int down)
+LEVER::Enum LEVER::calcLeverStrict(int left, int right, int up, int down)
 {
 	bool ll = keyManager::getSingleton()->isStayKeyDown(left);
 	bool rr = keyManager::getSingleton()->isStayKeyDown(right);
@@ -42,7 +42,7 @@ LEVER::Enum calculateLever(int left, int right, int up, int down)
 	else return LEVER::NONE;
 }
 
-LEVER::Enum makingSomethingPerfectLever(int left, int right, int up, int down)
+LEVER::Enum LEVER::makingSomethingPerfectLever(int left, int right, int up, int down)
 {
 	bool ll = keyManager::getSingleton()->isStayKeyDown(left);
 	bool rr = keyManager::getSingleton()->isStayKeyDown(right);
@@ -114,7 +114,7 @@ LEVER::Enum makingSomethingPerfectLever(int left, int right, int up, int down)
 	return LEVER::NONE;
 }
 
-PTINT letsReturnAsPTINTforHorizonAndVertical(int left, int right, int up, int down)
+PTINT LEVER::letsReturnAsPTINTforHorizonAndVertical(int left, int right, int up, int down)
 {
 	bool ll = keyManager::getSingleton()->isStayKeyDown(left);
 	bool rr = keyManager::getSingleton()->isStayKeyDown(right);
