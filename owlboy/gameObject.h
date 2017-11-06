@@ -7,6 +7,7 @@ class gameObject : public gameNode
 protected:
 	PTFLOAT _pos;
 	RECT _rc;
+	PTFLOAT _speed;
 
 	image* _image;
 	string _imageKey;

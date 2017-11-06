@@ -8,10 +8,27 @@ namespace LEVER
 	enum Enum
 	{
 		NONE,
-		LEFT_DOWN,	DOWN,		RIGHT_DOWN,
+		LEFT_UP,	UP,			RIGHT_UP,
 		LEFT,		NEUTRAL,	RIGHT,
-		LEFT_UP,	UP,			RIGHT_UP
+		LEFT_DOWN,	DOWN,		RIGHT_DOWN
 	};
+
+	inline PTINT leverToPTINT(LEVER::Enum lever)
+	{
+		switch (lever)
+		{
+		case LEVER::NONE:			return PTINT( 4,  4);
+		case LEVER::LEFT_UP:		return PTINT(-1, -1);
+		case LEVER::UP:				return PTINT( 0, -1);
+		case LEVER::RIGHT_UP:		return PTINT( 1, -1);
+		case LEVER::LEFT:			return PTINT(-1,  0);
+		case LEVER::NEUTRAL:		return PTINT( 0,  0);
+		case LEVER::RIGHT:			return PTINT( 1,  0);
+		case LEVER::LEFT_DOWN:		return PTINT(-1,  1);
+		case LEVER::DOWN:			return PTINT( 0,  1);
+		case LEVER::RIGHT_DOWN:		return PTINT( 1,  1);
+		}
+	}
 }
 
 LEVER::Enum calculateLever(int left, int right, int up, int down);

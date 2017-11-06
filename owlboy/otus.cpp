@@ -117,9 +117,9 @@ void otus::move()
 		switch (lever.y)
 		{
 		case -1:
-			while (1 <= (int)_lever && (int)_lever <= 6)
+			while (4 <= (int)_lever && (int)_lever <= 9)
 			{
-				_lever = (LEVER::Enum)((int)_lever + 3);
+				_lever = (LEVER::Enum)((int)_lever - 3);
 			}
 			break;
 		case 0:
@@ -127,9 +127,9 @@ void otus::move()
 			else if (7 <= (int)_lever && (int)_lever <= 9) _lever = (LEVER::Enum)((int)_lever - 3);
 			break;
 		case 1:
-			while (4 <= (int)_lever && (int)_lever <= 9)
+			while (1 <= (int)_lever && (int)_lever <= 6)
 			{
-				_lever = (LEVER::Enum)((int)_lever - 3);
+				_lever = (LEVER::Enum)((int)_lever + 3);
 			}
 			break;
 		}
@@ -154,29 +154,13 @@ void otus::move()
 	}
 	else
 	{
-		_lever = (LEVER::Enum)(5 + lever.x + -lever.y * 3);
+		_lever = (LEVER::Enum)(5 + lever.x + lever.y * 3);
 	}
-
+	LEVER::leverToPTINT(_lever);
+	//레버에 따라서 이동
 	switch (_lever)
 	{
 	case LEVER::NONE:
-		break;
-	case LEVER::LEFT_DOWN:
-		movePos(-10, 10);
-		break;
-	case LEVER::DOWN:
-		movePos(0, 10);
-		break;
-	case LEVER::RIGHT_DOWN:
-		movePos(10, 10);
-		break;
-	case LEVER::LEFT:
-		movePos(-10, 0);
-		break;
-	case LEVER::NEUTRAL:
-		break;
-	case LEVER::RIGHT:
-		movePos(10, 0);
 		break;
 	case LEVER::LEFT_UP:
 		movePos(-10, -10);
@@ -187,7 +171,37 @@ void otus::move()
 	case LEVER::RIGHT_UP:
 		movePos(10, -10);
 		break;
+	case LEVER::LEFT:
+		movePos(-10, 0);
+		break;
+	case LEVER::NEUTRAL:
+		break;
+	case LEVER::RIGHT:
+		movePos(10, 0);
+		break;
+	case LEVER::LEFT_DOWN:
+		movePos(-10, 10);
+		break;
+	case LEVER::DOWN:
+		movePos(0, 10);
+		break;
+	case LEVER::RIGHT_DOWN:
+		movePos(10, 10);
+		break;
 	}
 
+	//픽셀충돌
+	for (int i = _pos.y - 20; i <= _pos.y + 20; ++i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixelBuffer")->getMemDC(), _pos.x, i);
+
+		if (!(GetRValue(color) == 255 && GetGValue(color) == 0 && GetBValue(color) == 255))
+		{
+			_pos.y = i;
+			break;
+		}
+	}
+
+	//좌표에 맞춰서 렉트 조정
 	putRectCenterToPos();
 }
