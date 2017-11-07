@@ -8,12 +8,15 @@ HRESULT otus::init(PTFLOAT pos)
 
 	changeImage("hero");
 	_imageSize = PTINT(_image->getFrameWidth(), _image->getFrameHeight());
-	_rc = RectMakeCenter(pos.x, pos.y, _imageSize.x, _imageSize.y);
+	_rc = RectMake(pos.x - 50, pos.y -200, 50, 90);
 	_frame.x = 0;
 	_frame.y = 2;
 
 	_kind = OBJKIND::OTUS;
 	_layer = LAYER::OTUS;
+
+	_bLeft = false;
+	_bAir = false;
 
 	return S_OK;
 }
@@ -26,6 +29,15 @@ void otus::update()
 	gameObject::update();
 
 	move();
+
+	if (KEYMANAGER->isOnceKeyDown('K'))
+	{
+		if (_frame.y > 0) --_frame.y;
+	}
+	if (KEYMANAGER->isOnceKeyDown('M'))
+	{
+		if (_frame.y < _image->getMaxFrameY()) ++_frame.y;
+	}
 }
 void otus::render(float depthScale)
 {
@@ -38,7 +50,7 @@ void otus::render(float depthScale)
 		else _frame.x = 0;
 	}
 
-	_image->frameRender(getMemDC(), -CAMX + _pos.x - _imageSize.x / 2, -CAMY + _pos.y - _imageSize.y / 2, _frame.x, _frame.y);
+	_image->frameRender(getMemDC(), -CAMX + _pos.x - _imageSize.x / 2, -CAMY + _pos.y - 154, _frame.x, _frame.y);
 }
 
 
@@ -203,5 +215,5 @@ void otus::move()
 	}
 
 	//좌표에 맞춰서 렉트 조정
-	putRectCenterToPos();
+	putRectUponPos();
 }

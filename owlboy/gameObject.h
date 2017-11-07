@@ -35,6 +35,16 @@ public:
 		_rc.top = _pos.y - height / 2;
 		_rc.bottom = _rc.top + height;
 	}
+	void putRectUponPos()
+	{
+		int width = _rc.right - _rc.left;
+		int height = _rc.bottom - _rc.top;
+
+		_rc.left = _pos.x - width / 2;
+		_rc.right = _rc.left + width;
+		_rc.bottom = _pos.y;
+		_rc.top = _rc.bottom - height;
+	}
 	void putPosCenterToRect()
 	{
 		_pos.x = _rc.left + (_rc.right - _rc.left) / 2;

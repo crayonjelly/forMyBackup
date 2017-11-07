@@ -18,6 +18,7 @@ private:
 	//---------------------------------------------------
 	LEVER::Enum _lever;
 	bool _bLeft;
+	bool _bAir;
 
 public:
 	virtual HRESULT init(PTFLOAT pos);

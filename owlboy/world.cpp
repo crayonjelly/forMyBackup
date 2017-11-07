@@ -84,7 +84,18 @@ void world::render()
 		}
 
 		iter->second->render(depthScale);
-		iter->second->debugRender(depthScale);
+		
+		//구름 렉트 표시하면 정신없어서 지움
+		switch ((LAYER::Enum)iter->first)
+		{
+		case LAYER::BACK3:
+		case LAYER::BACK2:
+		case LAYER::BACK1:
+			break;
+		default:
+			iter->second->debugRender(depthScale);
+			break;
+		}
 	}
 }
 
