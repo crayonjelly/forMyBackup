@@ -70,6 +70,9 @@
     <Filter Include="playGround\objects">
       <UniqueIdentifier>{bdbb3c89-c9af-487b-aac9-69d45f8ea9a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="playGround\otusStates">
+      <UniqueIdentifier>{7f8c18c4-dfe6-487b-b56a-b741e394f41d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -198,6 +201,18 @@
     <ClInclude Include="lever.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="otusState.h">
+      <Filter>playGround\otusStates</Filter>
+    </ClInclude>
+    <ClInclude Include="fly.h">
+      <Filter>playGround\otusStates</Filter>
+    </ClInclude>
+    <ClInclude Include="run.h">
+      <Filter>playGround\otusStates</Filter>
+    </ClInclude>
+    <ClInclude Include="jump.h">
+      <Filter>playGround\otusStates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -307,6 +322,18 @@
     </ClCompile>
     <ClCompile Include="lever.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="otusState.cpp">
+      <Filter>playGround\otusStates</Filter>
+    </ClCompile>
+    <ClCompile Include="fly.cpp">
+      <Filter>playGround\otusStates</Filter>
+    </ClCompile>
+    <ClCompile Include="run.cpp">
+      <Filter>playGround\otusStates</Filter>
+    </ClCompile>
+    <ClCompile Include="jump.cpp">
+      <Filter>playGround\otusStates</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
