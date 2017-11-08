@@ -18,10 +18,6 @@ HRESULT otus::init(PTFLOAT pos)
 	_bLeft = false;
 	_bAir = false;
 
-	_state = new otusState;
-	_state->init(this);
-	//_state->setAddress(this);
-
 	return S_OK;
 }
 void otus::release()
@@ -32,8 +28,7 @@ void otus::update()
 {
 	gameObject::update();
 
-	//move();
-	_state->update();
+	move();
 
 	if (KEYMANAGER->isOnceKeyDown('K'))
 	{

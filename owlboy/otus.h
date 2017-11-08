@@ -1,28 +1,24 @@
 #pragma once
 #include "gameObject.h"
-#include "otusState.h"
-
 
 class otus : public gameObject
 {
 private:
-	//enum STATE
-	//{
-	//	STATE_NONE,
-	//	STATE_STAND,
-	//	STATE_RUN,
-	//	STATE_RUN_DASH,
-	//	STATE_FLY,
-	//	STATE_FLY_DASH,
-	//	STATE_ATTACK,
-	//	STATE_END
-	//};
+	enum STATE
+	{
+		STATE_NONE,
+		STATE_STAND,
+		STATE_RUN,
+		STATE_RUN_DASH,
+		STATE_FLY,
+		STATE_FLY_DASH,
+		STATE_ATTACK,
+		STATE_END
+	};
 	//---------------------------------------------------
 	LEVER::Enum _lever;
 	bool _bLeft;
 	bool _bAir;
-
-	otusState* _state;
 
 public:
 	virtual HRESULT init(PTFLOAT pos);
