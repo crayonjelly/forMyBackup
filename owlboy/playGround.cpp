@@ -24,7 +24,6 @@ HRESULT playGround::init(void)
 	IMAGEMANAGER->addImage("cloud01", "resource/(x2)cloud01(690,602).bmp", 690, 602, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("cloud02", "resource/(x2)cloud02(848,266).bmp", 848, 266, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("cloud03", "resource/(x2)cloud03(380,212).bmp", 380, 212, true, RGB(255, 0, 255));
-	//IMAGEMANAGER->addFrameImage("hero", "resource/(x2)hero(3136,2688,14,14).bmp", 3136, 2688, 14, 14, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("hero", "resource/(x2)hero(6272,2688,28,14).bmp", 6272, 2688, 28, 14, true, RGB(255, 0, 255));
 
 	SCENEMANAGER->addScene("아울보이씬", new owlboyScene);

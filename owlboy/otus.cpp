@@ -15,8 +15,8 @@ HRESULT otus::init(PTFLOAT pos)
 	_kind = OBJKIND::OTUS;
 	_layer = LAYER::OTUS;
 
+	_state = STATE_FLY;
 	_bLeft = false;
-	_bAir = false;
 
 	return S_OK;
 }
@@ -28,51 +28,33 @@ void otus::update()
 {
 	gameObject::update();
 
-	move();
+	_bLeftPast = _bLeft;
+
+	leverUpdate();
+	updateAsState();
+	pixelCollision();
 
 	if (KEYMANAGER->isOnceKeyDown('K'))
 	{
-		if (_frame.y > 0) --_frame.y;
+		if (_state >= 2) _state = (STATE)(_state - 1);
 	}
 	if (KEYMANAGER->isOnceKeyDown('M'))
 	{
-		if (_frame.y < _image->getMaxFrameY()) ++_frame.y;
+		if (_state <= STATE_END - 2) _state = (STATE)(_state + 1);
 	}
 }
 void otus::render(float depthScale)
 {
-	//날개짓 프레임 돌림
-	static float timeSave = TIMEMANAGER->getWorldTime();
-	if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08f)
-	{
-		timeSave = TIMEMANAGER->getWorldTime();
-		if (_frame.x < 10) ++_frame.x;
-		else _frame.x = 0;
-	}
+	draw();
 
-	_image->frameRender(getMemDC(), -CAMX + _pos.x - _imageSize.x / 2, -CAMY + _pos.y - 154, _frame.x, _frame.y);
+	char str[64];
+	sprintf_s(str, "%f", _speed.y);
+	TextOut(getMemDC(), 2, 400, str, strlen(str));
 }
 
 
-void otus::move()
+void otus::leverUpdate()
 {
-	//if (KEYMANAGER->isStayKeyDown('A'))
-	//{
-	//	movePos(-10, 0);
-	//}
-	//if (KEYMANAGER->isStayKeyDown('D'))
-	//{
-	//	movePos(10, 0);
-	//}
-	//if (KEYMANAGER->isStayKeyDown('W'))
-	//{
-	//	movePos(0, -10);
-	//}
-	//if (KEYMANAGER->isStayKeyDown('S'))
-	//{
-	//	movePos(0, 10);
-	//}
-
 	//switch (LEVER::Enum inputLever = LEVER::makingSomethingPerfectLever('A','D','W','S'))
 	//{
 	//case LEVER::NONE:
@@ -89,39 +71,7 @@ void otus::move()
 	//	_lever = inputLever;
 	//	break;
 	//}
-	//
-	//switch (_lever)
-	//{
-	//case LEVER::NONE:
-	//	break;
-	//case LEVER::LEFT_DOWN:
-	//	movePos(-10, 10);
-	//	break;
-	//case LEVER::DOWN:
-	//	movePos(0, 10);
-	//	break;
-	//case LEVER::RIGHT_DOWN:
-	//	movePos(10, 10);
-	//	break;
-	//case LEVER::LEFT:
-	//	movePos(-10, 0);
-	//	break;
-	//case LEVER::NEUTRAL:
-	//	break;
-	//case LEVER::RIGHT:
-	//	movePos(10, 0);
-	//	break;
-	//case LEVER::LEFT_UP:
-	//	movePos(-10, -10);
-	//	break;
-	//case LEVER::UP:
-	//	movePos(0, -10);
-	//	break;
-	//case LEVER::RIGHT_UP:
-	//	movePos(10, -10);
-	//	break;
-	//}
-
+	
 	PTINT lever = LEVER::letsReturnAsPTINTforHorizonAndVertical('A', 'D', 'W', 'S');
 	if (lever.x == 4 && lever.y == 4);
 	else if (lever.x == 4)
@@ -168,52 +118,376 @@ void otus::move()
 	{
 		_lever = (LEVER::Enum)(5 + lever.x + lever.y * 3);
 	}
-	
+}
+
+void otus::flyMove()
+{
 	//레버에 따라서 이동
 	switch (_lever)
 	{
 	case LEVER::NONE:
 		break;
 	case LEVER::LEFT_UP:
-		movePos(-10, -10);
+		_bLeft = true;
+		//movePos(-10, -10);
+		_speed.x = -10;
+		_speed.y = -10;
 		break;
 	case LEVER::UP:
-		movePos(0, -10);
+		//movePos(0, -10);
+		_speed.x = 0;
+		_speed.y = -10;
 		break;
 	case LEVER::RIGHT_UP:
-		movePos(10, -10);
+		_bLeft = false;
+		//movePos(10, -10);
+		_speed.x = 10;
+		_speed.y = -10;
 		break;
 	case LEVER::LEFT:
-		movePos(-10, 0);
+		_bLeft = true;
+		//movePos(-10, 0);
+		_speed.x = -10;
+		_speed.y = 0;
 		break;
 	case LEVER::NEUTRAL:
+		_speed.x = _speed.y = 0;
 		break;
 	case LEVER::RIGHT:
-		movePos(10, 0);
+		_bLeft = false;
+		//movePos(10, 0);
+		_speed.x = 10;
+		_speed.y = 0;
 		break;
 	case LEVER::LEFT_DOWN:
-		movePos(-10, 10);
+		_bLeft = true;
+		//movePos(-10, 10);
+		_speed.x = -10;
+		_speed.y = 10;
 		break;
 	case LEVER::DOWN:
-		movePos(0, 10);
+		//movePos(0, 10);
+		_speed.x = 0;
+		_speed.y = 10;
 		break;
 	case LEVER::RIGHT_DOWN:
-		movePos(10, 10);
+		_bLeft = false;
+		//movePos(10, 10);
+		_speed.x = 10;
+		_speed.y = 10;
 		break;
 	}
 
-	//픽셀충돌
-	for (int i = _pos.y - 20; i <= _pos.y + 20; ++i)
-	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixelBuffer")->getMemDC(), _pos.x, i);
-
-		if (!(GetRValue(color) == 255 && GetGValue(color) == 0 && GetBValue(color) == 255))
-		{
-			_pos.y = i;
-			break;
-		}
-	}
+	movePos(_speed);
 
 	//좌표에 맞춰서 렉트 조정
 	putRectUponPos();
+}
+
+void otus::airMove()
+{
+	float gravity = 0.2f - 0.001f * pow((abs(_speed.y)), 2);
+	if (gravity >= 0.001f)
+	{
+		_speed.y += gravity;
+	}
+
+	PTINT lever = LEVER::leverToPTINT(_lever);
+	if (lever.x != 4)
+	{
+		_speed.x = lever.x * 10;
+	}
+
+	//movePos(_speed.x, _speed.y);
+	PTFLOAT arrive = pixelRayCast(_pos, _speed);
+	if (arrive == _pos + _speed) setPos(arrive);
+	else
+	{
+		setPos(arrive);
+		_speed.y = 0;
+		changeState(STATE_STAND);
+	}
+	putRectUponPos();
+}
+
+void otus::groundMove()
+{
+	PTINT lever = LEVER::leverToPTINT(_lever);
+	_speed.x = lever.x * 10;
+	if (lever.y == -1) _speed.y = -10;
+
+	movePos(_speed);
+	putRectUponPos();
+}
+
+PTFLOAT otus::pixelRayCast(PTFLOAT startPos, PTFLOAT speed)
+{
+	//스피드 0이면 시작점 그대로 돌려줌
+	if (speed.x == 0 && speed.y == 0) return startPos;
+
+	HDC dc = IMAGEMANAGER->findImage("pixelBuffer")->getMemDC();
+	PTFLOAT pos = startPos;
+	PTFLOAT dest = startPos + speed;
+	PTFLOAT unit = speed.unit() * 0.9f;
+	//COLORREF color = GetPixel(dc, pos.x, pos.y);
+	COLORREF color;		//현재점은 검색하지 않음
+
+	//범위용
+	PTFLOAT minpt = PTFLOAT(min(startPos.x, dest.x), min(startPos.y, dest.y));
+	PTFLOAT maxpt = PTFLOAT(max(startPos.x, dest.x), max(startPos.y, dest.y));
+
+	//파란색 픽셀충돌 - 통과 가능한 땅
+	if (unit.y > 0)
+	{
+		while (true)
+		{
+			pos.x += unit.x;
+			pos.y += unit.y;
+			if (!(minpt.x <= pos.x && pos.x <= maxpt.x &&
+				minpt.y <= pos.y && pos.y <= maxpt.y))
+				break;
+
+			color = GetPixel(dc, pos.x, pos.y);
+			if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+			{
+				return pos;
+			}
+		}		//나왔다는건 dest까지 가는데 파란색 없었다는 것
+	}
+
+	return dest;
+}
+void otus::pixelCollision()
+{
+	//파란색 픽셀충돌 - 통과 가능한 땅
+	if (_speed.y >= 0)
+	{
+		HDC dc = IMAGEMANAGER->findImage("pixelBuffer")->getMemDC();
+		int i = _pos.y;
+		COLORREF color = GetPixel(dc, _pos.x, i);
+
+		//파란색에서 시작 (땅속)
+		if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+		{
+			while (--i >= _pos.y - 20)
+			{
+				color = GetPixel(dc, _pos.x, i);
+				if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+				{
+					continue;
+				}
+				else
+				{
+					_pos.y = i + 1;
+					putRectUponPos();
+					break;
+				}
+			}
+		}
+		//파란색 아닌곳에서 시작 (공중)
+		else
+		{
+			while (++i <= _pos.y + 20)
+			{
+				color = GetPixel(dc, _pos.x, i);
+				if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+				{
+					_pos.y = i;
+					putRectUponPos();
+					break;
+				}
+				else
+				{
+					continue;
+				}
+			}
+		}
+	}
+
+	//for (int i = _pos.y - 20; i <= _pos.y + 20; ++i)
+	//{
+	//	COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixelBuffer")->getMemDC(), _pos.x, i);
+	//
+	//	if (GetRValue(color) == 255 && GetGValue(color) == 0 && GetBValue(color) == 0)
+	//	{
+	//
+	//	}
+	//	else if (_speed.y > 0 &&
+	//		GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+	//	{
+	//		_pos.y = i;
+	//		putRectUponPos();
+	//		changeState(STATE_STAND);
+	//
+	//		break;
+	//	}
+	//}
+}
+
+void otus::draw()
+{
+	//시간 저장용 변수 만든다
+	static float timeSave = TIMEMANAGER->getWorldTime();
+
+	switch (_state)
+	{
+	case otus::STATE_NONE:
+		break;
+	case otus::STATE_STAND:
+		_frame.y = 0;
+		if (TIMEMANAGER->getWorldTime() - timeSave >= 0.11f ||
+			_bLeft != _bLeftPast)
+		{
+			timeSave = TIMEMANAGER->getWorldTime();
+
+			if (_bLeft)
+			{
+				if (--_frame.x < 15) _frame.x = 25;
+			}
+			else
+			{
+				if (++_frame.x >= 13) _frame.x = 2;
+			}
+		}
+		break;
+	case otus::STATE_RUN:
+		_frame.y = 1;
+		if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08f ||
+			_bLeft != _bLeftPast)
+		{
+			timeSave = TIMEMANAGER->getWorldTime();
+
+			if (_bLeft)
+			{
+				if (--_frame.x < 20) _frame.x = 27;
+			}
+			else
+			{
+				if (++_frame.x >= 8) _frame.x = 0;
+			}
+		}
+		break;
+	case otus::STATE_RUN_DASH:
+		break;
+	case otus::STATE_AIR:
+		_frame.y = 5;
+		if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08f ||
+			_bLeft != _bLeftPast)
+		{
+			timeSave = TIMEMANAGER->getWorldTime();
+
+			if (_bLeft)
+			{
+				if (--_frame.x < 23) _frame.x = 25;
+			}
+			else
+			{
+				if (++_frame.x >= 5) _frame.x = 2;
+			}
+		}
+		break;
+	case otus::STATE_FLY:
+		_frame.y = 2;
+		if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08f ||
+			_bLeft != _bLeftPast)
+		{
+			timeSave = TIMEMANAGER->getWorldTime();
+
+			if (_bLeft)
+			{
+				if (--_frame.x < 17) _frame.x = 27;
+			}
+			else
+			{
+				if (++_frame.x >= 11) _frame.x = 0;
+			}
+		}
+		break;
+	case otus::STATE_FLY_DASH:
+		break;
+	case otus::STATE_ATTACK:
+		break;
+	case otus::STATE_END:
+		break;
+	}
+
+	if (_bLeft)
+	{
+		_image->frameRender(getMemDC(), -CAMX + _pos.x - _imageSize.x / 2 - 15, -CAMY + _pos.y - 154, _frame.x, _frame.y);
+	}
+	else
+	{
+		_image->frameRender(getMemDC(), -CAMX + _pos.x - _imageSize.x / 2 + 15, -CAMY + _pos.y - 154, _frame.x, _frame.y);
+	}
+}
+
+void otus::changeState(STATE state)
+{
+	if (_state != state) _state = state;
+}
+
+void otus::updateAsState()
+{
+	switch (_state)
+	{
+	case otus::STATE_NONE:
+		break;
+	case otus::STATE_STAND:
+		groundMove();
+		switch (_lever)
+		{
+		case LEVER::NONE:
+			break;
+		case LEVER::LEFT_UP:
+		case LEVER::UP:
+		case LEVER::RIGHT_UP:
+			changeState(STATE_AIR);
+			break;
+		case LEVER::LEFT:
+		case LEVER::RIGHT:
+		case LEVER::LEFT_DOWN:
+		case LEVER::RIGHT_DOWN:
+			changeState(STATE_RUN);
+			break;
+		case LEVER::NEUTRAL:
+			break;
+		case LEVER::DOWN:
+			break;
+		}
+		break;
+	case otus::STATE_RUN:
+	{
+		groundMove();
+		PTINT lever = LEVER::leverToPTINT(_lever);
+		if (lever.y == -1) changeState(STATE_AIR);
+		else if (lever.x == 0) changeState(STATE_STAND);
+	}
+		break;
+	case otus::STATE_RUN_DASH:
+		break;
+	case otus::STATE_AIR:
+	{
+		if (KEYMANAGER->isOnceKeyDown('W'))
+		{
+			changeState(STATE_FLY);
+			break;
+		}
+		airMove();
+	}
+		break;
+	case otus::STATE_FLY:
+		if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
+		{
+			changeState(STATE_AIR);
+			break;
+		}
+		flyMove();
+		break;
+	case otus::STATE_FLY_DASH:
+		break;
+	case otus::STATE_ATTACK:
+		break;
+	case otus::STATE_END:
+		break;
+	}
 }

@@ -1,69 +1,13 @@
 #pragma once
 
 //=============================================================
-// PTINT, PTFLOAT 만들어 쓰자
+// PTFLOAT, PTINT 만들어 쓰자
 //=============================================================
 
-//PTINT의 PTFLOAT 형변환을 위한 PTFLOAT 구조체 전방선언
-struct PTFLOAT;
+//실수가 우선이라서 PTFLOAT 먼저 정의한다
 
-struct PTINT
-{
-	int x;
-	int y;
-
-	PTINT() : x(0), y(0) {}
-	PTINT(int X, int Y) : x(X), y(Y) {}
-
-	//연산자 오버로딩
-	PTINT operator+ (const PTINT &pt)
-	{
-		return PTINT(x + pt.x, y + pt.y);
-	}
-	PTINT operator- (const PTINT &pt)
-	{
-		return PTINT(x - pt.x, y - pt.y);
-	}
-	PTINT operator* (const int &scalar)
-	{
-		return PTINT(x * scalar, y * scalar);
-	}
-	PTINT operator* (const float &scalar)
-	{
-		return PTINT(x * scalar, y * scalar);
-	}
-	PTINT operator/ (const int &scalar)
-	{
-		return PTINT(x / scalar, y / scalar);
-	}
-	PTINT operator/ (const float &scalar)
-	{
-		return PTINT(x / scalar, y / scalar);
-	}
-	bool operator== (const PTINT &pt)
-	{
-		return (x == pt.x && y == pt.y);
-	}
-	bool operator!= (const PTINT &pt)
-	{
-		return !(x == pt.x && y == pt.y);
-	}
-
-	PTINT& operator+= (const PTINT &pt)
-	{
-		x += pt.x;
-		y += pt.y;
-		return *this;
-	}
-	PTINT& operator-= (const PTINT &pt)
-	{
-		x -= pt.x;
-		y -= pt.y;
-		return *this;
-	}
-
-	operator PTFLOAT();
-};
+//PTFLOAT의 PTINT 형변환을 위한 PTINT 구조체 전방선언
+struct PTINT;
 
 struct PTFLOAT
 {
@@ -121,4 +65,94 @@ struct PTFLOAT
 	}
 
 	operator PTINT();
+
+	//스칼라 값 반환
+	float scalar() { return sqrtf(x * x + y * y); }
+
+	PTFLOAT unit()
+	{
+		float scalar = sqrtf(x * x + y * y);
+		if (scalar == 0)
+		{
+			return PTFLOAT(0, 0);
+		}
+		else
+		{
+			return PTFLOAT(x / scalar, y / scalar);
+		}
+	}
+};
+
+struct PTINT
+{
+	int x;
+	int y;
+
+	PTINT() : x(0), y(0) {}
+	PTINT(int X, int Y) : x(X), y(Y) {}
+
+	//연산자 오버로딩
+	PTINT operator+ (const PTINT &pt)
+	{
+		return PTINT(x + pt.x, y + pt.y);
+	}
+	PTINT operator- (const PTINT &pt)
+	{
+		return PTINT(x - pt.x, y - pt.y);
+	}
+	PTINT operator* (const int &scalar)
+	{
+		return PTINT(x * scalar, y * scalar);
+	}
+	PTINT operator* (const float &scalar)
+	{
+		return PTINT(x * scalar, y * scalar);
+	}
+	PTINT operator/ (const int &scalar)
+	{
+		return PTINT(x / scalar, y / scalar);
+	}
+	PTINT operator/ (const float &scalar)
+	{
+		return PTINT(x / scalar, y / scalar);
+	}
+	bool operator== (const PTINT &pt)
+	{
+		return (x == pt.x && y == pt.y);
+	}
+	bool operator!= (const PTINT &pt)
+	{
+		return !(x == pt.x && y == pt.y);
+	}
+
+	PTINT& operator+= (const PTINT &pt)
+	{
+		x += pt.x;
+		y += pt.y;
+		return *this;
+	}
+	PTINT& operator-= (const PTINT &pt)
+	{
+		x -= pt.x;
+		y -= pt.y;
+		return *this;
+	}
+
+	operator PTFLOAT();
+
+	//스칼라 값 반환
+	float scalar() { return sqrtf(x * x + y * y); }
+
+	PTFLOAT unit()
+	{
+		float scalar = sqrtf(x * x + y * y);
+		if (scalar == 0)
+		{
+			return PTFLOAT(0, 0);
+		}
+		else
+		{
+			return PTFLOAT(x / scalar, y / scalar);
+		}
+	}
 };
