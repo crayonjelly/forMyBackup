@@ -17,6 +17,9 @@ HRESULT otus::init(PTFLOAT pos)
 
 	_state = STATE_FLY;
 	_bLeft = false;
+	_renderTimeSave = 0;
+
+	_pState = new otusAir;
 
 	return S_OK;
 }
@@ -31,8 +34,10 @@ void otus::update()
 	_bLeftPast = _bLeft;
 
 	leverUpdate();
-	updateAsState();
-	pixelCollision();
+
+	_pState->update(*this);
+	//updateAsState();
+	//pixelCollision();
 
 	if (KEYMANAGER->isOnceKeyDown('K'))
 	{
@@ -45,7 +50,8 @@ void otus::update()
 }
 void otus::render(float depthScale)
 {
-	draw();
+	//draw();
+	_pState->render(*this);
 
 	char str[64];
 	sprintf_s(str, "%f", _speed.y);
@@ -120,15 +126,20 @@ void otus::leverUpdate()
 	}
 }
 
+void otus::bLeftUpdate()
+{
+	if (LEVER::leverToPTINT(_lever).x == 1) _bLeft = false;
+	else if (LEVER::leverToPTINT(_lever).x == -1) _bLeft = true;
+}
+
 void otus::flyMove()
 {
-	//레버에 따라서 이동
+	//레버에 따라서 스피드 설정
 	switch (_lever)
 	{
 	case LEVER::NONE:
 		break;
 	case LEVER::LEFT_UP:
-		_bLeft = true;
 		//movePos(-10, -10);
 		_speed.x = -10;
 		_speed.y = -10;
@@ -139,13 +150,11 @@ void otus::flyMove()
 		_speed.y = -10;
 		break;
 	case LEVER::RIGHT_UP:
-		_bLeft = false;
 		//movePos(10, -10);
 		_speed.x = 10;
 		_speed.y = -10;
 		break;
 	case LEVER::LEFT:
-		_bLeft = true;
 		//movePos(-10, 0);
 		_speed.x = -10;
 		_speed.y = 0;
@@ -154,13 +163,11 @@ void otus::flyMove()
 		_speed.x = _speed.y = 0;
 		break;
 	case LEVER::RIGHT:
-		_bLeft = false;
 		//movePos(10, 0);
 		_speed.x = 10;
 		_speed.y = 0;
 		break;
 	case LEVER::LEFT_DOWN:
-		_bLeft = true;
 		//movePos(-10, 10);
 		_speed.x = -10;
 		_speed.y = 10;
@@ -171,17 +178,29 @@ void otus::flyMove()
 		_speed.y = 10;
 		break;
 	case LEVER::RIGHT_DOWN:
-		_bLeft = false;
 		//movePos(10, 10);
 		_speed.x = 10;
 		_speed.y = 10;
 		break;
 	}
 
+	bLeftUpdate();
+
 	movePos(_speed);
 
 	//좌표에 맞춰서 렉트 조정
 	putRectUponPos();
+}
+
+void otus::settingSpeedFly()
+{
+	//레버에 따라서 스피드 설정
+	PTINT lever = LEVER::leverToPTINT(_lever);
+
+	if (lever.x == 4 || lever.y == 4) return;
+
+	_speed.x = lever.x * 10;
+	_speed.y = lever.y * 10;
 }
 
 void otus::airMove()
@@ -214,7 +233,42 @@ void otus::groundMove()
 {
 	PTINT lever = LEVER::leverToPTINT(_lever);
 	_speed.x = lever.x * 10;
-	if (lever.y == -1) _speed.y = -10;
+
+	HDC dc = IMAGEMANAGER->findImage("pixelBuffer")->getMemDC();
+	int y = _pos.y;
+	COLORREF color = GetPixel(dc, _pos.x, y);
+	if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+	{
+		while (true)
+		{
+			color = GetPixel(dc, _pos.x, y - 1);
+			if (!(GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255))
+			{
+				break;
+			}
+			if (_pos.y - --y > 20) break;
+		}
+		_pos.y = y;
+	}
+	else
+	{
+		while (true)
+		{
+			if (++y - _pos.y > 20)
+			{
+				movePos(_speed);
+				putRectUponPos();
+				changeObjectiveState(new otusAir);
+				return;
+			}
+			color = GetPixel(dc, _pos.x, y);
+			if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+			{
+				_pos.y = y;
+				break;
+			}
+		}
+	}
 
 	movePos(_speed);
 	putRectUponPos();
@@ -254,6 +308,38 @@ PTFLOAT otus::pixelRayCast(PTFLOAT startPos, PTFLOAT speed)
 			}
 		}		//나왔다는건 dest까지 가는데 파란색 없었다는 것
 	}
+
+	return dest;
+}
+PTFLOAT otus::rayCastBlue(PTFLOAT startPos, PTFLOAT speed)
+{
+	//스피드 0이면 시작점 그대로 돌려줌
+	if (speed.x == 0 && speed.y == 0) return startPos;
+
+	HDC dc = IMAGEMANAGER->findImage("pixelBuffer")->getMemDC();
+	PTFLOAT pos = startPos;
+	PTFLOAT dest = startPos + speed;
+	PTFLOAT unit = speed.unit() * 0.9f;
+	COLORREF color;		//현재점은 검색하지 않음
+
+	//범위용
+	PTFLOAT minpt = PTFLOAT(min(startPos.x, dest.x), min(startPos.y, dest.y));
+	PTFLOAT maxpt = PTFLOAT(max(startPos.x, dest.x), max(startPos.y, dest.y));
+
+	while (true)
+	{
+		pos.x += unit.x;
+		pos.y += unit.y;
+		if (!(minpt.x <= pos.x && pos.x <= maxpt.x &&
+			minpt.y <= pos.y && pos.y <= maxpt.y))
+			break;
+
+		color = GetPixel(dc, pos.x, pos.y);
+		if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+		{
+			return pos;
+		}
+	}		//나왔다는건 dest까지 가는데 파란색 없었다는 것
 
 	return dest;
 }
@@ -424,6 +510,13 @@ void otus::draw()
 void otus::changeState(STATE state)
 {
 	if (_state != state) _state = state;
+}
+
+void otus::changeObjectiveState(otusState *newState)
+{
+	SAFE_DELETE(_pState);
+	_pState = newState;
+	_pState->enter(*this);
 }
 
 void otus::updateAsState()

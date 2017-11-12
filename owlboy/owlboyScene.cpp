@@ -43,6 +43,7 @@ HRESULT owlboyScene::init()
 		//픽셀버퍼에 픽셀 그리기
 		IMAGEMANAGER->findImage("bomboShop_pixel")->render(getPixelDC(), 500, 500);
 		IMAGEMANAGER->findImage("saunaFront_pixel")->render(getPixelDC(), 1000, 500);
+		IMAGEMANAGER->findImage("blueTest")->render(getPixelDC(), 500, 1000);
 
 		//맵버퍼 오브젝트로 만들어서 월드에 추가하기
 		auto temp = new gameObject;
