@@ -13,7 +13,7 @@ namespace LEVER
 		LEFT_DOWN,	DOWN,		RIGHT_DOWN
 	};
 
-	inline PTINT leverToPTINT(LEVER::Enum lever)
+	inline PTINT convertToPTINT(LEVER::Enum lever)
 	{
 		if (lever == LEVER::NONE) return PTINT(4, 4);
 		else return PTINT(((int)lever - 1) % 3 - 1, ((int)lever - 1) / 3 - 1);

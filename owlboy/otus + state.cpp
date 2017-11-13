@@ -16,20 +16,8 @@ void otusAir::update(otus &otus)
 		return;
 	}
 
-	//속도에 중력 작용
-	float gravity = 0.2f - 0.001f * pow((abs(otus._speed.y)), 2);
-	if (gravity >= 0.001f)
-	{
-		otus._speed.y += gravity;
-	}
-	
-	//좌우 이동 속도 설정
-	PTINT lever = LEVER::leverToPTINT(otus._lever);
-	if (lever.x != 4)
-	{
-		otus._speed.x = lever.x * 10;
-	}
-	
+	otus.settingSpeedAir();
+
 	//떨어지는 상황은 레이캐스트, 아닌건 그냥
 	if (otus._speed.y > 0)
 	{
@@ -167,7 +155,7 @@ void otusStand::update(otus &otus)
 		return;
 	}
 
-	if (abs(LEVER::leverToPTINT(otus._lever).x) == 1)
+	if (abs(LEVER::convertToPTINT(otus._lever).x) == 1)
 	{
 		otus.changeObjectiveState(new otusRun);
 	}
@@ -215,8 +203,49 @@ void otusRun::update(otus &otus)
 		return;
 	}
 
-	otus.groundMove();
-	PTINT lever = LEVER::leverToPTINT(otus._lever);
+	//otus.groundMove();
+	PTINT lever = LEVER::convertToPTINT(otus._lever);
+	otus._speed.x = lever.x * 10;
+
+	HDC dc = IMAGEMANAGER->findImage("pixelBuffer")->getMemDC();
+	int y = otus._pos.y;
+	COLORREF color = GetPixel(dc, otus._pos.x, y);
+	if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+	{
+		while (true)
+		{
+			color = GetPixel(dc, otus._pos.x, y - 1);
+			if (!(GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255))
+			{
+				break;
+			}
+			if (otus._pos.y - --y > 20) break;
+		}
+		otus._pos.y = y;
+	}
+	else
+	{
+		while (true)
+		{
+			if (++y - otus._pos.y > 20)
+			{
+				otus.movePos(otus._speed);
+				otus.putRectUponPos();
+				otus.changeObjectiveState(new otusAir);
+				return;
+			}
+			color = GetPixel(dc, otus._pos.x, y);
+			if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+			{
+				otus._pos.y = y;
+				break;
+			}
+		}
+	}
+
+	otus.movePos(otus._speed);
+	otus.putRectUponPos();
+	//PTINT lever = LEVER::leverToPTINT(otus._lever);
 	if (lever.x == 0) otus.changeObjectiveState(new otusStand);
 }
 void otusRun::render(otus &otus)

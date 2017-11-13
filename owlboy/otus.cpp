@@ -15,7 +15,7 @@ HRESULT otus::init(PTFLOAT pos)
 	_kind = OBJKIND::OTUS;
 	_layer = LAYER::OTUS;
 
-	_state = STATE_FLY;
+	//_state = STATE_FLY;
 	_bLeft = false;
 	_renderTimeSave = 0;
 
@@ -39,14 +39,14 @@ void otus::update()
 	//updateAsState();
 	//pixelCollision();
 
-	if (KEYMANAGER->isOnceKeyDown('K'))
-	{
-		if (_state >= 2) _state = (STATE)(_state - 1);
-	}
-	if (KEYMANAGER->isOnceKeyDown('M'))
-	{
-		if (_state <= STATE_END - 2) _state = (STATE)(_state + 1);
-	}
+	//if (KEYMANAGER->isOnceKeyDown('K'))
+	//{
+	//	if (_state >= 2) _state = (STATE)(_state - 1);
+	//}
+	//if (KEYMANAGER->isOnceKeyDown('M'))
+	//{
+	//	if (_state <= STATE_END - 2) _state = (STATE)(_state + 1);
+	//}
 }
 void otus::render(float depthScale)
 {
@@ -128,74 +128,74 @@ void otus::leverUpdate()
 
 void otus::bLeftUpdate()
 {
-	if (LEVER::leverToPTINT(_lever).x == 1) _bLeft = false;
-	else if (LEVER::leverToPTINT(_lever).x == -1) _bLeft = true;
+	if (LEVER::convertToPTINT(_lever).x == 1) _bLeft = false;
+	else if (LEVER::convertToPTINT(_lever).x == -1) _bLeft = true;
 }
 
-void otus::flyMove()
-{
-	//레버에 따라서 스피드 설정
-	switch (_lever)
-	{
-	case LEVER::NONE:
-		break;
-	case LEVER::LEFT_UP:
-		//movePos(-10, -10);
-		_speed.x = -10;
-		_speed.y = -10;
-		break;
-	case LEVER::UP:
-		//movePos(0, -10);
-		_speed.x = 0;
-		_speed.y = -10;
-		break;
-	case LEVER::RIGHT_UP:
-		//movePos(10, -10);
-		_speed.x = 10;
-		_speed.y = -10;
-		break;
-	case LEVER::LEFT:
-		//movePos(-10, 0);
-		_speed.x = -10;
-		_speed.y = 0;
-		break;
-	case LEVER::NEUTRAL:
-		_speed.x = _speed.y = 0;
-		break;
-	case LEVER::RIGHT:
-		//movePos(10, 0);
-		_speed.x = 10;
-		_speed.y = 0;
-		break;
-	case LEVER::LEFT_DOWN:
-		//movePos(-10, 10);
-		_speed.x = -10;
-		_speed.y = 10;
-		break;
-	case LEVER::DOWN:
-		//movePos(0, 10);
-		_speed.x = 0;
-		_speed.y = 10;
-		break;
-	case LEVER::RIGHT_DOWN:
-		//movePos(10, 10);
-		_speed.x = 10;
-		_speed.y = 10;
-		break;
-	}
-
-	bLeftUpdate();
-
-	movePos(_speed);
-
-	//좌표에 맞춰서 렉트 조정
-	putRectUponPos();
-}
+//void otus::flyMove()
+//{
+//	//레버에 따라서 스피드 설정
+//	switch (_lever)
+//	{
+//	case LEVER::NONE:
+//		break;
+//	case LEVER::LEFT_UP:
+//		//movePos(-10, -10);
+//		_speed.x = -10;
+//		_speed.y = -10;
+//		break;
+//	case LEVER::UP:
+//		//movePos(0, -10);
+//		_speed.x = 0;
+//		_speed.y = -10;
+//		break;
+//	case LEVER::RIGHT_UP:
+//		//movePos(10, -10);
+//		_speed.x = 10;
+//		_speed.y = -10;
+//		break;
+//	case LEVER::LEFT:
+//		//movePos(-10, 0);
+//		_speed.x = -10;
+//		_speed.y = 0;
+//		break;
+//	case LEVER::NEUTRAL:
+//		_speed.x = _speed.y = 0;
+//		break;
+//	case LEVER::RIGHT:
+//		//movePos(10, 0);
+//		_speed.x = 10;
+//		_speed.y = 0;
+//		break;
+//	case LEVER::LEFT_DOWN:
+//		//movePos(-10, 10);
+//		_speed.x = -10;
+//		_speed.y = 10;
+//		break;
+//	case LEVER::DOWN:
+//		//movePos(0, 10);
+//		_speed.x = 0;
+//		_speed.y = 10;
+//		break;
+//	case LEVER::RIGHT_DOWN:
+//		//movePos(10, 10);
+//		_speed.x = 10;
+//		_speed.y = 10;
+//		break;
+//	}
+//
+//	bLeftUpdate();
+//
+//	movePos(_speed);
+//
+//	//좌표에 맞춰서 렉트 조정
+//	putRectUponPos();
+//}
 
 void otus::settingSpeedFly()
 {
 	//레버에 따라서 스피드 설정
-	PTINT lever = LEVER::leverToPTINT(_lever);
+	PTINT lever = LEVER::convertToPTINT(_lever);
 
 	if (lever.x == 4 || lever.y == 4) return;
 
@@ -203,76 +203,78 @@ void otus::settingSpeedFly()
 	_speed.y = lever.y * 10;
 }
 
-void otus::airMove()
+void otus::settingSpeedAir()
 {
-	float gravity = 0.2f - 0.001f * pow((abs(_speed.y)), 2);
+	float gravity = 0.0f;
+
+	//상승-하강 속도에 따라서 중력(+y 방향 가속도) 설정
+	if (_speed.y > 0)
+	{
+		gravity = 0.4f - 0.002f * (_speed.y * _speed.y);
+	}
+	else
+	{
+		gravity = 0.4f + 0.002f * (_speed.y * _speed.y);
+	}
+
+	//너무 작은 중력값은 무시
 	if (gravity >= 0.001f)
 	{
 		_speed.y += gravity;
 	}
 
-	PTINT lever = LEVER::leverToPTINT(_lever);
+	//x축 속도 설정
+	PTINT lever = LEVER::convertToPTINT(_lever);
 	if (lever.x != 4)
 	{
 		_speed.x = lever.x * 10;
 	}
-
-	//movePos(_speed.x, _speed.y);
-	PTFLOAT arrive = pixelRayCast(_pos, _speed);
-	if (arrive == _pos + _speed) setPos(arrive);
-	else
-	{
-		setPos(arrive);
-		_speed.y = 0;
-		changeState(STATE_STAND);
-	}
-	putRectUponPos();
 }
 
-void otus::groundMove()
-{
-	PTINT lever = LEVER::leverToPTINT(_lever);
-	_speed.x = lever.x * 10;
-
-	HDC dc = IMAGEMANAGER->findImage("pixelBuffer")->getMemDC();
-	int y = _pos.y;
-	COLORREF color = GetPixel(dc, _pos.x, y);
-	if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
-	{
-		while (true)
-		{
-			color = GetPixel(dc, _pos.x, y - 1);
-			if (!(GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255))
-			{
-				break;
-			}
-			if (_pos.y - --y > 20) break;
-		}
-		_pos.y = y;
-	}
-	else
-	{
-		while (true)
-		{
-			if (++y - _pos.y > 20)
-			{
-				movePos(_speed);
-				putRectUponPos();
-				changeObjectiveState(new otusAir);
-				return;
-			}
-			color = GetPixel(dc, _pos.x, y);
-			if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
-			{
-				_pos.y = y;
-				break;
-			}
-		}
-	}
-
-	movePos(_speed);
-	putRectUponPos();
-}
+//void otus::groundMove()
+//{
+//	PTINT lever = LEVER::leverToPTINT(_lever);
+//	_speed.x = lever.x * 10;
+//
+//	HDC dc = IMAGEMANAGER->findImage("pixelBuffer")->getMemDC();
+//	int y = _pos.y;
+//	COLORREF color = GetPixel(dc, _pos.x, y);
+//	if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+//	{
+//		while (true)
+//		{
+//			color = GetPixel(dc, _pos.x, y - 1);
+//			if (!(GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255))
+//			{
+//				break;
+//			}
+//			if (_pos.y - --y > 20) break;
+//		}
+//		_pos.y = y;
+//	}
+//	else
+//	{
+//		while (true)
+//		{
+//			if (++y - _pos.y > 20)
+//			{
+//				movePos(_speed);
+//				putRectUponPos();
+//				changeObjectiveState(new otusAir);
+//				return;
+//			}
+//			color = GetPixel(dc, _pos.x, y);
+//			if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+//			{
+//				_pos.y = y;
+//				break;
+//			}
+//		}
+//	}
+//
+//	movePos(_speed);
+//	putRectUponPos();
+//}
 
 PTFLOAT otus::pixelRayCast(PTFLOAT startPos, PTFLOAT speed)
 {
@@ -410,107 +412,107 @@ void otus::pixelCollision()
 	//}
 }
 
-void otus::draw()
-{
-	//시간 저장용 변수 만든다
-	static float timeSave = TIMEMANAGER->getWorldTime();
+//void otus::draw()
+//{
+//	//시간 저장용 변수 만든다
+//	static float timeSave = TIMEMANAGER->getWorldTime();
+//
+//	switch (_state)
+//	{
+//	case otus::STATE_NONE:
+//		break;
+//	case otus::STATE_STAND:
+//		_frame.y = 0;
+//		if (TIMEMANAGER->getWorldTime() - timeSave >= 0.11f ||
+//			_bLeft != _bLeftPast)
+//		{
+//			timeSave = TIMEMANAGER->getWorldTime();
+//
+//			if (_bLeft)
+//			{
+//				if (--_frame.x < 15) _frame.x = 25;
+//			}
+//			else
+//			{
+//				if (++_frame.x >= 13) _frame.x = 2;
+//			}
+//		}
+//		break;
+//	case otus::STATE_RUN:
+//		_frame.y = 1;
+//		if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08f ||
+//			_bLeft != _bLeftPast)
+//		{
+//			timeSave = TIMEMANAGER->getWorldTime();
+//
+//			if (_bLeft)
+//			{
+//				if (--_frame.x < 20) _frame.x = 27;
+//			}
+//			else
+//			{
+//				if (++_frame.x >= 8) _frame.x = 0;
+//			}
+//		}
+//		break;
+//	case otus::STATE_RUN_DASH:
+//		break;
+//	case otus::STATE_AIR:
+//		_frame.y = 5;
+//		if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08f ||
+//			_bLeft != _bLeftPast)
+//		{
+//			timeSave = TIMEMANAGER->getWorldTime();
+//
+//			if (_bLeft)
+//			{
+//				if (--_frame.x < 23) _frame.x = 25;
+//			}
+//			else
+//			{
+//				if (++_frame.x >= 5) _frame.x = 2;
+//			}
+//		}
+//		break;
+//	case otus::STATE_FLY:
+//		_frame.y = 2;
+//		if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08f ||
+//			_bLeft != _bLeftPast)
+//		{
+//			timeSave = TIMEMANAGER->getWorldTime();
+//
+//			if (_bLeft)
+//			{
+//				if (--_frame.x < 17) _frame.x = 27;
+//			}
+//			else
+//			{
+//				if (++_frame.x >= 11) _frame.x = 0;
+//			}
+//		}
+//		break;
+//	case otus::STATE_FLY_DASH:
+//		break;
+//	case otus::STATE_ATTACK:
+//		break;
+//	case otus::STATE_END:
+//		break;
+//	}
+//
+//	if (_bLeft)
+//	{
+//		_image->frameRender(getMemDC(), -CAMX + _pos.x - _imageSize.x / 2 - 15, -CAMY + _pos.y - 154, _frame.x, _frame.y);
+//	}
+//	else
+//	{
+//		_image->frameRender(getMemDC(), -CAMX + _pos.x - _imageSize.x / 2 + 15, -CAMY + _pos.y - 154, _frame.x, _frame.y);
+//	}
+//}
 
-	switch (_state)
-	{
-	case otus::STATE_NONE:
-		break;
-	case otus::STATE_STAND:
-		_frame.y = 0;
-		if (TIMEMANAGER->getWorldTime() - timeSave >= 0.11f ||
-			_bLeft != _bLeftPast)
-		{
-			timeSave = TIMEMANAGER->getWorldTime();
-
-			if (_bLeft)
-			{
-				if (--_frame.x < 15) _frame.x = 25;
-			}
-			else
-			{
-				if (++_frame.x >= 13) _frame.x = 2;
-			}
-		}
-		break;
-	case otus::STATE_RUN:
-		_frame.y = 1;
-		if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08f ||
-			_bLeft != _bLeftPast)
-		{
-			timeSave = TIMEMANAGER->getWorldTime();
-
-			if (_bLeft)
-			{
-				if (--_frame.x < 20) _frame.x = 27;
-			}
-			else
-			{
-				if (++_frame.x >= 8) _frame.x = 0;
-			}
-		}
-		break;
-	case otus::STATE_RUN_DASH:
-		break;
-	case otus::STATE_AIR:
-		_frame.y = 5;
-		if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08f ||
-			_bLeft != _bLeftPast)
-		{
-			timeSave = TIMEMANAGER->getWorldTime();
-
-			if (_bLeft)
-			{
-				if (--_frame.x < 23) _frame.x = 25;
-			}
-			else
-			{
-				if (++_frame.x >= 5) _frame.x = 2;
-			}
-		}
-		break;
-	case otus::STATE_FLY:
-		_frame.y = 2;
-		if (TIMEMANAGER->getWorldTime() - timeSave >= 0.08f ||
-			_bLeft != _bLeftPast)
-		{
-			timeSave = TIMEMANAGER->getWorldTime();
-
-			if (_bLeft)
-			{
-				if (--_frame.x < 17) _frame.x = 27;
-			}
-			else
-			{
-				if (++_frame.x >= 11) _frame.x = 0;
-			}
-		}
-		break;
-	case otus::STATE_FLY_DASH:
-		break;
-	case otus::STATE_ATTACK:
-		break;
-	case otus::STATE_END:
-		break;
-	}
-
-	if (_bLeft)
-	{
-		_image->frameRender(getMemDC(), -CAMX + _pos.x - _imageSize.x / 2 - 15, -CAMY + _pos.y - 154, _frame.x, _frame.y);
-	}
-	else
-	{
-		_image->frameRender(getMemDC(), -CAMX + _pos.x - _imageSize.x / 2 + 15, -CAMY + _pos.y - 154, _frame.x, _frame.y);
-	}
-}
-
-void otus::changeState(STATE state)
-{
-	if (_state != state) _state = state;
-}
+//void otus::changeState(STATE state)
+//{
+//	if (_state != state) _state = state;
+//}
 
 void otus::changeObjectiveState(otusState *newState)
 {
@@ -519,68 +521,68 @@ void otus::changeObjectiveState(otusState *newState)
 	_pState->enter(*this);
 }
 
-void otus::updateAsState()
-{
-	switch (_state)
-	{
-	case otus::STATE_NONE:
-		break;
-	case otus::STATE_STAND:
-		groundMove();
-		switch (_lever)
-		{
-		case LEVER::NONE:
-			break;
-		case LEVER::LEFT_UP:
-		case LEVER::UP:
-		case LEVER::RIGHT_UP:
-			changeState(STATE_AIR);
-			break;
-		case LEVER::LEFT:
-		case LEVER::RIGHT:
-		case LEVER::LEFT_DOWN:
-		case LEVER::RIGHT_DOWN:
-			changeState(STATE_RUN);
-			break;
-		case LEVER::NEUTRAL:
-			break;
-		case LEVER::DOWN:
-			break;
-		}
-		break;
-	case otus::STATE_RUN:
-	{
-		groundMove();
-		PTINT lever = LEVER::leverToPTINT(_lever);
-		if (lever.y == -1) changeState(STATE_AIR);
-		else if (lever.x == 0) changeState(STATE_STAND);
-	}
-		break;
-	case otus::STATE_RUN_DASH:
-		break;
-	case otus::STATE_AIR:
-	{
-		if (KEYMANAGER->isOnceKeyDown('W'))
-		{
-			changeState(STATE_FLY);
-			break;
-		}
-		airMove();
-	}
-		break;
-	case otus::STATE_FLY:
-		if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
-		{
-			changeState(STATE_AIR);
-			break;
-		}
-		flyMove();
-		break;
-	case otus::STATE_FLY_DASH:
-		break;
-	case otus::STATE_ATTACK:
-		break;
-	case otus::STATE_END:
-		break;
-	}
-}
+//void otus::updateAsState()
+//{
+//	switch (_state)
+//	{
+//	case otus::STATE_NONE:
+//		break;
+//	case otus::STATE_STAND:
+//		groundMove();
+//		switch (_lever)
+//		{
+//		case LEVER::NONE:
+//			break;
+//		case LEVER::LEFT_UP:
+//		case LEVER::UP:
+//		case LEVER::RIGHT_UP:
+//			changeState(STATE_AIR);
+//			break;
+//		case LEVER::LEFT:
+//		case LEVER::RIGHT:
+//		case LEVER::LEFT_DOWN:
+//		case LEVER::RIGHT_DOWN:
+//			changeState(STATE_RUN);
+//			break;
+//		case LEVER::NEUTRAL:
+//			break;
+//		case LEVER::DOWN:
+//			break;
+//		}
+//		break;
+//	case otus::STATE_RUN:
+//	{
+//		groundMove();
+//		PTINT lever = LEVER::leverToPTINT(_lever);
+//		if (lever.y == -1) changeState(STATE_AIR);
+//		else if (lever.x == 0) changeState(STATE_STAND);
+//	}
+//		break;
+//	case otus::STATE_RUN_DASH:
+//		break;
+//	case otus::STATE_AIR:
+//	{
+//		if (KEYMANAGER->isOnceKeyDown('W'))
+//		{
+//			changeState(STATE_FLY);
+//			break;
+//		}
+//		airMove();
+//	}
+//		break;
+//	case otus::STATE_FLY:
+//		if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
+//		{
+//			changeState(STATE_AIR);
+//			break;
+//		}
+//		flyMove();
+//		break;
+//	case otus::STATE_FLY_DASH:
+//		break;
+//	case otus::STATE_ATTACK:
+//		break;
+//	case otus::STATE_END:
+//		break;
+//	}
+//}
