@@ -10,6 +10,12 @@ private:
 	friend class otusStand;
 	friend class otusRun;
 	friend class otusFly;
+	friend class otusAttack;
+	otusAir		*_otusAir;
+	otusStand	*_otusStand;
+	otusRun		*_otusRun;
+	otusFly		*_otusFly;
+	otusAttack	*_otusAttack;
 	//---------------------------------------------------
 	//enum STATE
 	//{
@@ -52,6 +58,7 @@ public:
 	void pixelCollision();
 	//void changeState(STATE state);
 	void changeObjectiveState(otusState *newState);
+	void changeObjectiveState2(otusState *state);
 	//void draw();
 
 	otus() {}
@@ -63,8 +70,14 @@ public:
 class otusState
 {
 public:
+	string _stateName;
+	otus *_otus;
+	image *_image;
+	PTINT _frame;
+	//-------------------------------
 	virtual ~otusState() {}
 
+	virtual void init(otus *otus) {}
 	virtual void enter(otus &otus) {}
 	virtual void update(otus &otus) {}
 	virtual void render(otus &otus) {}
@@ -73,6 +86,7 @@ public:
 class otusAir : public otusState
 {
 public:
+	virtual void init(otus *otus);
 	virtual void enter(otus &otus);
 	virtual void update(otus &otus);
 	virtual void render(otus &otus);
@@ -81,6 +95,7 @@ public:
 class otusFly : public otusState
 {
 public:
+	virtual void init(otus *otus);
 	virtual void enter(otus &otus);
 	virtual void update(otus &otus);
 	virtual void render(otus &otus);
@@ -89,6 +104,7 @@ public:
 class otusStand : public otusState
 {
 public:
+	virtual void init(otus *otus);
 	virtual void enter(otus &otus);
 	virtual void update(otus &otus);
 	virtual void render(otus &otus);
@@ -97,6 +113,16 @@ public:
 class otusRun : public otusState
 {
 public:
+	virtual void init(otus *otus);
+	virtual void enter(otus &otus);
+	virtual void update(otus &otus);
+	virtual void render(otus &otus);
+};
+
+class otusAttack : public otusState
+{
+public:
+	virtual void init(otus *otus);
 	virtual void enter(otus &otus);
 	virtual void update(otus &otus);
 	virtual void render(otus &otus);

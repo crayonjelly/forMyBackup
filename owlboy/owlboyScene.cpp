@@ -90,23 +90,6 @@ void owlboyScene::release()
 void owlboyScene::update()
 {
 	WORLD->update();
-
-	if (KEYMANAGER->isStayKeyDown('A'))
-	{
-		CAMERA->moveCamera(-10, 0);
-	}
-	if (KEYMANAGER->isStayKeyDown('D'))
-	{
-		CAMERA->moveCamera(10, 0);
-	}
-	if (KEYMANAGER->isStayKeyDown('W'))
-	{
-		CAMERA->moveCamera(0, -10);
-	}
-	if (KEYMANAGER->isStayKeyDown('S'))
-	{
-		CAMERA->moveCamera(0, 10);
-	}
 }
 void owlboyScene::render()
 {

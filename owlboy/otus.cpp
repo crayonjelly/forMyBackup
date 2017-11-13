@@ -19,7 +19,20 @@ HRESULT otus::init(PTFLOAT pos)
 	_bLeft = false;
 	_renderTimeSave = 0;
 
-	_pState = new otusAir;
+	//-----------------------------
+	_otusAir	= new otusAir;
+	_otusStand	= new otusStand;
+	_otusRun	= new otusRun;
+	_otusFly	= new otusFly;
+	_otusAttack = new otusAttack;
+
+	_otusAir    -> init(this);
+	_otusStand  -> init(this);
+	_otusRun    -> init(this);
+	_otusFly    -> init(this);
+	_otusAttack -> init(this);
+	//-----------------------------
+	_pState = _otusAir;
 
 	return S_OK;
 }
@@ -36,17 +49,6 @@ void otus::update()
 	leverUpdate();
 
 	_pState->update(*this);
-	//updateAsState();
-	//pixelCollision();
-
-	//if (KEYMANAGER->isOnceKeyDown('K'))
-	//{
-	//	if (_state >= 2) _state = (STATE)(_state - 1);
-	//}
-	//if (KEYMANAGER->isOnceKeyDown('M'))
-	//{
-	//	if (_state <= STATE_END - 2) _state = (STATE)(_state + 1);
-	//}
 }
 void otus::render(float depthScale)
 {
@@ -518,6 +520,12 @@ void otus::changeObjectiveState(otusState *newState)
 {
 	SAFE_DELETE(_pState);
 	_pState = newState;
+	_pState->enter(*this);
+}
+
+void otus::changeObjectiveState2(otusState *state)
+{
+	_pState = state;
 	_pState->enter(*this);
 }
 
