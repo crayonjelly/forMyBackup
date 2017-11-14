@@ -8,7 +8,7 @@ HRESULT otus::init(PTFLOAT pos)
 
 	changeImage("hero");
 	_imageSize = PTINT(_image->getFrameWidth(), _image->getFrameHeight());
-	_rc = RectMake(pos.x - 50, pos.y -200, 50, 90);
+	_rc = RectMake(pos.x - 50, pos.y - 200, 50, 90);
 	_frame.x = 0;
 	_frame.y = 2;
 
@@ -20,17 +20,21 @@ HRESULT otus::init(PTFLOAT pos)
 	_renderTimeSave = 0;
 
 	//-----------------------------
-	_otusAir	= new otusAir;
-	_otusStand	= new otusStand;
-	_otusRun	= new otusRun;
-	_otusFly	= new otusFly;
-	_otusAttack = new otusAttack;
+	_otusAir		= new otusAir;
+	_otusStand		= new otusStand;
+	_otusRun		= new otusRun;
+	_otusFly		= new otusFly;
+	_otusAttack		= new otusAttack;
+	_otusGroundDash = new otusGroundDash;
+	_otusAirDash	= new otusAirDash;
 
-	_otusAir    -> init(this);
-	_otusStand  -> init(this);
-	_otusRun    -> init(this);
-	_otusFly    -> init(this);
-	_otusAttack -> init(this);
+	_otusAir		->init(this);
+	_otusStand		->init(this);
+	_otusRun		->init(this);
+	_otusFly		->init(this);
+	_otusAttack		->init(this);
+	_otusGroundDash	->init(this);
+	_otusAirDash	->init(this);
 	//-----------------------------
 	_pState = _otusAir;
 
@@ -516,17 +520,18 @@ void otus::pixelCollision()
 //	if (_state != state) _state = state;
 //}
 
-void otus::changeObjectiveState(otusState *newState)
-{
-	SAFE_DELETE(_pState);
-	_pState = newState;
-	_pState->enter(*this);
-}
+//void otus::changeObjectiveState(otusState *newState)
+//{
+//	SAFE_DELETE(_pState);
+//	_pState = newState;
+//	_pState->enter(*this);
+//}
 
-void otus::changeObjectiveState2(otusState *state)
+void otus::changeObjectiveState2(otusState *state, string currentStateName)
 {
+	string temp = _pState->_stateName;
 	_pState = state;
-	_pState->enter(*this);
+	_pState->enter(temp);
 }
 
 //void otus::updateAsState()

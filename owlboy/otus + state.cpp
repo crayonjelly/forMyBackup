@@ -9,7 +9,7 @@ void otusAir::init(otus *otus)
 	_image = IMAGEMANAGER->findImage("hero");
 	_frame.x = _frame.y = 0;
 }
-void otusAir::enter(otus &otus)
+void otusAir::enter(string pastStateName)
 {
 
 }
@@ -17,10 +17,15 @@ void otusAir::update(otus &otus)
 {
 	_otus->bLeftUpdate();
 
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+		_otus->changeObjectiveState2(_otus->_otusAttack, _stateName);
+		return;
+	}
 	if (KEYMANAGER->isOnceKeyDown('W'))
 	{
 		//otus.changeObjectiveState(new otusFly);
-		_otus->changeObjectiveState2(_otus->_otusFly);
+		_otus->changeObjectiveState2(_otus->_otusFly, _stateName);
 		return;
 	}
 
@@ -36,7 +41,7 @@ void otusAir::update(otus &otus)
 			_otus->setPos(arrive);
 			_otus->_speed.y = 0;
 			//otus.changeObjectiveState(new otusStand);
-			_otus->changeObjectiveState2(_otus->_otusStand);
+			_otus->changeObjectiveState2(_otus->_otusStand, _stateName);
 		}
 	}
 	else
@@ -81,21 +86,35 @@ void otusFly::init(otus *otus)
 	_stateName = "otusFly";
 	_otus = otus;
 	_image = IMAGEMANAGER->findImage("hero");
-	_frame.x = _frame.y = 0;
+	_frame.x = 10;
+	_frame.y = 2;
 }
-void otusFly::enter(otus &otus)
+void otusFly::enter(string pastStateName)
 {
-
+	_time1 = TIMEMANAGER->getWorldTime();
+	if (_otus->_bLeft)
+	{
+		_frame.x = 27;
+	}
+	else
+	{
+		_frame.x = 0;
+	}
 }
 void otusFly::update(otus &otus)
 {
 	otus.bLeftUpdate();
 
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+		_otus->changeObjectiveState2(_otus->_otusAttack, _stateName);
+		return;
+	}
 	if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
 	{
 		otus._speed.y = 0;
 		//otus.changeObjectiveState(new otusAir);
-		otus.changeObjectiveState2(otus._otusAir);
+		otus.changeObjectiveState2(otus._otusAir, _stateName);
 		return;
 	}
 
@@ -111,7 +130,7 @@ void otusFly::update(otus &otus)
 			otus.setPos(arrive);
 			otus._speed.y = 0;
 			//otus.changeObjectiveState(new otusStand);
-			otus.changeObjectiveState2(otus._otusStand);
+			otus.changeObjectiveState2(otus._otusStand, _stateName);
 		}
 	}
 	else
@@ -124,29 +143,34 @@ void otusFly::update(otus &otus)
 }
 void otusFly::render(otus &otus)
 {
-	otus._frame.y = 2;
-	if (TIMEMANAGER->getWorldTime() - otus._renderTimeSave >= 0.08f ||
-		otus._bLeft != otus._bLeftPast)
+	if (TIMEMANAGER->getWorldTime() - _time1 >= 0.08f ||
+		_otus->_bLeft != _otus->_bLeftPast)
 	{
-		otus._renderTimeSave = TIMEMANAGER->getWorldTime();
+		_time1 = TIMEMANAGER->getWorldTime();
 
-		if (otus._bLeft)
+		if (_otus->_bLeft)
 		{
-			if (--otus._frame.x < 17) otus._frame.x = 27;
+			if (--_frame.x < 17) _frame.x = 27;
 		}
 		else
 		{
-			if (++otus._frame.x >= 11) otus._frame.x = 0;
+			if (++_frame.x >= 11) _frame.x = 0;
 		}
 	}
 
-	if (otus._bLeft)
+	if (_otus->_bLeft)
 	{
-		otus._image->frameRender(otus.getMemDC(), -CAMX + otus._pos.x - otus._imageSize.x / 2 - 15, -CAMY + otus._pos.y - 154, otus._frame.x, otus._frame.y);
+		_otus->_image->frameRender(_otus->getMemDC(),
+			-CAMX + _otus->_pos.x - _otus->_imageSize.x / 2 - 15,
+			-CAMY + _otus->_pos.y - 154,
+			_frame.x, _frame.y);
 	}
 	else
 	{
-		otus._image->frameRender(otus.getMemDC(), -CAMX + otus._pos.x - otus._imageSize.x / 2 + 15, -CAMY + otus._pos.y - 154, otus._frame.x, otus._frame.y);
+		_otus->_image->frameRender(_otus->getMemDC(),
+			-CAMX + _otus->_pos.x - _otus->_imageSize.x / 2 + 15,
+			-CAMY + _otus->_pos.y - 154,
+			_frame.x, _frame.y);
 	}
 }
 //--------------------------------
@@ -157,7 +181,7 @@ void otusStand::init(otus *otus)
 	_image = IMAGEMANAGER->findImage("hero");
 	_frame.x = _frame.y = 0;
 }
-void otusStand::enter(otus &otus)
+void otusStand::enter(string pastStateName)
 {
 
 }
@@ -165,11 +189,16 @@ void otusStand::update(otus &otus)
 {
 	otus.bLeftUpdate();
 
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+		_otus->changeObjectiveState2(_otus->_otusAttack, _stateName);
+		return;
+	}
 	if (KEYMANAGER->isOnceKeyDown('W'))
 	{
 		otus._speed.y = -10;
 		//otus.changeObjectiveState(new otusAir);
-		otus.changeObjectiveState2(otus._otusAir);
+		otus.changeObjectiveState2(otus._otusAir, _stateName);
 		return;
 	}
 
@@ -178,14 +207,14 @@ void otusStand::update(otus &otus)
 	if (!(GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255))
 	{
 		//otus.changeObjectiveState(new otusAir);
-		otus.changeObjectiveState2(otus._otusAir);
+		otus.changeObjectiveState2(otus._otusAir, _stateName);
 		return;
 	}
 
 	if (abs(LEVER::convertToPTINT(otus._lever).x) == 1)
 	{
 		//otus.changeObjectiveState(new otusRun);
-		otus.changeObjectiveState2(otus._otusRun);
+		otus.changeObjectiveState2(otus._otusRun, _stateName);
 	}
 }
 void otusStand::render(otus &otus)
@@ -223,7 +252,7 @@ void otusRun::init(otus *otus)
 	_image = IMAGEMANAGER->findImage("hero");
 	_frame.x = _frame.y = 0;
 }
-void otusRun::enter(otus &otus)
+void otusRun::enter(string pastStateName)
 {
 
 }
@@ -231,11 +260,16 @@ void otusRun::update(otus &otus)
 {
 	otus.bLeftUpdate();
 
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+		_otus->changeObjectiveState2(_otus->_otusAttack, _stateName);
+		return;
+	}
 	if (KEYMANAGER->isOnceKeyDown('W'))
 	{
 		otus._speed.y = -10;
 		//otus.changeObjectiveState(new otusAir);
-		otus.changeObjectiveState2(otus._otusAir);
+		otus.changeObjectiveState2(otus._otusAir, _stateName);
 		return;
 	}
 
@@ -268,7 +302,7 @@ void otusRun::update(otus &otus)
 				otus.movePos(otus._speed);
 				otus.putRectUponPos();
 				//otus.changeObjectiveState(new otusAir);
-				otus.changeObjectiveState2(otus._otusAir);
+				otus.changeObjectiveState2(otus._otusAir, _stateName);
 				return;
 			}
 			color = GetPixel(dc, otus._pos.x, y);
@@ -284,7 +318,7 @@ void otusRun::update(otus &otus)
 	otus.putRectUponPos();
 	//PTINT lever = LEVER::leverToPTINT(otus._lever);
 	if (lever.x == 0) //otus.changeObjectiveState(new otusStand);
-		otus.changeObjectiveState2(otus._otusStand);
+		otus.changeObjectiveState2(otus._otusStand, _stateName);
 }
 void otusRun::render(otus &otus)
 {
@@ -318,33 +352,118 @@ void otusAttack::init(otus *otus)
 {
 	_stateName = "otusAttack";
 	_otus = otus;
-	_image = IMAGEMANAGER->findImage("hero");
-	_frame.x = _frame.y = 0;
+	_image = IMAGEMANAGER->findImage("hero2");
+	_frame.x = 3;
+	_frame.y = 11;
+	_time1 = 0.0f;
+	_count1 = 0;
 }
-void otusAttack::enter(otus &otus)
+void otusAttack::enter(string pastStateName)
 {
+	_time1 = TIMEMANAGER->getWorldTime();
+	_count1 = 0;
 
+	if (_otus->_bLeft)
+	{
+		_frame.x = 19 - _count1;
+	}
+	else
+	{
+		_frame.x = _count1;
+	}
+
+	//공격 생성해줘야함
 }
 void otusAttack::update(otus &otus)
 {
-	static float timeSave = 0.0f;
-	static int frameCount = -1;
-	if (TIMEMANAGER->getWorldTime() - timeSave >= 0.05f)
+	if (TIMEMANAGER->getWorldTime() - _time1 >= 0.08f)
 	{
-		timeSave = TIMEMANAGER->getWorldTime();
-
-		if (otus._bLeft)
+		_time1 = TIMEMANAGER->getWorldTime();
+		if (++_count1 >= 4)
 		{
-			if (--otus._frame.x < 20) otus._frame.x = 27;
+			auto color = GetPixel(_otus->getPixelDC(), _otus->_pos.x, _otus->_pos.y);
+			if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+			{
+				_otus->changeObjectiveState2(_otus->_otusStand, _stateName);
+				return;
+			}
+			else
+			{
+				_otus->changeObjectiveState2(_otus->_otusFly, _stateName);
+				return;
+			}
+		}
+
+		if (_otus->_bLeft)
+		{
+			_frame.x = 19 - _count1;
 		}
 		else
 		{
-			if (++otus._frame.x >= 8) otus._frame.x = 0;
+			_frame.x = _count1;
 		}
 	}
 }
 void otusAttack::render(otus &otus)
 {
-	char *str = "otusAttack";
-	TextOut(otus.getMemDC(), otus._pos.x, otus._pos.y, str, strlen(str));
+	if (_otus->_bLeft)
+	{
+		_image->frameRender(_otus->getMemDC(),
+			-CAMX + _otus->_pos.x - _otus->_imageSize.x / 2 - 15,
+			-CAMY + _otus->_pos.y - 154,
+			_frame.x, _frame.y);
+	}
+	else
+	{
+		_image->frameRender(_otus->getMemDC(),
+			-CAMX + _otus->_pos.x - _otus->_imageSize.x / 2 + 15,
+			-CAMY + _otus->_pos.y - 154,
+			_frame.x, _frame.y);
+	}
+}
+//--------------------------------
+void otusGroundDash::init(otus *otus)
+{
+	_stateName = "otusGroundDash";
+	_otus = otus;
+	_image = IMAGEMANAGER->findImage("rollGround");
+	_frame.x = 0;
+	_frame.y = 0;
+	_time1 = 0.0f;
+	_count1 = 0;
+}
+void otusGroundDash::enter(string pastStateName)
+{
+
+}
+void otusGroundDash::update(otus &otus)
+{
+
+}
+void otusGroundDash::render(otus &otus)
+{
+
+}
+//--------------------------------
+void otusAirDash::init(otus *otus)
+{
+	_stateName = "otusAirDash";
+	_otus = otus;
+	_image = IMAGEMANAGER->findImage("roll");
+	_frame.x = 0;
+	_frame.y = 0;
+	_time1 = 0.0f;
+	_count1 = 0;
+}
+void otusAirDash::enter(string pastStateName)
+{
+
+}
+void otusAirDash::update(otus &otus)
+{
+
+}
+void otusAirDash::render(otus &otus)
+{
+
 }

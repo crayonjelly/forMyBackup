@@ -26,6 +26,9 @@ HRESULT playGround::init(void)
 	IMAGEMANAGER->addImage("cloud03", "resource/(x2)cloud03(380,212).bmp", 380, 212, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("blueTest", "resource/파랑픽셀 테스트(674,402).bmp", 674, 402, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("hero", "resource/(x2)hero(6272,2688,28,14).bmp", 6272, 2688, 28, 14, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("hero2", "resource/(x2)hero2(4480,2688,20,14).bmp", 4480, 2688, 20, 14, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("roll", "resource/(x2)roll(2016,384,9,2).bmp", 2016, 384, 9, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("rollGround", "resource/(x2)rollGround(1344,384,6,2).bmp", 1344, 384, 6, 2, true, RGB(255, 0, 255));
 
 	SCENEMANAGER->addScene("아울보이씬", new owlboyScene);
 
