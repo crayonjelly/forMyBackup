@@ -19,13 +19,18 @@ void otusAir::update(otus &otus)
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		_otus->changeObjectiveState2(_otus->_otusAttack, _stateName);
+		_otus->changeObjectiveState2(_otus->_otusAttack);
+		return;
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		_otus->changeObjectiveState2(_otus->_otusAirDash);
 		return;
 	}
 	if (KEYMANAGER->isOnceKeyDown('W'))
 	{
 		//otus.changeObjectiveState(new otusFly);
-		_otus->changeObjectiveState2(_otus->_otusFly, _stateName);
+		_otus->changeObjectiveState2(_otus->_otusFly);
 		return;
 	}
 
@@ -41,7 +46,7 @@ void otusAir::update(otus &otus)
 			_otus->setPos(arrive);
 			_otus->_speed.y = 0;
 			//otus.changeObjectiveState(new otusStand);
-			_otus->changeObjectiveState2(_otus->_otusStand, _stateName);
+			_otus->changeObjectiveState2(_otus->_otusStand);
 		}
 	}
 	else
@@ -107,14 +112,19 @@ void otusFly::update(otus &otus)
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		_otus->changeObjectiveState2(_otus->_otusAttack, _stateName);
+		_otus->changeObjectiveState2(_otus->_otusAttack);
+		return;
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		_otus->changeObjectiveState2(_otus->_otusAirDash);
 		return;
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
 	{
 		otus._speed.y = 0;
 		//otus.changeObjectiveState(new otusAir);
-		otus.changeObjectiveState2(otus._otusAir, _stateName);
+		otus.changeObjectiveState2(otus._otusAir);
 		return;
 	}
 
@@ -130,7 +140,7 @@ void otusFly::update(otus &otus)
 			otus.setPos(arrive);
 			otus._speed.y = 0;
 			//otus.changeObjectiveState(new otusStand);
-			otus.changeObjectiveState2(otus._otusStand, _stateName);
+			otus.changeObjectiveState2(otus._otusStand);
 		}
 	}
 	else
@@ -191,14 +201,19 @@ void otusStand::update(otus &otus)
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		_otus->changeObjectiveState2(_otus->_otusAttack, _stateName);
+		_otus->changeObjectiveState2(_otus->_otusAttack);
+		return;
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		_otus->changeObjectiveState2(_otus->_otusGroundDash);
 		return;
 	}
 	if (KEYMANAGER->isOnceKeyDown('W'))
 	{
-		otus._speed.y = -10;
+		otus._speed.y = -16;
 		//otus.changeObjectiveState(new otusAir);
-		otus.changeObjectiveState2(otus._otusAir, _stateName);
+		otus.changeObjectiveState2(otus._otusAir);
 		return;
 	}
 
@@ -207,14 +222,14 @@ void otusStand::update(otus &otus)
 	if (!(GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255))
 	{
 		//otus.changeObjectiveState(new otusAir);
-		otus.changeObjectiveState2(otus._otusAir, _stateName);
+		otus.changeObjectiveState2(otus._otusAir);
 		return;
 	}
 
 	if (abs(LEVER::convertToPTINT(otus._lever).x) == 1)
 	{
 		//otus.changeObjectiveState(new otusRun);
-		otus.changeObjectiveState2(otus._otusRun, _stateName);
+		otus.changeObjectiveState2(otus._otusRun);
 	}
 }
 void otusStand::render(otus &otus)
@@ -254,7 +269,7 @@ void otusRun::init(otus *otus)
 }
 void otusRun::enter(string pastStateName)
 {
-
+	_otus->_speed.y = 0;
 }
 void otusRun::update(otus &otus)
 {
@@ -262,24 +277,41 @@ void otusRun::update(otus &otus)
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		_otus->changeObjectiveState2(_otus->_otusAttack, _stateName);
+		_otus->changeObjectiveState2(_otus->_otusAttack);
+		return;
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		_otus->changeObjectiveState2(_otus->_otusGroundDash);
 		return;
 	}
 	if (KEYMANAGER->isOnceKeyDown('W'))
 	{
-		otus._speed.y = -10;
+		otus._speed.y = -16;
 		//otus.changeObjectiveState(new otusAir);
-		otus.changeObjectiveState2(otus._otusAir, _stateName);
+		otus.changeObjectiveState2(otus._otusAir);
 		return;
 	}
 
 	//otus.groundMove();
-	PTINT lever = LEVER::convertToPTINT(otus._lever);
-	otus._speed.x = lever.x * 10;
+	PTINT lever = LEVER::convertToPTINT(_otus->_lever);
+	if (lever.x == 0)
+	{
+		_otus->changeObjectiveState2(_otus->_otusStand);
+		return;
+	}
+	if (lever.x != 4)
+	{
+		_otus->_speed.x = lever.x * RUNSPEED;
+	}
 
-	HDC dc = IMAGEMANAGER->findImage("pixelBuffer")->getMemDC();
-	int y = otus._pos.y;
-	COLORREF color = GetPixel(dc, otus._pos.x, y);
+	_otus->movePos(_otus->_speed);
+	_otus->putRectUponPos();
+
+	//땅 찾음
+	HDC dc = _otus->getPixelDC();
+	int y = _otus->_pos.y;
+	COLORREF color = GetPixel(dc, _otus->_pos.x, y);
 	if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
 	{
 		while (true)
@@ -302,7 +334,7 @@ void otusRun::update(otus &otus)
 				otus.movePos(otus._speed);
 				otus.putRectUponPos();
 				//otus.changeObjectiveState(new otusAir);
-				otus.changeObjectiveState2(otus._otusAir, _stateName);
+				otus.changeObjectiveState2(otus._otusAir);
 				return;
 			}
 			color = GetPixel(dc, otus._pos.x, y);
@@ -314,11 +346,7 @@ void otusRun::update(otus &otus)
 		}
 	}
 
-	otus.movePos(otus._speed);
-	otus.putRectUponPos();
-	//PTINT lever = LEVER::leverToPTINT(otus._lever);
-	if (lever.x == 0) //otus.changeObjectiveState(new otusStand);
-		otus.changeObjectiveState2(otus._otusStand, _stateName);
+	_otus->putRectUponPos();
 }
 void otusRun::render(otus &otus)
 {
@@ -384,12 +412,12 @@ void otusAttack::update(otus &otus)
 			auto color = GetPixel(_otus->getPixelDC(), _otus->_pos.x, _otus->_pos.y);
 			if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
 			{
-				_otus->changeObjectiveState2(_otus->_otusStand, _stateName);
+				_otus->changeObjectiveState2(_otus->_otusStand);
 				return;
 			}
 			else
 			{
-				_otus->changeObjectiveState2(_otus->_otusFly, _stateName);
+				_otus->changeObjectiveState2(_otus->_otusFly);
 				return;
 			}
 		}
@@ -427,22 +455,108 @@ void otusGroundDash::init(otus *otus)
 	_stateName = "otusGroundDash";
 	_otus = otus;
 	_image = IMAGEMANAGER->findImage("rollGround");
-	_frame.x = 0;
-	_frame.y = 0;
+	_frame.x = 5;
+	_frame.y = 1;
 	_time1 = 0.0f;
 	_count1 = 0;
 }
 void otusGroundDash::enter(string pastStateName)
 {
+	_time1 = TIMEMANAGER->getWorldTime();
+	_count1 = 0;
 
+	if (_otus->_bLeft)
+	{
+		_frame.y = 1;
+		_frame.x = 5 - _count1;
+		_otus->_speed.x = -13;
+	}
+	else
+	{
+		_frame.y = 0;
+		_frame.x = _count1;
+		_otus->_speed.x = 13;
+	}
 }
 void otusGroundDash::update(otus &otus)
 {
+	if (TIMEMANAGER->getWorldTime() - _time1 >= 0.06f)
+	{
+		_time1 = TIMEMANAGER->getWorldTime();
+		if (++_count1 > 5)
+		{
+			_otus->changeObjectiveState2(_otus->_otusStand);
+		}
 
+		if (_otus->_bLeft)
+		{
+			_frame.x = 5 - _count1;
+		}
+		else
+		{
+			_frame.x = _count1;
+		}
+	}
+
+	_otus->movePos(_otus->_speed);
+	_otus->putRectUponPos();
+
+	//땅 찾음
+	HDC dc = _otus->getPixelDC();
+	int y = _otus->_pos.y;
+	COLORREF color = GetPixel(dc, _otus->_pos.x, y);
+	if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+	{
+		while (true)
+		{
+			color = GetPixel(dc, otus._pos.x, y - 1);
+			if (!(GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255))
+			{
+				break;
+			}
+			if (otus._pos.y - --y > 20) break;
+		}
+		otus._pos.y = y;
+	}
+	else
+	{
+		while (true)
+		{
+			if (++y - otus._pos.y > 20)
+			{
+				otus.movePos(otus._speed);
+				otus.putRectUponPos();
+				//otus.changeObjectiveState(new otusAir);
+				otus.changeObjectiveState2(otus._otusAir);
+				return;
+			}
+			color = GetPixel(dc, otus._pos.x, y);
+			if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+			{
+				otus._pos.y = y;
+				break;
+			}
+		}
+	}
+
+	_otus->putRectUponPos();
 }
 void otusGroundDash::render(otus &otus)
 {
-
+	if (_otus->_bLeft)
+	{
+		_image->frameRender(_otus->getMemDC(),
+			-CAMX + _otus->_pos.x - _otus->_imageSize.x / 2 - 15,
+			-CAMY + _otus->_pos.y - 154,
+			_frame.x, _frame.y);
+	}
+	else
+	{
+		_image->frameRender(_otus->getMemDC(),
+			-CAMX + _otus->_pos.x - _otus->_imageSize.x / 2 + 15,
+			-CAMY + _otus->_pos.y - 154,
+			_frame.x, _frame.y);
+	}
 }
 //--------------------------------
 void otusAirDash::init(otus *otus)
@@ -450,20 +564,88 @@ void otusAirDash::init(otus *otus)
 	_stateName = "otusAirDash";
 	_otus = otus;
 	_image = IMAGEMANAGER->findImage("roll");
-	_frame.x = 0;
-	_frame.y = 0;
+	_frame.x = 8;
+	_frame.y = 1;
 	_time1 = 0.0f;
 	_count1 = 0;
 }
 void otusAirDash::enter(string pastStateName)
 {
+	_time1 = TIMEMANAGER->getWorldTime();
+	_count1 = 0;
 
+	if (_otus->_bLeft)
+	{
+		_frame.y = 1;
+		_frame.x = 8 - _count1;
+	}
+	else
+	{
+		_frame.y = 0;
+		_frame.x = _count1;
+	}
+
+	PTINT lever = LEVER::convertToPTINT(_otus->_lever);
+	if (lever.x != 4 && lever.y != 4)
+	{
+		_otus->_speed = lever.unit() * 13;
+	}
 }
 void otusAirDash::update(otus &otus)
 {
+	if (TIMEMANAGER->getWorldTime() - _time1 >= 0.05f)
+	{
+		_time1 = TIMEMANAGER->getWorldTime();
+		if (++_count1 > 8)
+		{
+			_otus->changeObjectiveState2(_otus->_otusFly);
+		}
 
+		if (_otus->_bLeft)
+		{
+			_frame.x = 8 - _count1;
+		}
+		else
+		{
+			_frame.x = _count1;
+		}
+	}
+
+	//속도대로 이동하는데, 옆이나 아래쪽으로 이동하는건 레이캐스트
+	if (otus._speed.y >= 0)
+	{
+		PTFLOAT arrive = otus.rayCastBlue(otus._pos, otus._speed);
+		if (arrive == otus._pos + otus._speed) otus.setPos(arrive);
+		else
+		{
+			otus.setPos(arrive);
+			otus._speed.y = 0;
+			//otus.changeObjectiveState(new otusStand);
+			otus.changeObjectiveState2(otus._otusStand);
+		}
+	}
+	else
+	{
+		otus.movePos(otus._speed);
+	}
+
+	//렉트 맞춰줌
+	otus.putRectUponPos();
 }
 void otusAirDash::render(otus &otus)
 {
-
+	if (_otus->_bLeft)
+	{
+		_image->frameRender(_otus->getMemDC(),
+			-CAMX + _otus->_pos.x - _otus->_imageSize.x / 2 - 15,
+			-CAMY + _otus->_pos.y - 154,
+			_frame.x, _frame.y);
+	}
+	else
+	{
+		_image->frameRender(_otus->getMemDC(),
+			-CAMX + _otus->_pos.x - _otus->_imageSize.x / 2 + 15,
+			-CAMY + _otus->_pos.y - 154,
+			_frame.x, _frame.y);
+	}
 }

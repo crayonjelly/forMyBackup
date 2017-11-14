@@ -1,6 +1,8 @@
 #pragma once
 #include "gameObject.h"
 
+#define RUNSPEED 7
+
 
 class otus : public gameObject
 {
@@ -61,8 +63,8 @@ public:
 	PTFLOAT rayCastBlue(PTFLOAT startPos, PTFLOAT speed);
 	void pixelCollision();
 	//void changeState(STATE state);
-	void changeObjectiveState(otusState *newState);
-	void changeObjectiveState2(otusState *state, string currentStateName);
+	//void changeObjectiveState(otusState *newState);
+	void changeObjectiveState2(otusState *state);
 	//void draw();
 
 	otus() {}

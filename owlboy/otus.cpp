@@ -205,8 +205,7 @@ void otus::settingSpeedFly()
 
 	if (lever.x == 4 || lever.y == 4) return;
 
-	_speed.x = lever.x * 10;
-	_speed.y = lever.y * 10;
+	_speed = lever.unit() * RUNSPEED;
 }
 
 void otus::settingSpeedAir()
@@ -233,7 +232,7 @@ void otus::settingSpeedAir()
 	PTINT lever = LEVER::convertToPTINT(_lever);
 	if (lever.x != 4)
 	{
-		_speed.x = lever.x * 10;
+		_speed.x = lever.x * RUNSPEED;
 	}
 }
 
@@ -527,7 +526,7 @@ void otus::pixelCollision()
 //	_pState->enter(*this);
 //}
 
-void otus::changeObjectiveState2(otusState *state, string currentStateName)
+void otus::changeObjectiveState2(otusState *state)
 {
 	string temp = _pState->_stateName;
 	_pState = state;
