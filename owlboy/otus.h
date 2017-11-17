@@ -5,7 +5,7 @@
 class otus : public gameObject
 {
 private:
-#define RUNSPEED 7
+#define RUNSPEED 6
 
 	friend class otusState;
 	friend class otusAir;

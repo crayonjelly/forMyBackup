@@ -6,6 +6,7 @@ HRESULT gawk::init(PTFLOAT pos)
 {
 	gameObject::init(pos);
 
+	_initialPos = pos;
 	_rc = RectMakeCenter(pos.x, pos.y, 50, 50);
 
 	_kind = OBJKIND::GAWK;
@@ -85,7 +86,8 @@ void gawkSleep::enter(string pastStateName)
 }
 void gawkSleep::update()
 {
-	if (calcDistance(_gawk->_pos, _gawk->_target->getPos()) <= 300)
+	if (_gawk->_target &&
+		calcDistance(_gawk->_pos, _gawk->_target->getPos()) <= 200)
 	{
 		_gawk->changeState(_gawk->_gawkWake);
 		return;
@@ -139,7 +141,17 @@ void gawkWake::enter(string pastStateName)
 	_time1 = TIMEMANAGER->getWorldTime();
 	_count1 = 0;
 
-	//깨어날 때 오투스 위치 확인해서 좌우 설정해놓고 깨어나야지
+	if (_gawk->_target)
+	{
+		if (_gawk->_pos.x < _gawk->_target->getPos().x)
+		{
+			_gawk->_bLeft = false;
+		}
+		else
+		{
+			_gawk->_bLeft = true;
+		}
+	}
 
 	if (_gawk->_bLeft)
 	{
@@ -203,23 +215,37 @@ void gawkFly::enter(string pastStateName)
 {
 	_time1 = TIMEMANAGER->getWorldTime();
 	_count1 = 0;
+
+	if (_gawk->_target)
+	{
+		if (_gawk->_pos.x < _gawk->_target->getPos().x)
+		{
+			_gawk->_bLeft = false;
+			_frame.x = 0;
+		}
+		else
+		{
+			_gawk->_bLeft = true;
+			_frame.x = 21;
+		}
+	}
 }
 void gawkFly::update()
 {
-	//_frame.x 감으면서 이거 기준으로 날개짓 상태 확인하고
-	//한번 더 날개짓 할지말지 결정하자
-	//기본 아래방향 속도 설정하고
-	//날개짓 한번 할 때 속도 퉁 튕겨서 내리면 날개짓 될거같은데?
+	//타겟 맨날 유효검사 귀찮다
+	if (_gawk->_target == NULL) return;
 
-	//if (날개짓 조건)
-	//{
-	//	_count1 = 0;
-	//
-	//	_gawk->_speed.y = -8;
-	//}
+	//날개짓
+	if (_count1 >= 5 &&
+		_gawk->_pos.y  - _gawk->_target->getPos().y >= 0)
+	{
+		_count1 = 0;
+	
+		_gawk->_speed.y = -7.0f;
+	}
 
 	//일정 시간마다 카운트 올리기
-	if (TIMEMANAGER->getWorldTime() - _time1 >= 0.4f)
+	if (TIMEMANAGER->getWorldTime() - _time1 >= 0.08f)
 	{
 		_time1 = TIMEMANAGER->getWorldTime();
 		if (_count1 < 5) ++_count1;
@@ -228,10 +254,24 @@ void gawkFly::update()
 	//속도 조절
 	float gravity = 0.3f;
 	_gawk->_speed.y += 0.3f;
-	if (_gawk->_speed.y > 5.0f) _gawk->_speed.y = 5.0f;
+	if (_gawk->_speed.y > GAWKSPEED) _gawk->_speed.y = GAWKSPEED;
+
+	if (_gawk->_pos.x < _gawk->_target->getPos().x - 20)
+	{
+		_gawk->_speed.x = GAWKSPEED;
+		_gawk->_bLeft = false;
+	}
+	else if (_gawk->_pos.x > _gawk->_target->getPos().x + 20)
+	{
+		_gawk->_speed.x = -GAWKSPEED;
+		_gawk->_bLeft = true;
+	}
+	else _gawk->_speed.x = 0;
+
 
 	//속도에 따라 이동
 	_gawk->movePos(_gawk->_speed);
+	_gawk->putRectCenterToPos();
 
 	//카운트에 따라 프레임 설정
 	if (_gawk->_bLeft)

@@ -5,7 +5,7 @@
 class gawk : public gameObject
 {
 private:
-#define GAWKSPEED 6
+#define GAWKSPEED 5
 
 	friend class gawkState;
 	friend class gawkSleep;
@@ -24,6 +24,8 @@ private:
 
 	gawkState *_state;
 	gameObject *_target;
+
+	PTFLOAT _initialPos;
 
 public:
 	virtual HRESULT init(PTFLOAT pos);
