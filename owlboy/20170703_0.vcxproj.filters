@@ -198,6 +198,9 @@
     <ClInclude Include="lever.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="gawk.h">
+      <Filter>playGround\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -309,6 +312,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="otus + state.cpp">
+      <Filter>playGround\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="gawk.cpp">
       <Filter>playGround\objects</Filter>
     </ClCompile>
   </ItemGroup>

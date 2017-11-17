@@ -156,3 +156,15 @@ struct PTINT
 		}
 	}
 };
+
+
+
+//∏≈≈©∑Œ
+
+inline float calcDistance(PTFLOAT pt1, PTFLOAT pt2)
+{
+	float x = pt1.x - pt2.x;
+	float y = pt1.y - pt2.y;
+
+	return sqrtf(x * x + y * y);
+}

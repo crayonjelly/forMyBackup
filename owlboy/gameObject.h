@@ -72,6 +72,7 @@ public:
 	inline PTINT getImageSize() { return _imageSize; }
 	inline PTINT getFrame() { return _frame; }
 	inline auto getLayer() { return _layer; }
+	inline auto getKind() { return _kind; }
 
 	//¼³Á¤ÀÚ
 	inline void setPos(PTFLOAT pos) { _pos = pos; }
@@ -81,6 +82,7 @@ public:
 	inline void setImageSize(PTINT imageSize) { _imageSize = imageSize; }
 	inline void setFrame(PTINT frame) { _frame = frame; }
 	inline void setLayer(LAYER::Enum layerEnum) { _layer = layerEnum; }
+	inline void setKind(OBJKIND::Enum kind) { _kind = kind; }
 
 	gameObject() {}
 	virtual ~gameObject() {}

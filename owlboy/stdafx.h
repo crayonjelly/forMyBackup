@@ -83,6 +83,7 @@ extern HINSTANCE _hInstance;
 extern HWND _hWnd;
 extern POINT _ptMouse;
 extern BOOL _leftButtonDown;
+extern BOOL _mainDebugMode;
 
 //전역화 시킬 헤더들
 #include "worldNode.h"

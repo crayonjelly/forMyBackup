@@ -11,6 +11,7 @@ namespace OBJKIND
 		TERRAIN,
 		OTUS,
 		GEDDY,
+		GAWK,
 		FRUIT_BLUE,
 		END
 	};

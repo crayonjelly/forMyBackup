@@ -4,6 +4,7 @@
 #include "cloud.h"
 #include "terrain.h"
 #include "backGround.h"
+#include "gawk.h"
 
 
 HRESULT owlboyScene::init()
@@ -79,6 +80,15 @@ HRESULT owlboyScene::init()
 		temp->rcResetByImage();
 		temp->setLayer((LAYER::Enum)RND->getFromIntTo(3, 5));
 		WORLD->addObject(temp);
+	}
+	{
+		for (int i = 0; i < 10; ++i)
+		{
+			auto temp = new gawk;
+			temp->init(PTFLOAT(600 + RND->getFromIntTo(0, 1000),
+				600 + RND->getFromIntTo(0, 1000)));
+			WORLD->addObject(temp);
+		}
 	}
 
 	return S_OK;

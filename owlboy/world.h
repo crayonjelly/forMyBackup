@@ -14,6 +14,7 @@ public:
 	void render();
 
 	void addObject(gameObject* obj);
+	vector<gameObject*> findByKind(OBJKIND::Enum kind);
 
 	world() {}
 	~world() {}

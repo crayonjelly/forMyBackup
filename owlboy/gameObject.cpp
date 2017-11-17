@@ -29,7 +29,8 @@ void gameObject::render(float depthScale)
 	//기본적으로는 이미지 있으면 기본렌더로 렌더하기
 	if (_image)
 	{
-		_image->render(getMemDC(), -CAMX * depthScale + _pos.x, -CAMY * depthScale + _pos.y);
+		_image->render(getMemDC(),
+			-CAMX * depthScale + _pos.x, -CAMY * depthScale + _pos.y);
 	}
 }
 

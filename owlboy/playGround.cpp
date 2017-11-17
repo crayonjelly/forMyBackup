@@ -29,6 +29,7 @@ HRESULT playGround::init(void)
 	IMAGEMANAGER->addFrameImage("hero2", "resource/(x2)hero2(4480,2688,20,14).bmp", 4480, 2688, 20, 14, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("roll", "resource/(x2)roll(2016,384,9,2).bmp", 2016, 384, 9, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("rollGround", "resource/(x2)rollGround(1344,384,6,2).bmp", 1344, 384, 6, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("gawkSheet", "resource/(x2)gawkSheet(3564,700,22,5).bmp", 3564, 700, 22, 5, true, RGB(255, 0, 255));
 
 	SCENEMANAGER->addScene("아울보이씬", new owlboyScene);
 
@@ -45,6 +46,12 @@ void playGround::release(void)
 void playGround::update(void)
 {
 	gameNode::update();
+
+	//F9 누르면 디버그모드 온/오프
+	if (KEYMANAGER->isOnceKeyDown(VK_F9))
+	{
+		_mainDebugMode = !_mainDebugMode;
+	}
 
 	SCENEMANAGER->update();
 

@@ -85,16 +85,20 @@ void world::render()
 
 		iter->second->render(depthScale);
 		
-		//구름 렉트 표시하면 정신없어서 지움
-		switch ((LAYER::Enum)iter->first)
+		//디버그모드
+		if (_mainDebugMode)
 		{
-		case LAYER::BACK3:
-		case LAYER::BACK2:
-		case LAYER::BACK1:
-			break;
-		default:
-			iter->second->debugRender(depthScale);
-			break;
+			//구름 렉트 표시하면 정신없어서 지움
+			switch ((LAYER::Enum)iter->first)
+			{
+			case LAYER::BACK3:
+			case LAYER::BACK2:
+			case LAYER::BACK1:
+				break;
+			default:
+				iter->second->debugRender(depthScale);
+				break;
+			}
 		}
 	}
 }
@@ -103,4 +107,18 @@ void world::render()
 void world::addObject(gameObject* obj)
 {
 	_vObject.push_back(obj);
+}
+
+vector<gameObject*> world::findByKind(OBJKIND::Enum kind)
+{
+	vector<gameObject*> result;
+	for (int i = 0; i < _vObject.size(); ++i)
+	{
+		if (_vObject[i]->getKind() == kind)
+		{
+			result.push_back(_vObject[i]);
+		}
+	}
+
+	return result;
 }

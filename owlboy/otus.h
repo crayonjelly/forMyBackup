@@ -1,12 +1,12 @@
 #pragma once
 #include "gameObject.h"
 
-#define RUNSPEED 7
-
 
 class otus : public gameObject
 {
 private:
+#define RUNSPEED 7
+
 	friend class otusState;
 	friend class otusAir;
 	friend class otusStand;

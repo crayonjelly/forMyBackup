@@ -10,6 +10,7 @@ POINT _ptMouse;
 playGround _pg;
 
 BOOL _leftButtonDown = false;
+BOOL _mainDebugMode = FALSE;
 
 //함수의 프로토 타입
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
