@@ -10,6 +10,8 @@ public:
 	void update();
 	void render();
 
+	void terrainInit();
+
 	owlboyScene() {}
 	~owlboyScene() {}
 };

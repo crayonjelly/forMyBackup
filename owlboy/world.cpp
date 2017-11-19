@@ -28,6 +28,7 @@ void world::render()
 		auto obj = _vObject[i];
 		mRenderOrder.insert(make_pair((int)obj->getLayer(), obj));
 	}
+
 	for (auto iter = mRenderOrder.begin(); iter != mRenderOrder.end(); ++iter)
 	{
 		//월드에서 렌더할 때 레이어 깊이에 따라서 인자로 넣어준다.
@@ -36,6 +37,7 @@ void world::render()
 		//depthScale의 기본값 1.0f
 		float depthScale = 1.0f;
 
+		//레이어에 따라 depthScale 설정
 		switch ((LAYER::Enum)iter->first)
 		{
 		case LAYER::SKY3:
@@ -56,7 +58,9 @@ void world::render()
 		case LAYER::BACK1:
 			depthScale = 0.8f;
 			break;
-		case LAYER::TERRAIN: case LAYER::FRUIT:
+		case LAYER::TERRAIN3: case LAYER::TERRAIN2:
+		case LAYER::TERRAIN1: case LAYER::PIXELDC:
+		case LAYER::FRUIT:
 		case LAYER::TEAM: case LAYER::NPC:
 		case LAYER::OTUS: case LAYER::GRAB_LIGHT:
 		case LAYER::ARM: case LAYER::GRAB_HEAVY:
@@ -83,7 +87,16 @@ void world::render()
 			break;
 		}
 
-		iter->second->render(depthScale);
+		//렌더링
+		switch ((LAYER::Enum)iter->first)
+		{
+		case LAYER::PIXELDC:
+			//픽셀충돌 그린건 디버그에서만 보자
+			break;
+		default:
+			iter->second->render(depthScale);
+			break;
+		}
 		
 		//디버그모드
 		if (_mainDebugMode)
@@ -94,6 +107,9 @@ void world::render()
 			case LAYER::BACK3:
 			case LAYER::BACK2:
 			case LAYER::BACK1:
+				break;
+			case LAYER::PIXELDC:
+				iter->second->render(depthScale);
 				break;
 			default:
 				iter->second->debugRender(depthScale);

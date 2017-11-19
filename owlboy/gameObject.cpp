@@ -43,6 +43,31 @@ void gameObject::debugRender(float depthScale)
 	LineMake(getMemDC(), -CAMX * depthScale + _rc.right, -CAMY * depthScale + _rc.bottom, -CAMX * depthScale + _rc.left, -CAMY * depthScale + _rc.bottom);
 	LineMake(getMemDC(), -CAMX * depthScale + _rc.left, -CAMY * depthScale + _rc.bottom, -CAMX * depthScale + _rc.left, -CAMY * depthScale + _rc.top);
 }
+void gameObject::putRectCenterToPos()
+{
+	int width = _rc.right - _rc.left;
+	int height = _rc.bottom - _rc.top;
+
+	_rc.left = _pos.x - width / 2;
+	_rc.right = _rc.left + width;
+	_rc.top = _pos.y - height / 2;
+	_rc.bottom = _rc.top + height;
+}
+void gameObject::putRectUponPos()
+{
+	int width = _rc.right - _rc.left;
+	int height = _rc.bottom - _rc.top;
+
+	_rc.left = _pos.x - width / 2;
+	_rc.right = _rc.left + width;
+	_rc.bottom = _pos.y;
+	_rc.top = _rc.bottom - height;
+}
+void gameObject::putPosCenterToRect()
+{
+	_pos.x = _rc.left + (_rc.right - _rc.left) / 2;
+	_pos.y = _rc.top + (_rc.bottom - _rc.top) / 2;
+}
 void gameObject::changeImage(string imageKey)
 {
 	_imageKey = imageKey;

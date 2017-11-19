@@ -146,6 +146,7 @@
     <ClCompile Include="mypoints.cpp" />
     <ClCompile Include="otus + state.cpp" />
     <ClCompile Include="otus.cpp" />
+    <ClCompile Include="owlboyScene + terrainInit.cpp" />
     <ClCompile Include="owlboyScene.cpp" />
     <ClCompile Include="playGround.cpp" />
     <ClCompile Include="progressBar.cpp" />

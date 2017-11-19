@@ -28,7 +28,10 @@ namespace LAYER
 		BACK2,
 		BACK1,
 		//---
-		TERRAIN,
+		TERRAIN3,
+		TERRAIN2,
+		TERRAIN1,
+		PIXELDC,		//디버그용
 		FRUIT,
 		TEAM,
 		NPC,

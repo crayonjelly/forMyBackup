@@ -317,5 +317,8 @@
     <ClCompile Include="gawk.cpp">
       <Filter>playGround\objects</Filter>
     </ClCompile>
+    <ClCompile Include="owlboyScene + terrainInit.cpp">
+      <Filter>playGround\owlboyScene</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

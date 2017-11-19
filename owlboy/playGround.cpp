@@ -25,11 +25,23 @@ HRESULT playGround::init(void)
 	IMAGEMANAGER->addImage("cloud02", "resource/(x2)cloud02(848,266).bmp", 848, 266, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("cloud03", "resource/(x2)cloud03(380,212).bmp", 380, 212, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("blueTest", "resource/파랑픽셀 테스트(674,402).bmp", 674, 402, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("bomboHouse", "resource/(x2)bomboHouse(424,238).bmp", 424, 238, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("mandolynHouse", "resource/(x2)mandolynHouse(327,311).bmp", 327, 311, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("otusHouse", "resource/(x2)island01(540,692).bmp", 540, 692, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("otusHouse_pixel", "resource/(x2)island01(540,692)_pixel.bmp", 540, 692, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("hero", "resource/(x2)hero(6272,2688,28,14).bmp", 6272, 2688, 28, 14, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("hero2", "resource/(x2)hero2(4480,2688,20,14).bmp", 4480, 2688, 20, 14, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("roll", "resource/(x2)roll(2016,384,9,2).bmp", 2016, 384, 9, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("rollGround", "resource/(x2)rollGround(1344,384,6,2).bmp", 1344, 384, 6, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("gawkSheet", "resource/(x2)gawkSheet(3564,700,22,5).bmp", 3564, 700, 22, 5, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("grassBrownEdge1", "resource/(x2)grassBrown_edge1(744,86,6,1).bmp", 744, 86, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("grassBrownEdge2", "resource/(x2)grassBrown_edge2(576,72,6,1).bmp", 576, 72, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("grassBrownPlatform1", "resource/(x2)grassBrown_platform1(1908,104,6,1).bmp", 1908, 104, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("grassBrownPlatform2", "resource/(x2)grassBrown_platform2(2508,114,6,1).bmp", 2508, 114, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("grassBrownEdge1_pixel", "resource/(x2)grassBrown_edge1_pixel(124,86).bmp", 124, 86, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("grassBrownEdge2_pixel", "resource/(x2)grassBrown_edge2_pixel(96,72).bmp", 96, 72, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("grassBrownPlatform1_pixel", "resource/(x2)grassBrown_platform1_pixel(318,104).bmp", 318, 104, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("grassBrownPlatform2_pixel", "resource/(x2)grassBrown_platform2_pixel(418,114).bmp", 418, 114, true, RGB(255, 0, 255));
 
 	SCENEMANAGER->addScene("아울보이씬", new owlboyScene);
 

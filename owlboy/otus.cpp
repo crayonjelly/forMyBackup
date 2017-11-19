@@ -56,7 +56,6 @@ void otus::update()
 }
 void otus::render(float depthScale)
 {
-	//draw();
 	_pState->render(*this);
 
 	char str[64];
