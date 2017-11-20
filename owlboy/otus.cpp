@@ -19,6 +19,9 @@ HRESULT otus::init(PTFLOAT pos)
 	_bLeft = false;
 	_renderTimeSave = 0;
 
+	_bPassDown = false;
+	_downInputTimeSave = 0.0f;
+
 	//-----------------------------
 	_otusAir		= new otusAir;
 	_otusStand		= new otusStand;
@@ -597,3 +600,28 @@ void otus::changeObjectiveState2(otusState *state)
 //		break;
 //	}
 //}
+
+void otus::bPassDownTrueUpdate()
+{
+	auto color = GetPixel(getPixelDC(), _pos.x, _pos.y);
+
+	if (!(GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255))
+	{
+		_bPassDown = false;
+		return;
+	}
+}
+
+void otus::doubleDownUpdate()
+{
+	if (KEYMANAGER->isOnceKeyDown('S'))
+	{
+		if (TIMEMANAGER->getWorldTime() - _downInputTimeSave <= 0.2f)
+		{
+			_bPassDown = true;
+			return;
+		}
+
+		_downInputTimeSave = TIMEMANAGER->getWorldTime();
+	}
+}

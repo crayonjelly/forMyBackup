@@ -44,6 +44,9 @@ private:
 	bool _bLeftPast;
 	float _renderTimeSave;
 
+	bool _bPassDown;
+	float _downInputTimeSave;
+
 	otusState *_pState;
 
 public:
@@ -66,6 +69,8 @@ public:
 	//void changeObjectiveState(otusState *newState);
 	void changeObjectiveState2(otusState *state);
 	//void draw();
+	void bPassDownTrueUpdate();
+	void doubleDownUpdate();
 
 	otus() {}
 	virtual ~otus() {}

@@ -37,21 +37,30 @@ void otusAir::update(otus &otus)
 	_otus->settingSpeedAir();
 
 	//떨어지는 상황은 레이캐스트, 아닌건 그냥
-	if (_otus->_speed.y > 0)
+	//거기다가 _bPassDown 상태도 더해서 체크해준다
+	if (_otus->_bPassDown)
 	{
-		PTFLOAT arrive = _otus->rayCastBlue(_otus->_pos, _otus->_speed);
-		if (arrive == _otus->_pos + _otus->_speed) _otus->setPos(arrive);
-		else
-		{
-			_otus->setPos(arrive);
-			_otus->_speed.y = 0;
-			//otus.changeObjectiveState(new otusStand);
-			_otus->changeObjectiveState2(_otus->_otusStand);
-		}
+		_otus->movePos(_otus->_speed);
+		_otus->bPassDownTrueUpdate();
 	}
 	else
 	{
-		_otus->movePos(_otus->_speed);
+		if (_otus->_speed.y > 0)
+		{
+			PTFLOAT arrive = _otus->rayCastBlue(_otus->_pos, _otus->_speed);
+			if (arrive == _otus->_pos + _otus->_speed) _otus->setPos(arrive);
+			else
+			{
+				_otus->setPos(arrive);
+				_otus->_speed.y = 0;
+				//otus.changeObjectiveState(new otusStand);
+				_otus->changeObjectiveState2(_otus->_otusStand);
+			}
+		}
+		else
+		{
+			_otus->movePos(_otus->_speed);
+		}
 	}
 	
 	//렉트 맞춰줌
@@ -199,6 +208,13 @@ void otusStand::update(otus &otus)
 {
 	otus.bLeftUpdate();
 
+	_otus->doubleDownUpdate();
+	if (_otus->_bPassDown)
+	{
+		_otus->changeObjectiveState2(_otus->_otusAir);
+		return;
+	}
+
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		_otus->changeObjectiveState2(_otus->_otusAttack);
@@ -274,6 +290,13 @@ void otusRun::enter(string pastStateName)
 void otusRun::update(otus &otus)
 {
 	otus.bLeftUpdate();
+
+	_otus->doubleDownUpdate();
+	if (_otus->_bPassDown)
+	{
+		_otus->changeObjectiveState2(_otus->_otusAir);
+		return;
+	}
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
