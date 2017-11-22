@@ -70,6 +70,9 @@
     <Filter Include="playGround\objects">
       <UniqueIdentifier>{bdbb3c89-c9af-487b-aac9-69d45f8ea9a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="playGround\stages">
+      <UniqueIdentifier>{3c885736-8efb-44db-8d07-5982f74ad7bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -201,6 +204,15 @@
     <ClInclude Include="gawk.h">
       <Filter>playGround\objects</Filter>
     </ClInclude>
+    <ClInclude Include="stageManager.h">
+      <Filter>playGround\world</Filter>
+    </ClInclude>
+    <ClInclude Include="stages.h">
+      <Filter>playGround\stages</Filter>
+    </ClInclude>
+    <ClInclude Include="door.h">
+      <Filter>playGround\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -319,6 +331,18 @@
     </ClCompile>
     <ClCompile Include="owlboyScene + terrainInit.cpp">
       <Filter>playGround\owlboyScene</Filter>
+    </ClCompile>
+    <ClCompile Include="stageManager.cpp">
+      <Filter>playGround\world</Filter>
+    </ClCompile>
+    <ClCompile Include="stages.cpp">
+      <Filter>playGround\stages</Filter>
+    </ClCompile>
+    <ClCompile Include="vellie.cpp">
+      <Filter>playGround\stages</Filter>
+    </ClCompile>
+    <ClCompile Include="door.cpp">
+      <Filter>playGround\objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -30,6 +30,7 @@ using namespace std;
 #include "keyAniManager.h"
 #include "iniDataManager.h"
 #include "cameraManager.h"
+#include "stageManager.h"
 
 using namespace OMICRON_UTIL;
 
@@ -62,6 +63,7 @@ using namespace OMICRON_UTIL;
 #define INIDATA iniDataManager::getSingleton()
 #define CAMERA cameraManager::getSingleton()
 #define WORLD world::getSingleton()
+#define STAGEMANAGER stageManager::getSingleton()
 
 //카메라 매크로
 #define CAMX (CAMERA->getPos().x)

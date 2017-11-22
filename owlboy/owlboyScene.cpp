@@ -9,6 +9,10 @@
 
 HRESULT owlboyScene::init()
 {
+	//맵버퍼, 픽셀버퍼 월드에 추가
+	terrainInit();
+
+	//오투스 추가
 	{
 		auto temp = new otus;
 		temp->init(PTFLOAT(5000, 3000));
@@ -16,45 +20,13 @@ HRESULT owlboyScene::init()
 
 		CAMERA->setTarget(temp);
 	}
-	{
-		auto temp = new backGround;
-		temp->init(PTFLOAT(0, 0));
-		temp->changeImage("cloudBack");
-		temp->setPos(PTFLOAT(0, WINSIZEY - temp->getImage()->getHeight()));
-		temp->rcResetByImage();
-		WORLD->addObject(temp);
-	}
-	terrainInit();
-	for (int i = 0; i < 40; ++i)
-	{
-		auto temp = new cloud;
-		temp->init(PTFLOAT(RND->getFromIntTo(2000, 8000), RND->getFromIntTo(1000, 7000)));
-		temp->changeImage("cloud01");
-		temp->rcResetByImage();
-		temp->setLayer((LAYER::Enum)RND->getFromIntTo(3, 5));
-		WORLD->addObject(temp);
-		temp = new cloud;
-		temp->init(PTFLOAT(RND->getFromIntTo(2000, 8000), RND->getFromIntTo(1000, 7000)));
-		temp->changeImage("cloud02");
-		temp->rcResetByImage();
-		temp->setLayer((LAYER::Enum)RND->getFromIntTo(3, 5));
-		WORLD->addObject(temp);
-		temp = new cloud;
-		temp->init(PTFLOAT(RND->getFromIntTo(2000, 8000), RND->getFromIntTo(1000, 7000)));
-		temp->changeImage("cloud03");
-		temp->rcResetByImage();
-		temp->setLayer((LAYER::Enum)RND->getFromIntTo(3, 5));
-		WORLD->addObject(temp);
-	}
-	{
-		for (int i = 0; i < 10; ++i)
-		{
-			auto temp = new gawk;
-			temp->init(PTFLOAT(RND->getFromIntTo(4000, 6000),
-				RND->getFromIntTo(2000, 4000)));
-			WORLD->addObject(temp);
-		}
-	}
+
+	//----------- 스테이지 해보자 ------------
+	STAGEMANAGER->insertStage("vellie", new vellie);
+	STAGEMANAGER->insertStage("otusHouse", new otusHouse);
+
+	STAGEMANAGER->changeStage("vellie");
+	//---------------------------------------
 
 	return S_OK;
 }

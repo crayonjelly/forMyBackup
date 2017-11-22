@@ -6,7 +6,7 @@ HRESULT gameNode::init(void)
 {
 	_hdc = GetDC(_hWnd);
 	_managerInit = false;
-		
+
 	return S_OK;
 }
 
@@ -30,6 +30,7 @@ HRESULT gameNode::init(bool managerInit)
 		INIDATA->init();
 		CAMERA->init();
 		WORLD->init();
+		STAGEMANAGER->init();
 	}
 
 	return S_OK;
@@ -52,6 +53,7 @@ void gameNode::release(void)
 		INIDATA->releaseSingleton();
 		CAMERA->releaseSingleton();
 		WORLD->releaseSingleton();
+		STAGEMANAGER->releaseSingleton();
 	}
 	
 	ReleaseDC(_hWnd, _hdc);

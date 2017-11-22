@@ -4,6 +4,9 @@
 
 class owlboyScene : public gameNode
 {
+private:
+
+
 public:
 	HRESULT init();
 	void release();
