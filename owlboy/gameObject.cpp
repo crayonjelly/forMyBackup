@@ -14,6 +14,9 @@ HRESULT gameObject::init(PTFLOAT pos)
 	_kind = OBJKIND::NONE;
 	_layer = LAYER::FRUIT;
 
+	auto test = [&](int a, float b, gameObject* c) {  };
+	auto test2 = []() {};
+	test(1,2,this);
 	return S_OK;
 }
 void gameObject::release()
@@ -22,7 +25,16 @@ void gameObject::release()
 }
 void gameObject::update()
 {
-
+	int size = _vMessage.size();
+	if (size >= 1)
+	{
+		for (int i = 0; i < size; ++i)
+		{
+			auto msg = _vMessage[i];
+			if (auto cb = _mCallback.at(msg.text)) cb(msg);
+		}
+		_vMessage.clear();
+	}
 }
 void gameObject::render(float depthScale)
 {
@@ -87,4 +99,8 @@ void gameObject::rcResetByImage()
 	{
 		_rc = RectMake(_pos.x, _pos.y, _image->getWidth(), _image->getHeight());
 	}
+}
+void gameObject::sendMessage(tagMessage msg)
+{
+	_vMessage.push_back(msg);
 }

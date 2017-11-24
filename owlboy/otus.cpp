@@ -41,6 +41,12 @@ HRESULT otus::init(PTFLOAT pos)
 	//-----------------------------
 	_pState = _otusAir;
 
+	//콜백 더하기
+	_mCallback.insert(make_pair("door", [this](tagMessage msg)
+	{
+		_pos.y -= 15;
+	}));
+
 	return S_OK;
 }
 void otus::release()

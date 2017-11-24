@@ -6,7 +6,7 @@ class door : public gameObject
 {
 private:
 	gameObject *_target;
-	string _message;
+	tagMessage _message;
 
 public:
 	virtual HRESULT init(PTFLOAT pos);
@@ -17,6 +17,7 @@ public:
 	//°Ù¼Â
 	inline auto getTarget() { return _target; }
 	inline void setTarget(gameObject *target) { _target = target; }
+	inline void setMessage(tagMessage msg) { _message = msg; }
 
 	door() {}
 	virtual ~door() {}

@@ -1,6 +1,29 @@
 #pragma once
 #include "gameNode.h"
 
+struct tagMessage
+{
+	string text;
+	int dataInt;
+	float dataFloat;
+	string dataString;
+	gameObject *dataTarget;
+
+	tagMessage() : text(""), dataInt(0), dataFloat(0.0f),
+		dataString(""), dataTarget(NULL) {}
+	tagMessage(
+		string text,
+		int dataInt = 0,
+		float dataFloat = 0.0f,
+		string dataString = "",
+		gameObject *dataTarget = NULL) :
+
+		text(text),
+		dataInt(dataInt),
+		dataFloat(dataFloat),
+		dataString(dataString),
+		dataTarget(dataTarget) {}
+};
 
 class gameObject : public gameNode
 {
@@ -17,6 +40,9 @@ protected:
 	OBJKIND::Enum _kind;
 	LAYER::Enum _layer;
 
+	vector<tagMessage> _vMessage;
+	map<string, function<void(tagMessage)>> _mCallback;
+
 public:
 	virtual HRESULT init(PTFLOAT pos);
 	virtual void release();
@@ -30,6 +56,7 @@ public:
 	void putPosCenterToRect();
 	virtual void changeImage(string imageKey);
 	void rcResetByImage();
+	void sendMessage(tagMessage msg);
 
 	//inline ÇÔ¼ö
 	inline void movePos(PTFLOAT dPos)

@@ -100,7 +100,7 @@ void vellie::drawMap()
 		PTINT newPos = makePos + PTINT(290, 300);
 		temp->init(newPos);
 		temp->setRect(RectMake(newPos.x, newPos.y, 40, 80));
-		//temp->setMessage("door:otusHouse");
+		temp->setMessage(tagMessage("door", 0, 0.0f, "vellie"));
 		WORLD->addObject(temp);
 	}
 }

@@ -28,6 +28,6 @@ void door::update()
 	POINT pt = { _target->getPos().x, _target->getPos().y };
 	if (PtInRect(&_rc, pt))
 	{
-		//_target->sendMessage(_message);
+		_target->sendMessage(_message);
 	}
 }

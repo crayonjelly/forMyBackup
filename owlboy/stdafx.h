@@ -13,6 +13,8 @@
 
 using namespace std;
 
+#include <functional>
+
 #include "mypoints.h"		//내가 만든 PTINT, PTFLOAT
 #include "commonMacroFunction.h"
 #include "randomFunction.h"
