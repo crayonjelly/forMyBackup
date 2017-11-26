@@ -25,8 +25,11 @@ void stageManager::eraseStage(string name)
 }
 void stageManager::changeStage(string name)
 {
+	string pastStage = "";
+
 	if (_currentStage)
 	{
+		pastStage = _currentStage->_stageName;
 		_currentStage->exit();
 		_currentStage = NULL;
 	}
@@ -34,6 +37,6 @@ void stageManager::changeStage(string name)
 	if (auto nextStage = _mStage.at(name))
 	{
 		_currentStage = nextStage;
-		nextStage->enter();
+		nextStage->enter(pastStage);
 	}
 }

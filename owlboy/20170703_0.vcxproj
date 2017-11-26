@@ -81,6 +81,7 @@
     <ClInclude Include="animation.h" />
     <ClInclude Include="backGround.h" />
     <ClInclude Include="button.h" />
+    <ClInclude Include="buttonPopup.h" />
     <ClInclude Include="cameraManager.h" />
     <ClInclude Include="characterSelectScene.h" />
     <ClInclude Include="cloud.h" />
@@ -128,6 +129,7 @@
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="backGround.cpp" />
     <ClCompile Include="button.cpp" />
+    <ClCompile Include="buttonPopup.cpp" />
     <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="characterSelectScene.cpp" />
     <ClCompile Include="cloud.cpp" />
@@ -150,6 +152,7 @@
     <ClCompile Include="mypoints.cpp" />
     <ClCompile Include="otus + state.cpp" />
     <ClCompile Include="otus.cpp" />
+    <ClCompile Include="otusHouse.cpp" />
     <ClCompile Include="owlboyScene + terrainInit.cpp" />
     <ClCompile Include="owlboyScene.cpp" />
     <ClCompile Include="playGround.cpp" />

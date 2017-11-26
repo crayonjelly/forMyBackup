@@ -4,6 +4,7 @@
 
 HRESULT gameObject::init(PTFLOAT pos)
 {
+	_bLive = true;
 	_pos = pos;
 	_rc = RectMakeCenter(pos.x, pos.y, 10, 10);
 
@@ -21,7 +22,8 @@ HRESULT gameObject::init(PTFLOAT pos)
 }
 void gameObject::release()
 {
-
+	_vMessage.clear();
+	_mCallback.clear();
 }
 void gameObject::update()
 {
@@ -84,8 +86,24 @@ void gameObject::changeImage(string imageKey)
 {
 	_imageKey = imageKey;
 	_image = IMAGEMANAGER->findImage(imageKey);
-	_imageSize.x = _image->getWidth();
-	_imageSize.y = _image->getHeight();
+	if (!_image)
+	{
+		_imageSize.x = 0;
+		_imageSize.y = 0;
+		return;
+	}
+
+	if (_image->getMaxFrameX() == 0 &&
+		_image->getMaxFrameY() == 0)
+	{
+		_imageSize.x = _image->getWidth();
+		_imageSize.y = _image->getHeight();
+	}
+	else
+	{
+		_imageSize.x = _image->getFrameWidth();
+		_imageSize.y = _image->getFrameHeight();
+	}
 }
 void gameObject::rcResetByImage()
 {

@@ -1,6 +1,8 @@
 #pragma once
 #include "gameObject.h"
 
+class buttonPopup;
+
 
 class otus : public gameObject
 {
@@ -48,6 +50,7 @@ private:
 	float _downInputTimeSave;
 
 	otusState *_pState;
+	gameObject *_btn;
 
 public:
 	virtual HRESULT init(PTFLOAT pos);

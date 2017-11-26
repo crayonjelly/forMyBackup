@@ -10,6 +10,8 @@ HRESULT playGround::init(void)
 	char *str = "Now Loading . . .";
 	TextOut(getHDC(), WINSIZEX / 2 - 100, WINSIZEY / 2 - 10, str, strlen(str));
 
+	WORLD->setPG(this);
+
 	IMAGEMANAGER->addImage("cloudBack", "resource/(x2)cloudBack(1180,378).bmp", 1180, 378, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("bomboShop", "resource/(x2)bomboShop(674,402).bmp", 674, 402, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("bomboShop_pixel", "resource/(x2)bomboShop(674,402)_pixel.bmp", 674, 402, true, RGB(255, 0, 255));
@@ -29,6 +31,7 @@ HRESULT playGround::init(void)
 	IMAGEMANAGER->addImage("mandolynHouse", "resource/(x2)mandolynHouse(327,311).bmp", 327, 311, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("otusHouse", "resource/(x2)island01(540,692).bmp", 540, 692, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("otusHouse_pixel", "resource/(x2)island01(540,692)_pixel.bmp", 540, 692, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("fontBig", "resource/(x2)fontBig(572,28,26,1).bmp", 572, 28, 26, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("hero", "resource/(x2)hero(6272,2688,28,14).bmp", 6272, 2688, 28, 14, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("hero2", "resource/(x2)hero2(4480,2688,20,14).bmp", 4480, 2688, 20, 14, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("roll", "resource/(x2)roll(2016,384,9,2).bmp", 2016, 384, 9, 2, true, RGB(255, 0, 255));
@@ -42,6 +45,11 @@ HRESULT playGround::init(void)
 	IMAGEMANAGER->addImage("grassBrownEdge2_pixel", "resource/(x2)grassBrown_edge2_pixel(96,72).bmp", 96, 72, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("grassBrownPlatform1_pixel", "resource/(x2)grassBrown_platform1_pixel(318,104).bmp", 318, 104, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("grassBrownPlatform2_pixel", "resource/(x2)grassBrown_platform2_pixel(418,114).bmp", 418, 114, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("otusHousePart1", "resource/(x2)otusHousePart1(2352,528,4,1).bmp", 2352, 528, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("otusHousePart2", "resource/(x2)otusHousePart1(2352,528,4,1).bmp", 2352, 528, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("otusHousePart1_pixel", "resource/(x2)otusHousePart1_pixel(588,528).bmp", 588, 528, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("btnClicks", "resource/(x2)btnClicks(72,84,2,2).bmp", 72, 84, 2, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("btnMouseRGrab", "resource/(x2)btnMouseRGrab(92,60,2,1).bmp", 92, 60, 2, 1, true, RGB(255, 0, 255));
 
 	SCENEMANAGER->addScene("아울보이씬", new owlboyScene);
 
@@ -64,6 +72,9 @@ void playGround::update(void)
 	{
 		_mainDebugMode = !_mainDebugMode;
 	}
+
+	//once 제대로 안먹혀서 조치
+	KEYMANAGER->isStayKeyDown(VK_RBUTTON);
 
 	SCENEMANAGER->update();
 

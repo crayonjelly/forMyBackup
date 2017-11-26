@@ -8,11 +8,14 @@ HRESULT door::init(PTFLOAT pos)
 
 	//오투스 타겟으로 잡기
 	_target = NULL;
-	auto vOtus = WORLD->findByKind(OBJKIND::OTUS);
-	if (vOtus.size() >= 1)
-	{
-		_target = vOtus[0];
-	}
+	//auto vOtus = WORLD->findByKind(OBJKIND::OTUS);
+	//if (vOtus.size() >= 1)
+	//{
+	//	_target = vOtus[0];
+	//}
+	_target = WORLD->getOtus();
+
+	_message = tagMessage("door");
 
 	return S_OK;
 }

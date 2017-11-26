@@ -51,6 +51,8 @@ void terrain::changeImage(string imageKey)
 	gameObject::changeImage(imageKey);
 
 	auto image = IMAGEMANAGER->findImage(imageKey);
+	if (!image) return;
+
 	_maxFrame.x = image->getMaxFrameX();
 	_maxFrame.y = image->getMaxFrameY();
 	

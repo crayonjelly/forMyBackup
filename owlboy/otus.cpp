@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "otus.h"
+#include "buttonPopup.h"
 
 
 HRESULT otus::init(PTFLOAT pos)
@@ -21,6 +22,8 @@ HRESULT otus::init(PTFLOAT pos)
 
 	_bPassDown = false;
 	_downInputTimeSave = 0.0f;
+
+	_btn = NULL;
 
 	//-----------------------------
 	_otusAir		= new otusAir;
@@ -44,7 +47,26 @@ HRESULT otus::init(PTFLOAT pos)
 	//콜백 더하기
 	_mCallback.insert(make_pair("door", [this](tagMessage msg)
 	{
-		_pos.y -= 15;
+		if (!_btn)
+		{
+			_btn = new buttonPopup;
+			_btn->init(PTFLOAT(0, 0));
+			_btn->changeImage("btnClicks");
+			_btn->setFrame(PTINT(0, 1));
+			WORLD->addObject(_btn);
+
+			_btn->sendMessage(msg);
+		}
+		else
+		{
+			_btn->sendMessage(msg);
+		}
+
+		if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
+		{
+			changeObjectiveState2(_otusAir);
+			STAGEMANAGER->changeStage(msg.dataString);
+		}
 	}));
 
 	return S_OK;
@@ -61,6 +83,8 @@ void otus::update()
 
 	leverUpdate();
 
+	if (_btn && !_btn->getBLive()) _btn = NULL;
+
 	_pState->update(*this);
 }
 void otus::render(float depthScale)
@@ -68,7 +92,7 @@ void otus::render(float depthScale)
 	_pState->render(*this);
 
 	char str[64];
-	sprintf_s(str, "%f", _speed.y);
+	sprintf_s(str, "오투스: %d, %d", (int)_pos.x, (int)_pos.y);
 	TextOut(getMemDC(), 2, 400, str, strlen(str));
 }
 

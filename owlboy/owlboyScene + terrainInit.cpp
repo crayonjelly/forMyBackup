@@ -19,6 +19,7 @@ void owlboyScene::terrainInit()
 	//맵버퍼 오브젝트로 만들어서 월드에 추가하기
 	auto temp = new gameObject;
 	temp->init(PTFLOAT(0, 0));
+	temp->setKind(OBJKIND::MAPBUFFER);
 	temp->changeImage("mapBuffer");
 	temp->setLayer(LAYER::TERRAIN2);
 	WORLD->addObject(temp);
@@ -26,6 +27,7 @@ void owlboyScene::terrainInit()
 	//픽셀버퍼 디버그용으로 월드에 추가
 	temp = new gameObject;
 	temp->init(PTFLOAT(0, 0));
+	temp->setKind(OBJKIND::PIXELBUFFER);
 	temp->changeImage("pixelBuffer");
 	temp->setLayer((LAYER::Enum)(LAYER::PIXELDC));
 	WORLD->addObject(temp);

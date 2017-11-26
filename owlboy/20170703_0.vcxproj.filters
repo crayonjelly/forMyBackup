@@ -213,6 +213,9 @@
     <ClInclude Include="door.h">
       <Filter>playGround\objects</Filter>
     </ClInclude>
+    <ClInclude Include="buttonPopup.h">
+      <Filter>playGround\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -342,6 +345,12 @@
       <Filter>playGround\stages</Filter>
     </ClCompile>
     <ClCompile Include="door.cpp">
+      <Filter>playGround\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="otusHouse.cpp">
+      <Filter>playGround\stages</Filter>
+    </ClCompile>
+    <ClCompile Include="buttonPopup.cpp">
       <Filter>playGround\objects</Filter>
     </ClCompile>
   </ItemGroup>

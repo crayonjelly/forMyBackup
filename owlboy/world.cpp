@@ -16,7 +16,17 @@ void world::update()
 {
 	for (int i = 0; i < _vObject.size(); ++i)
 	{
-		_vObject[i]->update();
+		auto obj = _vObject[i];
+
+		if (!obj->getBLive())
+		{
+			obj->release();
+			delete obj;
+			obj->setBLive(false);
+			_vObject.erase(_vObject.begin() + i--);
+			continue;
+		}
+		obj->update();
 	}
 }
 void world::render()
@@ -115,6 +125,17 @@ void world::render()
 				iter->second->debugRender(depthScale);
 				break;
 			}
+
+			//_vObject 크기 표시
+			char str[64];
+			sprintf_s(str, "world: %d", _vObject.size());
+			TextOut(_pg->getMemDC(), WINSIZEX - 100, 2, str, strlen(str));
+
+			//마우스 절대좌표 표시
+			auto oldMode = SetBkMode(_pg->getMemDC(), OPAQUE);
+			sprintf_s(str, "(%d, %d)", ABSMOUSEX, ABSMOUSEY);
+			TextOut(_pg->getMemDC(), _ptMouse.x + 13, _ptMouse.y, str, strlen(str));
+			SetBkMode(_pg->getMemDC(), oldMode);
 		}
 	}
 }
@@ -137,4 +158,22 @@ vector<gameObject*> world::findByKind(OBJKIND::Enum kind)
 	}
 
 	return result;
+}
+
+void world::allDieExceptBase()
+{
+	for (int i = 0; i < _vObject.size(); ++i)
+	{
+		auto obj = _vObject[i];
+		
+		auto kind = obj->getKind();
+		if (kind == OBJKIND::OTUS ||
+			kind == OBJKIND::MAPBUFFER ||
+			kind == OBJKIND::PIXELBUFFER)
+		{
+			continue;
+		}
+		
+		obj->setBLive(false);
+	}
 }

@@ -6,6 +6,8 @@ namespace OBJKIND
 	enum Enum
 	{
 		NONE,
+		MAPBUFFER,
+		PIXELBUFFER,
 		BACKGROUND,
 		CLOUD,
 		TERRAIN,

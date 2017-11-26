@@ -17,6 +17,9 @@ public:
 	void eraseStage(string name);
 	void changeStage(string name);
 
+	//°Ù¼Â
+	inline auto getCurrentStage() { return _currentStage; }
+
 	stageManager() {}
 	~stageManager() {}
 };

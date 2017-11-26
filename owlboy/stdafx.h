@@ -89,6 +89,9 @@ extern POINT _ptMouse;
 extern BOOL _leftButtonDown;
 extern BOOL _mainDebugMode;
 
+#define ABSMOUSEX (CAMX + _ptMouse.x)
+#define ABSMOUSEY (CAMY + _ptMouse.y)
+
 //전역화 시킬 헤더들
 #include "worldNode.h"
 #include "gameObject.h"

@@ -10,11 +10,21 @@
 void vellie::init()
 {
 	setDCs();
+
+	_stageName = "vellie";
 }
-void vellie::enter()
+void vellie::enter(string pastStage)
 {
+	WORLD->allDieExceptBase();
+	mapPixelClear();
 	drawMap();
 	createObjects();
+
+	if (pastStage == "otusHouse")
+	{
+		WORLD->getOtus()->setPos(PTFLOAT(5212, 4374));
+		WORLD->getOtus()->putRectUponPos();
+	}
 }
 
 void vellie::drawMap()
@@ -97,10 +107,10 @@ void vellie::drawMap()
 		makePos.x, makePos.y);
 	{
 		auto temp = new door;
-		PTINT newPos = makePos + PTINT(290, 300);
+		PTINT newPos = makePos + PTINT(280, 300);
 		temp->init(newPos);
-		temp->setRect(RectMake(newPos.x, newPos.y, 40, 80));
-		temp->setMessage(tagMessage("door", 0, 0.0f, "vellie"));
+		temp->setRect(RectMake(newPos.x, newPos.y, 60, 80));
+		temp->setMessage(tagMessage("door", 0, 0.0f, "otusHouse"));
 		WORLD->addObject(temp);
 	}
 }

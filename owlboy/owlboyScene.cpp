@@ -17,6 +17,7 @@ HRESULT owlboyScene::init()
 		auto temp = new otus;
 		temp->init(PTFLOAT(5000, 3000));
 		WORLD->addObject(temp);
+		WORLD->setOtus(temp);
 
 		CAMERA->setTarget(temp);
 	}

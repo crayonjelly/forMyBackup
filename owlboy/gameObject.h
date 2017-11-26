@@ -28,6 +28,7 @@ struct tagMessage
 class gameObject : public gameNode
 {
 protected:
+	bool _bLive;
 	PTFLOAT _pos;
 	RECT _rc;
 	PTFLOAT _speed;
@@ -70,6 +71,7 @@ public:
 	}
 
 	//접근자
+	inline bool getBLive() { return _bLive; }
 	inline PTFLOAT getPos() { return _pos; }
 	inline RECT getRect() { return _rc; }
 	inline image* getImage() { return _image; }
@@ -80,6 +82,7 @@ public:
 	inline auto getKind() { return _kind; }
 
 	//설정자
+	inline void setBLive(bool live) { _bLive = live; }
 	inline void setPos(PTFLOAT pos) { _pos = pos; }
 	inline void setRect(RECT rc) { _rc = rc; }
 	inline void setImage(image* image) { _image = image; }
