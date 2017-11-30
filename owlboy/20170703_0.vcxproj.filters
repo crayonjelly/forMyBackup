@@ -353,5 +353,8 @@
     <ClCompile Include="buttonPopup.cpp">
       <Filter>playGround\objects</Filter>
     </ClCompile>
+    <ClCompile Include="otus + attackRect.cpp">
+      <Filter>playGround\objects</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -18,13 +18,13 @@ HRESULT gawk::init(PTFLOAT pos)
 	_gawkSleep	= new gawkSleep;
 	_gawkWake	= new gawkWake;
 	_gawkFly	= new gawkFly;
-	//_gawkStun	= new gawkStun;
+	_gawkStun	= new gawkStun;
 	//_gawkDie	= new gawkDie;
 
 	_gawkSleep	->init(this);
 	_gawkWake	->init(this);
 	_gawkFly	->init(this);
-	//_gawkStun	->init(this);
+	_gawkStun	->init(this);
 	//_gawkDie	->init(this);
 	//-----------------------------
 	_state = _gawkSleep;
@@ -34,6 +34,18 @@ HRESULT gawk::init(PTFLOAT pos)
 	{
 		_target = vOtus[0];
 	}
+
+	//콜백 추가
+	_mCallback.insert(make_pair("otusAttack", [this](tagMessage msg)
+	{
+		if (this->_state->_stateName == "gawkSleep" ||
+			this->_state->_stateName == "gawkWake" ||
+			this->_state->_stateName == "gawkFly" ||
+			this->_state->_stateName == "gawkStun")
+		{
+			this->changeState(_gawkStun);
+		}
+	}));
 
 	return S_OK;
 }
@@ -284,6 +296,62 @@ void gawkFly::update()
 	}
 }
 void gawkFly::render(float depthScale)
+{
+	if (_gawk->_bLeft)
+	{
+		_image->frameRender(_gawk->getMemDC(),
+			-CAMX * depthScale + _gawk->_pos.x - _image->getFrameWidth() / 2 + 12,
+			-CAMY * depthScale + _gawk->_pos.y - _image->getFrameHeight() / 2,
+			_frame.x, _frame.y);
+	}
+	else
+	{
+		_image->frameRender(_gawk->getMemDC(),
+			-CAMX * depthScale + _gawk->_pos.x - _image->getFrameWidth() / 2 - 12,
+			-CAMY * depthScale + _gawk->_pos.y - _image->getFrameHeight() / 2,
+			_frame.x, _frame.y);
+	}
+}
+//---------------------------------------------------------------
+void gawkStun::init(gawk *gawk)
+{
+	_stateName = "gawkStun";
+	_gawk = gawk;
+	_image = IMAGEMANAGER->findImage("gawkSheet");
+	_frame.x = 0;
+	_frame.y = 3;
+	_time1 = 0.0f;
+	_count1 = 0;
+}
+void gawkStun::enter(string pastStateName)
+{
+	_stunTime = 2.0f;
+	PTFLOAT otusCenter = _gawk->_target->getPos();
+	otusCenter.y -= (_gawk->_target->getRect().bottom - _gawk->_target->getRect().top) / 2;
+	_gawk->_speed = (_gawk->_pos - otusCenter).unit() * 15.0f;
+}
+void gawkStun::update()
+{
+	if (_gawk->_speed.scalar() >= 2.0f)
+	{
+		_gawk->_speed.x *= 0.93f;
+		_gawk->_speed.y *= 0.93f;
+	}
+	else _gawk->_speed.x = _gawk->_speed.y = 0.0f;
+
+	_gawk->_pos += _gawk->_speed;
+	_gawk->putRectCenterToPos();
+
+	if (_stunTime > 0.0f)
+	{
+		_stunTime -= TIMEMANAGER->getElapsedTime();
+	}
+	else
+	{
+		_gawk->changeState(_gawk->_gawkFly);
+	}
+}
+void gawkStun::render(float depthScale)
 {
 	if (_gawk->_bLeft)
 	{

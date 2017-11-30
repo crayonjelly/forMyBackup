@@ -93,6 +93,9 @@ public:
 //-------------------------------------
 class gawkStun : public gawkState
 {
+private:
+	float _stunTime;
+
 public:
 	virtual void init(gawk *gawk);
 	virtual void enter(string pastStateName);

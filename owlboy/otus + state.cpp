@@ -40,26 +40,99 @@ void otusAir::update(otus &otus)
 	//거기다가 _bPassDown 상태도 더해서 체크해준다
 	if (_otus->_bPassDown)
 	{
+		//빨간거 못가게 막자
+		float restrictX = _otus->_pos.x + _otus->_speed.x;
+		if (_otus->_speed.x < 0)
+		{
+			PTFLOAT dest = _otus->_leftPT + _otus->_speed;
+			PTFLOAT castRed = _otus->rayCastColor(_otus->_leftPT, _otus->_speed, RGB(255, 0, 0));
+			if (dest != castRed)
+			{
+				restrictX = _otus->_pos.x + (castRed.x - _otus->_leftPT.x) + 1;
+			}
+		}
+		else if (_otus->_speed.x > 0)
+		{
+			PTFLOAT dest = _otus->_rightPT + _otus->_speed;
+			PTFLOAT castRed = _otus->rayCastColor(_otus->_rightPT, _otus->_speed, RGB(255, 0, 0));
+			if (dest != castRed)
+			{
+				restrictX = _otus->_pos.x + (castRed.x - _otus->_rightPT.x) - 1;
+			}
+		}
+
 		_otus->movePos(_otus->_speed);
+		_otus->_pos.x = restrictX;
 		_otus->bPassDownTrueUpdate();
 	}
 	else
 	{
 		if (_otus->_speed.y > 0)
 		{
-			PTFLOAT arrive = _otus->rayCastBlue(_otus->_pos, _otus->_speed);
-			if (arrive == _otus->_pos + _otus->_speed) _otus->setPos(arrive);
+			//빨간거 못가게 막자
+			float restrictX = _otus->_pos.x + _otus->_speed.x;
+			if (_otus->_speed.x < 0)
+			{
+				PTFLOAT dest = _otus->_leftPT + _otus->_speed;
+				PTFLOAT castRed = _otus->rayCastColor(_otus->_leftPT, _otus->_speed, RGB(255, 0, 0));
+				if (dest != castRed)
+				{
+					restrictX = _otus->_pos.x + (castRed.x - _otus->_leftPT.x) + 1;
+				}
+			}
+			else if (_otus->_speed.x > 0)
+			{
+				PTFLOAT dest = _otus->_rightPT + _otus->_speed;
+				PTFLOAT castRed = _otus->rayCastColor(_otus->_rightPT, _otus->_speed, RGB(255, 0, 0));
+				if (dest != castRed)
+				{
+					restrictX = _otus->_pos.x + (castRed.x - _otus->_rightPT.x) - 1;
+				}
+			}
+
+			PTFLOAT arrive = _otus->_pos;
+			PTFLOAT castBlue = _otus->rayCastColor(_otus->_pos, _otus->_speed, RGB(0, 0, 255));
+			PTFLOAT castRed = _otus->rayCastColor(_otus->_pos, _otus->_speed, RGB(255, 0, 0));
+
+			//떨어지는 중이니까 위에꺼 밟으면 됨
+			if (castBlue.y < castRed.y) arrive = castBlue;
+			else arrive = castRed;
+
+			if (arrive == _otus->_pos + _otus->_speed) _otus->setPos(PTFLOAT(restrictX, arrive.y));
 			else
 			{
 				_otus->setPos(arrive);
 				_otus->_speed.y = 0;
+				_otus->_pos.x = restrictX;
 				//otus.changeObjectiveState(new otusStand);
 				_otus->changeObjectiveState2(_otus->_otusStand);
 			}
 		}
 		else
 		{
+			//빨간거 못가게 막자
+			float restrictX = _otus->_pos.x + _otus->_speed.x;
+			if (_otus->_speed.x < 0)
+			{
+				PTFLOAT dest = _otus->_leftPT + _otus->_speed;
+				PTFLOAT castRed = _otus->rayCastColor(_otus->_leftPT, _otus->_speed, RGB(255, 0, 0));
+				if (dest != castRed)
+				{
+					restrictX = _otus->_pos.x + (castRed.x - _otus->_leftPT.x) + 1;
+				}
+			}
+			else if (_otus->_speed.x > 0)
+			{
+				PTFLOAT dest = _otus->_rightPT + _otus->_speed;
+				PTFLOAT castRed = _otus->rayCastColor(_otus->_rightPT, _otus->_speed, RGB(255, 0, 0));
+				if (dest != castRed)
+				{
+					restrictX = _otus->_pos.x + (castRed.x - _otus->_rightPT.x) - 1;
+				}
+			}
+
 			_otus->movePos(_otus->_speed);
+			_otus->_pos.x = restrictX;
 		}
 	}
 	
@@ -140,13 +213,40 @@ void otusFly::update(otus &otus)
 	otus.settingSpeedFly();
 
 	//속도대로 이동하는데, 옆이나 아래쪽으로 이동하는건 레이캐스트
-	if (otus._speed.y >= 0)
+	//빨간거 못가게 막자
+	float restrictX = _otus->_pos.x + _otus->_speed.x;
+	float restrictY = _otus->_pos.y + _otus->_speed.y;
+	if (_otus->_speed.x < 0)
 	{
-		PTFLOAT arrive = otus.rayCastBlue(otus._pos, otus._speed);
-		if (arrive == otus._pos + otus._speed) otus.setPos(arrive);
+		PTFLOAT dest = _otus->_leftPT + _otus->_speed;
+		PTFLOAT castRed = _otus->rayCastColor(_otus->_leftPT, _otus->_speed, RGB(255, 0, 0));
+		if (dest != castRed)
+		{
+			restrictX = _otus->_pos.x + (castRed.x - _otus->_leftPT.x) + 1;
+		}
+	}
+	else if (_otus->_speed.x > 0)
+	{
+		PTFLOAT dest = _otus->_rightPT + _otus->_speed;
+		PTFLOAT castRed = _otus->rayCastColor(_otus->_rightPT, _otus->_speed, RGB(255, 0, 0));
+		if (dest != castRed)
+		{
+			restrictX = _otus->_pos.x + (castRed.x - _otus->_rightPT.x) - 1;
+		}
+	}
+	//-----------------------------------
+	if (otus._speed.y > 0)
+	{
+		PTFLOAT castBlue = otus.rayCastColor(otus._pos, otus._speed, RGB(0, 0, 255));
+		PTFLOAT castRed = _otus->rayCastColor(_otus->_pos, _otus->_speed, RGB(255, 0, 0));
+		PTFLOAT arrive;
+		if (castBlue.y < castRed.y) arrive = castBlue;
+		else arrive = castRed;
+
+		if (arrive == otus._pos + otus._speed) otus.setPos(PTFLOAT(restrictX, arrive.y));
 		else
 		{
-			otus.setPos(arrive);
+			otus.setPos(PTFLOAT(restrictX, arrive.y));
 			otus._speed.y = 0;
 			//otus.changeObjectiveState(new otusStand);
 			otus.changeObjectiveState2(otus._otusStand);
@@ -155,7 +255,9 @@ void otusFly::update(otus &otus)
 	else
 	{
 		otus.movePos(otus._speed);
+		_otus->_pos.x = restrictX;
 	}
+	//---------------------------------------
 
 	//렉트 맞춰줌
 	otus.putRectUponPos();
@@ -235,7 +337,7 @@ void otusStand::update(otus &otus)
 
 	//땅이 변할 수도 있으니 픽셀 검출해서 공중으로
 	COLORREF color = GetPixel(otus.getPixelDC(), otus._pos.x, otus._pos.y);
-	if (!(GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255))
+	if (!(color == RGB(0, 0, 255) || color == RGB(255, 0, 0)))
 	{
 		//otus.changeObjectiveState(new otusAir);
 		otus.changeObjectiveState2(otus._otusAir);
@@ -328,19 +430,42 @@ void otusRun::update(otus &otus)
 		_otus->_speed.x = lever.x * RUNSPEED;
 	}
 
+	//빨간거 못가게 막자
+	float restrictX = _otus->_pos.x + _otus->_speed.x;
+	if (_otus->_speed.x < 0)
+	{
+		PTFLOAT dest = _otus->_leftPT + _otus->_speed;
+		PTFLOAT castRed = _otus->rayCastColor(_otus->_leftPT, _otus->_speed, RGB(255, 0, 0));
+		if (dest != castRed)
+		{
+			restrictX = _otus->_pos.x + (castRed.x - _otus->_leftPT.x) + 1;
+		}
+	}
+	else if (_otus->_speed.x > 0)
+	{
+		PTFLOAT dest = _otus->_rightPT + _otus->_speed;
+		PTFLOAT castRed = _otus->rayCastColor(_otus->_rightPT, _otus->_speed, RGB(255, 0, 0));
+		if (dest != castRed)
+		{
+			restrictX = _otus->_pos.x + (castRed.x - _otus->_rightPT.x) - 1;
+		}
+	}
+
 	_otus->movePos(_otus->_speed);
-	_otus->putRectUponPos();
+	_otus->_pos.x = restrictX;
+	//_otus->putRectUponPos();
+	_otus->putRectAndPTs();
 
 	//땅 찾음
 	HDC dc = _otus->getPixelDC();
 	int y = _otus->_pos.y;
 	COLORREF color = GetPixel(dc, _otus->_pos.x, y);
-	if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+	if (color == RGB(0, 0, 255) || color == RGB(255, 0, 0))
 	{
 		while (true)
 		{
 			color = GetPixel(dc, otus._pos.x, y - 1);
-			if (!(GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255))
+			if (!(color == RGB(0, 0, 255) || color == RGB(255, 0, 0)))
 			{
 				break;
 			}
@@ -361,7 +486,7 @@ void otusRun::update(otus &otus)
 				return;
 			}
 			color = GetPixel(dc, otus._pos.x, y);
-			if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+			if (color == RGB(0, 0, 255) || color == RGB(255, 0, 0))
 			{
 				otus._pos.y = y;
 				break;
@@ -424,6 +549,23 @@ void otusAttack::enter(string pastStateName)
 	}
 
 	//공격 생성해줘야함
+	{
+		auto temp = new attackRect;
+		PTINT makeSize(130, 100);
+		PTFLOAT makePos;
+		if (_otus->_bLeft)
+		{
+			makePos = _otus->_pos + PTFLOAT(-(makeSize.x / 2 + 2), -(_otus->_rc.bottom - _otus->_rc.top) / 2);
+		}
+		else
+		{
+			makePos = _otus->_pos + PTFLOAT(makeSize.x / 2 + 2, -(_otus->_rc.bottom - _otus->_rc.top) / 2);
+		}
+		temp->init(makePos);
+		temp->setRect(RectMakeCenter(makePos.x, makePos.y, makeSize.x, makeSize.y));
+		temp->setExistTime(0.3f);
+		WORLD->addObject(temp);
+	}
 }
 void otusAttack::update(otus &otus)
 {

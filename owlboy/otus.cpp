@@ -86,6 +86,8 @@ void otus::update()
 	if (_btn && !_btn->getBLive()) _btn = NULL;
 
 	_pState->update(*this);
+
+	putRectAndPTs();
 }
 void otus::render(float depthScale)
 {
@@ -94,6 +96,18 @@ void otus::render(float depthScale)
 	char str[64];
 	sprintf_s(str, "오투스: %d, %d", (int)_pos.x, (int)_pos.y);
 	TextOut(getMemDC(), 2, 400, str, strlen(str));
+}
+
+void otus::debugRender(float depthScale)
+{
+	gameObject::debugRender(depthScale);
+
+	EllipseMakeCenter(getMemDC(), -CAMX * depthScale + _leftPT.x,
+		-CAMY * depthScale + _leftPT.y, 6, 6);
+	EllipseMakeCenter(getMemDC(), -CAMX * depthScale + _rightPT.x,
+		-CAMY * depthScale + _rightPT.y, 6, 6);
+	EllipseMakeCenter(getMemDC(), -CAMX * depthScale + _topPT.x,
+		-CAMY * depthScale + _topPT.y, 6, 6);
 }
 
 
@@ -374,11 +388,43 @@ PTFLOAT otus::rayCastBlue(PTFLOAT startPos, PTFLOAT speed)
 			break;
 
 		color = GetPixel(dc, pos.x, pos.y);
-		if (GetRValue(color) == 0 && GetGValue(color) == 0 && GetBValue(color) == 255)
+		if (color == RGB(0, 0, 255))
 		{
 			return pos;
 		}
 	}		//나왔다는건 dest까지 가는데 파란색 없었다는 것
+
+	return dest;
+}
+PTFLOAT otus::rayCastColor(PTFLOAT startPos, PTFLOAT speed, COLORREF castColor)
+{
+	//스피드 0이면 시작점 그대로 돌려줌
+	if (speed.x == 0 && speed.y == 0) return startPos;
+
+	HDC dc = IMAGEMANAGER->findImage("pixelBuffer")->getMemDC();
+	PTFLOAT pos = startPos;
+	PTFLOAT dest = startPos + speed;
+	PTFLOAT unit = speed.unit() * 0.9f;
+	COLORREF color;		//현재점은 검색하지 않음
+
+						//범위용
+	PTFLOAT minpt = PTFLOAT(min(startPos.x, dest.x), min(startPos.y, dest.y));
+	PTFLOAT maxpt = PTFLOAT(max(startPos.x, dest.x), max(startPos.y, dest.y));
+
+	while (true)
+	{
+		pos.x += unit.x;
+		pos.y += unit.y;
+		if (!(minpt.x <= pos.x && pos.x <= maxpt.x &&
+			minpt.y <= pos.y && pos.y <= maxpt.y))
+			break;
+
+		color = GetPixel(dc, pos.x, pos.y);
+		if (color == castColor)
+		{
+			return pos;
+		}
+	}		//나왔다는건 dest까지 가는데 캐스트하는 색 없었다는 것
 
 	return dest;
 }
@@ -654,4 +700,22 @@ void otus::doubleDownUpdate()
 
 		_downInputTimeSave = TIMEMANAGER->getWorldTime();
 	}
+}
+
+void otus::putRectAndPTs()
+{
+	int width = _rc.right - _rc.left;
+	int height = _rc.bottom - _rc.top;
+
+	_rc.left = _pos.x - width / 2;
+	_rc.right = _rc.left + width;
+	_rc.bottom = _pos.y;
+	_rc.top = _rc.bottom - height;
+
+	_leftPT.x = _rc.left;
+	_leftPT.y = _pos.y - height / 2;
+	_rightPT.x = _rc.right;
+	_rightPT.y = _pos.y - height / 2;
+	_topPT.x = _pos.x;
+	_topPT.y = _rc.top;
 }

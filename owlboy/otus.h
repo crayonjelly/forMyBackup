@@ -52,11 +52,17 @@ private:
 	otusState *_pState;
 	gameObject *_btn;
 
+	PTFLOAT _leftPT;
+	PTFLOAT _rightPT;
+	PTFLOAT _topPT;
+
 public:
 	virtual HRESULT init(PTFLOAT pos);
 	virtual void release();
 	virtual void update();
 	virtual void render(float depthScale = 1.0f);
+
+	virtual void debugRender(float depthScale = 1.0f);
 
 	void leverUpdate();
 	void bLeftUpdate();
@@ -67,6 +73,7 @@ public:
 	void settingSpeedFly();
 	PTFLOAT pixelRayCast(PTFLOAT startPos, PTFLOAT speed);
 	PTFLOAT rayCastBlue(PTFLOAT startPos, PTFLOAT speed);
+	PTFLOAT rayCastColor(PTFLOAT startPos, PTFLOAT speed, COLORREF castColor);
 	void pixelCollision();
 	//void changeState(STATE state);
 	//void changeObjectiveState(otusState *newState);
@@ -74,11 +81,31 @@ public:
 	//void draw();
 	void bPassDownTrueUpdate();
 	void doubleDownUpdate();
+	void putRectAndPTs();
 
 	otus() {}
 	virtual ~otus() {}
 };
 
+
+class attackRect : public gameObject
+{
+private:
+	float _existTime;
+
+public:
+	virtual HRESULT init(PTFLOAT pos);
+	virtual void release();
+	virtual void update();
+	virtual void render(float depthScale = 1.0f);
+
+	//void setting(RECT)
+
+	inline void setExistTime(float time) { _existTime = time; }
+
+	attackRect() {}
+	virtual ~attackRect() {}
+};
 
 //==============  »óÅÂ °´Ã¼  =====================
 class otusState

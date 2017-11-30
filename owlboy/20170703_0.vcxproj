@@ -150,6 +150,7 @@
     <ClCompile Include="loading.cpp" />
     <ClCompile Include="loadingScene.cpp" />
     <ClCompile Include="mypoints.cpp" />
+    <ClCompile Include="otus + attackRect.cpp" />
     <ClCompile Include="otus + state.cpp" />
     <ClCompile Include="otus.cpp" />
     <ClCompile Include="otusHouse.cpp" />

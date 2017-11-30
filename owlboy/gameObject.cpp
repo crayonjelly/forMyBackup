@@ -33,7 +33,7 @@ void gameObject::update()
 		for (int i = 0; i < size; ++i)
 		{
 			auto msg = _vMessage[i];
-			if (auto cb = _mCallback.at(msg.text)) cb(msg);
+			if (auto cb = _mCallback[msg.text]) cb(msg);
 		}
 		_vMessage.clear();
 	}

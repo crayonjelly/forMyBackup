@@ -21,6 +21,7 @@ public:
 
 	//°Ù¼Â
 	inline gameObject* getOtus() { return _otus; }
+	inline auto getAllObjects() { return _vObject; }
 
 	inline void setPG(gameNode *pg) { _pg = pg; }
 	inline void setOtus(gameObject *otus) { _otus = otus; }
