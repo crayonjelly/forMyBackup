@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "gawk.h"
+#include "effExplosion.h"
 
 
 HRESULT gawk::init(PTFLOAT pos)
@@ -13,19 +14,20 @@ HRESULT gawk::init(PTFLOAT pos)
 	_layer = LAYER::FRUIT;
 
 	_bLeft = false;
+	_hp = 3;
 
 	//-----------------------------
 	_gawkSleep	= new gawkSleep;
 	_gawkWake	= new gawkWake;
 	_gawkFly	= new gawkFly;
 	_gawkStun	= new gawkStun;
-	//_gawkDie	= new gawkDie;
+	_gawkDie	= new gawkDie;
 
 	_gawkSleep	->init(this);
 	_gawkWake	->init(this);
 	_gawkFly	->init(this);
 	_gawkStun	->init(this);
-	//_gawkDie	->init(this);
+	_gawkDie	->init(this);
 	//-----------------------------
 	_state = _gawkSleep;
 	_target = NULL;
@@ -44,6 +46,11 @@ HRESULT gawk::init(PTFLOAT pos)
 			this->_state->_stateName == "gawkStun")
 		{
 			this->changeState(_gawkStun);
+
+			if (--_hp <= 0)
+			{
+				this->changeState(_gawkDie);
+			}
 		}
 	}));
 
@@ -249,7 +256,7 @@ void gawkFly::update()
 
 	//³¯°³Áþ
 	if (_count1 >= 5 &&
-		_gawk->_pos.y  - _gawk->_target->getPos().y >= 0)
+		_gawk->_pos.y  - (_gawk->_target->getPos().y - 25) >= 0)
 	{
 		_count1 = 0;
 	
@@ -268,12 +275,12 @@ void gawkFly::update()
 	_gawk->_speed.y += 0.3f;
 	if (_gawk->_speed.y > GAWKSPEED) _gawk->_speed.y = GAWKSPEED;
 
-	if (_gawk->_pos.x < _gawk->_target->getPos().x - 20)
+	if (_gawk->_pos.x < _gawk->_target->getPos().x - 30)
 	{
 		_gawk->_speed.x = GAWKSPEED;
 		_gawk->_bLeft = false;
 	}
-	else if (_gawk->_pos.x > _gawk->_target->getPos().x + 20)
+	else if (_gawk->_pos.x > _gawk->_target->getPos().x + 30)
 	{
 		_gawk->_speed.x = -GAWKSPEED;
 		_gawk->_bLeft = true;
@@ -352,6 +359,63 @@ void gawkStun::update()
 	}
 }
 void gawkStun::render(float depthScale)
+{
+	if (_gawk->_bLeft)
+	{
+		_image->frameRender(_gawk->getMemDC(),
+			-CAMX * depthScale + _gawk->_pos.x - _image->getFrameWidth() / 2 + 12,
+			-CAMY * depthScale + _gawk->_pos.y - _image->getFrameHeight() / 2,
+			_frame.x, _frame.y);
+	}
+	else
+	{
+		_image->frameRender(_gawk->getMemDC(),
+			-CAMX * depthScale + _gawk->_pos.x - _image->getFrameWidth() / 2 - 12,
+			-CAMY * depthScale + _gawk->_pos.y - _image->getFrameHeight() / 2,
+			_frame.x, _frame.y);
+	}
+}
+//---------------------------------------------------------------
+void gawkDie::init(gawk *gawk)
+{
+	_stateName = "gawkDie";
+	_gawk = gawk;
+	_image = IMAGEMANAGER->findImage("gawkSheet");
+	_frame.x = 0;
+	_frame.y = 3;
+	_time1 = 0.0f;
+	_count1 = 0;
+}
+void gawkDie::enter(string pastStateName)
+{
+	_time1 = 0.0f;
+
+	PTFLOAT otusCenter = _gawk->_target->getPos();
+	otusCenter.y -= (_gawk->_target->getRect().bottom - _gawk->_target->getRect().top) / 2;
+	_gawk->_speed = (_gawk->_pos - otusCenter).unit() * 15.0f;
+}
+void gawkDie::update()
+{
+	_time1 += TIMEMANAGER->getElapsedTime();
+
+	if (_time1 >= 0.9f)
+	{
+		_gawk->setBLive(false);
+		new effExplosion(_gawk->_pos);
+	}
+
+	if (_gawk->_speed.scalar() >= 2.0f)
+	{
+		_gawk->_speed.x *= 0.93f;
+		_gawk->_speed.y *= 0.93f;
+	}
+	else _gawk->_speed.x = _gawk->_speed.y = 0.0f;
+
+	_gawk->_pos += _gawk->_speed;
+	_gawk->putRectCenterToPos();
+
+}
+void gawkDie::render(float depthScale)
 {
 	if (_gawk->_bLeft)
 	{

@@ -80,6 +80,7 @@
     <ClInclude Include="action.h" />
     <ClInclude Include="animation.h" />
     <ClInclude Include="backGround.h" />
+    <ClInclude Include="backRock.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="buttonPopup.h" />
     <ClInclude Include="cameraManager.h" />
@@ -91,6 +92,7 @@
     <ClInclude Include="door.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
+    <ClInclude Include="effExplosion.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="gawk.h" />
@@ -99,8 +101,10 @@
     <ClInclude Include="iniDataManager.h" />
     <ClInclude Include="keyAniManager.h" />
     <ClInclude Include="keyManager.h" />
+    <ClInclude Include="layerObject.h" />
     <ClInclude Include="loading.h" />
     <ClInclude Include="loadingScene.h" />
+    <ClInclude Include="maskObject.h" />
     <ClInclude Include="mypoints.h" />
     <ClInclude Include="otus.h" />
     <ClInclude Include="owlboyScene.h" />
@@ -128,6 +132,7 @@
     <ClCompile Include="action.cpp" />
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="backGround.cpp" />
+    <ClCompile Include="backRock.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="buttonPopup.cpp" />
     <ClCompile Include="cameraManager.cpp" />
@@ -136,8 +141,10 @@
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="database.cpp" />
     <ClCompile Include="door.cpp" />
+    <ClCompile Include="dungeon.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
+    <ClCompile Include="effExplosion.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="gawk.cpp" />
@@ -146,9 +153,11 @@
     <ClCompile Include="iniDataManager.cpp" />
     <ClCompile Include="keyAniManager.cpp" />
     <ClCompile Include="keyManager.cpp" />
+    <ClCompile Include="layerObject.cpp" />
     <ClCompile Include="lever.cpp" />
     <ClCompile Include="loading.cpp" />
     <ClCompile Include="loadingScene.cpp" />
+    <ClCompile Include="maskObject.cpp" />
     <ClCompile Include="mypoints.cpp" />
     <ClCompile Include="otus + attackRect.cpp" />
     <ClCompile Include="otus + state.cpp" />

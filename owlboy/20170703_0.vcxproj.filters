@@ -216,6 +216,18 @@
     <ClInclude Include="buttonPopup.h">
       <Filter>playGround\objects</Filter>
     </ClInclude>
+    <ClInclude Include="layerObject.h">
+      <Filter>playGround\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="backRock.h">
+      <Filter>playGround\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="maskObject.h">
+      <Filter>playGround\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="effExplosion.h">
+      <Filter>playGround\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -354,6 +366,21 @@
       <Filter>playGround\objects</Filter>
     </ClCompile>
     <ClCompile Include="otus + attackRect.cpp">
+      <Filter>playGround\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="dungeon.cpp">
+      <Filter>playGround\stages</Filter>
+    </ClCompile>
+    <ClCompile Include="layerObject.cpp">
+      <Filter>playGround\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="backRock.cpp">
+      <Filter>playGround\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="maskObject.cpp">
+      <Filter>playGround\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="effExplosion.cpp">
       <Filter>playGround\objects</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,6 +2,7 @@
 #include "stages.h"
 #include "terrain.h"
 #include "door.h"
+#include "layerObject.h"
 
 
 void otusHouse::init()
@@ -18,11 +19,31 @@ void otusHouse::enter(string pastStage)
 	createObjects();
 	WORLD->getOtus()->setPos(PTFLOAT(1140, 1461));
 	WORLD->getOtus()->putRectUponPos();
+
+	CAMERA->setTarget(NULL);
+	CAMERA->setPos(PTINT(700, 880));
 }
 
 void otusHouse::drawMap()
 {
 	PTINT makePos(1000, 1000);
+	{
+		//뒷배경용 레이어
+		auto makeLayer = new layerObject;
+		makeLayer->init(PTFLOAT(0, 0));
+		makeLayer->setLayer(LAYER::SKY3);
+
+		image* layerImage = new image;
+		layerImage->init(10000, 10000, RGB(255, 0, 255));
+
+		HBRUSH oldBrush = (HBRUSH)SelectObject(layerImage->getMemDC(), CreateSolidBrush(RGB(0, 0, 0)));
+		RectangleMake(layerImage->getMemDC(), -10, -10, layerImage->getWidth() + 10, layerImage->getHeight() + 10);
+		DeleteObject(SelectObject(layerImage->getMemDC(), oldBrush));
+
+		makeLayer->setLayerImage(layerImage);
+
+		WORLD->addObject(makeLayer);
+	}
 	{
 		auto makeHouse = new terrain;
 		makeHouse->init(makePos);

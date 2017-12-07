@@ -34,7 +34,7 @@ void stageManager::changeStage(string name)
 		_currentStage = NULL;
 	}
 
-	if (auto nextStage = _mStage.at(name))
+	if (auto nextStage = _mStage[name])
 	{
 		_currentStage = nextStage;
 		nextStage->enter(pastStage);

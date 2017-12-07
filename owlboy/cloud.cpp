@@ -17,6 +17,13 @@ void cloud::release()
 void cloud::update()
 {
 	gameObject::update();
+
+	_pos.x += 1;
+
+	if (_pos.x > 8000)
+	{
+		_pos.x = 2000;
+	}
 }
 void cloud::render(float depthScale)
 {

@@ -27,6 +27,8 @@ private:
 
 	PTFLOAT _initialPos;
 
+	int _hp;
+
 public:
 	virtual HRESULT init(PTFLOAT pos);
 	virtual void release();

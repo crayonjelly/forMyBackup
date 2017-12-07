@@ -8,6 +8,7 @@ private:
 	vector<gameObject*> _vObject;
 	gameNode *_pg;
 	gameObject *_otus;
+	float _mainTime;
 
 public:
 	HRESULT init();
@@ -22,9 +23,11 @@ public:
 	//°Ù¼Â
 	inline gameObject* getOtus() { return _otus; }
 	inline auto getAllObjects() { return _vObject; }
+	inline auto getMainTime() { return _mainTime; }
 
 	inline void setPG(gameNode *pg) { _pg = pg; }
 	inline void setOtus(gameObject *otus) { _otus = otus; }
+	inline void setMainTime(float time) { _mainTime = time; }
 
 	world() {}
 	~world() {}

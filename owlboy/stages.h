@@ -44,3 +44,10 @@ class otusHouse : public stage
 	virtual void drawMap();
 	virtual void createObjects();
 };
+class dungeon : public stage
+{
+	virtual void init();
+	virtual void enter(string pastStage = "");
+	virtual void drawMap();
+	virtual void createObjects();
+};

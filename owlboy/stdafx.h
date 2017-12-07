@@ -45,6 +45,8 @@ using namespace OMICRON_UTIL;
 #define WINSTARTY 10
 #define WINSIZEX 1200
 #define WINSIZEY 800
+#define WINCX (WINSIZEX / 2)
+#define WINCY (WINSIZEY / 2)
 #define WINSTYLE WS_CAPTION | WS_SYSMENU
 
 
@@ -70,6 +72,8 @@ using namespace OMICRON_UTIL;
 //카메라 매크로
 #define CAMX (CAMERA->getPos().x)
 #define CAMY (CAMERA->getPos().y)
+#define CAMCX (CAMERA->getPos().x + WINSIZEX / 2)
+#define CAMCY (CAMERA->getPos().y + WINSIZEY / 2)
 
 //=============================================================
 // ## 17.07.06 ## Macro ##

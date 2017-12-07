@@ -25,6 +25,7 @@ HRESULT owlboyScene::init()
 	//----------- 스테이지 해보자 ------------
 	STAGEMANAGER->insertStage("vellie", new vellie);
 	STAGEMANAGER->insertStage("otusHouse", new otusHouse);
+	STAGEMANAGER->insertStage("dungeon", new dungeon);
 
 	STAGEMANAGER->changeStage("vellie");
 	//---------------------------------------

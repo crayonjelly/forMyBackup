@@ -17,8 +17,18 @@ void backGround::release()
 void backGround::update()
 {
 	gameObject::update();
+
+	//_pos.x += 0.5f;
+	//if (_pos.x > WINSIZEX + 200)
+	//{
+	//	_posx.
+	//}
 }
 void backGround::render(float depthScale)
 {
-	gameObject::render(depthScale);
+	//_image->render(getMemDC(),
+	//	WINSIZEX / 2 + (_pos.x - CAMCX) * depthScale,
+	//	WINSIZEY / 2 + (_pos.y - CAMCY) * depthScale);
+
+	_image->render(getMemDC(), _pos.x, _pos.y);
 }

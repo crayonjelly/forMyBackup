@@ -7,12 +7,14 @@ HRESULT playGround::init(void)
 {
 	gameNode::init(true);
 
-	char *str = "Now Loading . . .";
+	char str[64] = "Now Loading . . .";
 	TextOut(getHDC(), WINSIZEX / 2 - 100, WINSIZEY / 2 - 10, str, strlen(str));
 
 	WORLD->setPG(this);
 
 	IMAGEMANAGER->addImage("cloudBack", "resource/(x2)cloudBack(1180,378).bmp", 1180, 378, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("cloudMiddle", "resource/(x2)cloudMiddle(1180,344).bmp", 1180, 344, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("cloudTop", "resource/(x2)cloudTop(1180,206).bmp", 1180, 206, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("bomboShop", "resource/(x2)bomboShop(674,402).bmp", 674, 402, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("bomboShop_pixel", "resource/(x2)bomboShop(674,402)_pixel.bmp", 674, 402, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("saunaFront", "resource/(x2)saunaFront(896,724).bmp", 896, 724, true, RGB(255, 0, 255));
@@ -31,6 +33,11 @@ HRESULT playGround::init(void)
 	IMAGEMANAGER->addImage("mandolynHouse", "resource/(x2)mandolynHouse(327,311).bmp", 327, 311, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("otusHouse", "resource/(x2)island01(540,692).bmp", 540, 692, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("otusHouse_pixel", "resource/(x2)island01(540,692)_pixel.bmp", 540, 692, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("backWallBig", "resource/(x2)backWallBig(324,638).bmp", 324, 638, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("caveEntry", "resource/(x2)caveEntry(376,230).bmp", 376, 230, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("caveSegment1", "resource/(x2)caveSegment1(278,364).bmp", 278, 364, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("caveSegment3", "resource/(x2)caveSegment3(478,408).bmp", 478, 408, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("caveCombined", "resource/(x2)caveCombined(602,422).bmp", 602, 422, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("fontBig", "resource/(x2)fontBig(572,28,26,1).bmp", 572, 28, 26, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("hero", "resource/(x2)hero(6272,2688,28,14).bmp", 6272, 2688, 28, 14, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("hero2", "resource/(x2)hero2(4480,2688,20,14).bmp", 4480, 2688, 20, 14, true, RGB(255, 0, 255));
@@ -50,6 +57,15 @@ HRESULT playGround::init(void)
 	IMAGEMANAGER->addImage("otusHousePart1_pixel", "resource/(x2)otusHousePart1_pixel(588,528).bmp", 588, 528, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("btnClicks", "resource/(x2)btnClicks(72,84,2,2).bmp", 72, 84, 2, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("btnMouseRGrab", "resource/(x2)btnMouseRGrab(92,60,2,1).bmp", 92, 60, 2, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("tileCeiling", "resource/(x2)tileCeiling(392,92).bmp", 392, 92, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("tileCeiling_pixel", "resource/(x2)tileCeiling_pixel(392,92).bmp", 392, 92, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("tileFloor", "resource/(x2)tileFloor(390,96).bmp", 390, 96, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("tileFloor_pixel", "resource/(x2)tileFloor_pixel(390,96).bmp", 390, 96, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("tileFloorRock", "resource/(x2)tileFloorRock(412,96).bmp", 412, 96, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("tileFloorRock_pixel", "resource/(x2)tileFloorRock_pixel(412,96).bmp", 412, 96, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("tileWall", "resource/(x2)tileWall(188,214,2,1).bmp", 188, 214, 2, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("tileWall_pixel", "resource/(x2)tileWall_pixel(188,214,2,1).bmp", 188, 214, 2, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("explosion", "resource/(x2)explosion(3230,170,19,1).bmp", 3230, 170, 19, 1, true, RGB(255, 0, 255));
 
 	SCENEMANAGER->addScene("¾Æ¿ïº¸ÀÌ¾À", new owlboyScene);
 
@@ -84,7 +100,13 @@ void playGround::update(void)
 
 void playGround::render(void)
 {
-	PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, WHITENESS);
+	//PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, WHITENESS);
+
+	//ÆÖºí¸´ ´ë½Å ÇÏ´Ã»öÀ¸·Î ¹ĞÀÚ
+	HBRUSH oldBrush = (HBRUSH)SelectObject(getMemDC(), CreateSolidBrush(RGB(121, 185, 255)));
+	RectangleMake(getMemDC(), -10, -10, WINSIZEX + 10, WINSIZEY + 10);
+	DeleteObject(SelectObject(getMemDC(), oldBrush));
+
 
 	SCENEMANAGER->render();
 

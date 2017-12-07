@@ -4,7 +4,9 @@
 
 HRESULT world::init()
 {
-
+	_pg = NULL;
+	_otus = NULL;
+	_mainTime = 0.0f;
 
 	return S_OK;
 }
@@ -14,6 +16,8 @@ void world::release()
 }
 void world::update()
 {
+	_mainTime += TIMEMANAGER->getElapsedTime();
+
 	for (int i = 0; i < _vObject.size(); ++i)
 	{
 		auto obj = _vObject[i];
@@ -51,16 +55,12 @@ void world::render()
 		switch ((LAYER::Enum)iter->first)
 		{
 		case LAYER::SKY3:
-			depthScale = 0;
-			break;
 		case LAYER::SKY2:
-			depthScale = 0;
-			break;
 		case LAYER::SKY1:
-			depthScale = 0;
+			//얘들도 걍 1로. 렌더함수 depthScale값 안쓰고 그냥 ui 처럼.
 			break;
 		case LAYER::BACK3:
-			depthScale = 0.5f;
+			depthScale = 0.4f;
 			break;
 		case LAYER::BACK2:
 			depthScale = 0.6f;
