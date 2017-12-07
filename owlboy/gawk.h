@@ -37,6 +37,7 @@ public:
 
 
 	void changeState(gawkState *state);
+	void targetAttack();
 
 
 	auto getTarget() { return _target; }
@@ -77,6 +78,9 @@ public:
 //-------------------------------------
 class gawkWake : public gawkState
 {
+private:
+	bool _start;
+
 public:
 	virtual void init(gawk *gawk);
 	virtual void enter(string pastStateName);

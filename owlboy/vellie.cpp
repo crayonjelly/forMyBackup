@@ -272,38 +272,45 @@ void vellie::createObjects()
 		WORLD->addObject(temp);
 	}
 
-	//{
-	//	//for (int i = 0; i < 5; ++i)
-	//	//{
-	//		auto temp = new cloud;
-	//		temp->init(PTFLOAT(5000, 2700));
-	//		temp->changeImage("cloud01");
-	//		temp->rcResetByImage();
-	//		temp->setLayer((LAYER::Enum)3);
-	//		WORLD->addObject(temp);
-	//	//}
-	//		temp = new cloud;
-	//		temp->init(PTFLOAT(5000, 2700));
-	//		temp->changeImage("cloud01");
-	//		temp->rcResetByImage();
-	//		temp->setLayer((LAYER::Enum)4);
-	//		WORLD->addObject(temp);
-	//		temp = new cloud;
-	//		temp->init(PTFLOAT(5000, 2700));
-	//		temp->changeImage("cloud01");
-	//		temp->rcResetByImage();
-	//		temp->setLayer((LAYER::Enum)5);
-	//		WORLD->addObject(temp);
-	//}
-
 	//∞Ì≈©
 	{
-		for (int i = 0; i < 10; ++i)
-		{
-			auto temp = new gawk;
-			temp->init(PTFLOAT(RND->getFromIntTo(4000, 6000),
-				RND->getFromIntTo(2000, 4000)));
-			WORLD->addObject(temp);
-		}
+		//for (int i = 0; i < 10; ++i)
+		//{
+		//	auto temp = new gawk;
+		//	temp->init(PTFLOAT(RND->getFromIntTo(4000, 6000),
+		//		RND->getFromIntTo(2000, 4000)));
+		//	WORLD->addObject(temp);
+		//}
+
+		auto temp = new gawk;
+		temp->init(PTFLOAT(5400, 2800));
+		WORLD->addObject(temp);
+		temp = new gawk;
+		temp->init(PTFLOAT(4060, 3300));
+		WORLD->addObject(temp);
+		temp = new gawk;
+		temp->init(PTFLOAT(4580, 3500));
+		WORLD->addObject(temp);
+		temp = new gawk;
+		temp->init(PTFLOAT(5642, 2806));
+		WORLD->addObject(temp);
+		temp = new gawk;
+		temp->init(PTFLOAT(5934, 3622));
+		WORLD->addObject(temp);
+		temp = new gawk;
+		temp->init(PTFLOAT(6057, 3655));
+		WORLD->addObject(temp);
+		temp = new gawk;
+		temp->init(PTFLOAT(6186, 3690));
+		WORLD->addObject(temp);
+		temp = new gawk;
+		temp->init(PTFLOAT(6386, 3300));
+		WORLD->addObject(temp);
+		temp = new gawk;
+		temp->init(PTFLOAT(6450, 3300));
+		WORLD->addObject(temp);
+		temp = new gawk;
+		temp->init(PTFLOAT(6485, 3400));
+		WORLD->addObject(temp);
 	}
 }

@@ -814,3 +814,54 @@ void otusAirDash::render(otus &otus)
 			_frame.x, _frame.y);
 	}
 }
+//--------------------------------
+void otusHit::init(otus *otus)
+{
+	_stateName = "otusHit";
+	_otus = otus;
+	_image = IMAGEMANAGER->findImage("hero2");
+	_frame.x = 0;
+	_frame.y = 4;
+	_time1 = 0.0f;
+}
+void otusHit::enter(string pastStateName)
+{
+	_time1 = TIMEMANAGER->getWorldTime();
+	if (_otus->_bLeft)
+	{
+		_frame.x = 19;
+	}
+	else
+	{
+		_frame.x = 0;
+	}
+}
+void otusHit::update(otus &otus)
+{
+	if (TIMEMANAGER->getWorldTime() - _time1 >= 0.5f)
+	{
+		_otus->changeObjectiveState2(_otus->_otusFly);
+	}
+
+	_otus->_speed = _otus->_speed * 0.95f;
+	if (_otus->_speed.scalar() <= 0.1f) _otus->_speed.x = _otus->_speed.y = 0;
+	_otus->movePos(_otus->_speed);
+	_otus->putRectAndPTs();
+}
+void otusHit::render(otus &otus)
+{
+	if (_otus->_bLeft)
+	{
+		_image->frameRender(_otus->getMemDC(),
+			-CAMX + _otus->_pos.x - _otus->_imageSize.x / 2 - 15,
+			-CAMY + _otus->_pos.y - 154,
+			_frame.x, _frame.y);
+	}
+	else
+	{
+		_image->frameRender(_otus->getMemDC(),
+			-CAMX + _otus->_pos.x - _otus->_imageSize.x / 2 + 15,
+			-CAMY + _otus->_pos.y - 154,
+			_frame.x, _frame.y);
+	}
+}

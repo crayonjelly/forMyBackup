@@ -33,6 +33,7 @@ HRESULT otus::init(PTFLOAT pos)
 	_otusAttack		= new otusAttack;
 	_otusGroundDash = new otusGroundDash;
 	_otusAirDash	= new otusAirDash;
+	_otusHit		= new otusHit;
 
 	_otusAir		->init(this);
 	_otusStand		->init(this);
@@ -41,6 +42,7 @@ HRESULT otus::init(PTFLOAT pos)
 	_otusAttack		->init(this);
 	_otusGroundDash	->init(this);
 	_otusAirDash	->init(this);
+	_otusHit		->init(this);
 	//-----------------------------
 	_pState = _otusAir;
 
@@ -67,6 +69,15 @@ HRESULT otus::init(PTFLOAT pos)
 			changeObjectiveState2(_otusAir);
 			STAGEMANAGER->changeStage(msg.dataString);
 		}
+	}));
+	_mCallback.insert(make_pair("gawkAttack", [this](tagMessage msg)
+	{
+		auto target = msg.dataTarget;
+		if (_pos.x <= target->getPos().x) _bLeft = false;
+		else _bLeft = true;
+		_speed = ((_pos + PTFLOAT(0, -(_rc.bottom - _rc.top) / 2)) - target->getPos())
+			.unit() * 20.0f;
+		changeObjectiveState2(_otusHit);
 	}));
 
 	return S_OK;

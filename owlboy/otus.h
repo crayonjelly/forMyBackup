@@ -17,6 +17,7 @@ private:
 	friend class otusAttack;
 	friend class otusGroundDash;
 	friend class otusAirDash;
+	friend class otusHit;
 	otusAir			*_otusAir;
 	otusStand		*_otusStand;
 	otusRun			*_otusRun;
@@ -24,6 +25,7 @@ private:
 	otusAttack		*_otusAttack;
 	otusGroundDash	*_otusGroundDash;
 	otusAirDash		*_otusAirDash;
+	otusHit			*_otusHit;
 	//---------------------------------------------------
 	//enum STATE
 	//{
@@ -181,6 +183,15 @@ public:
 };
 
 class otusAirDash : public otusState
+{
+public:
+	virtual void init(otus *otus);
+	virtual void enter(string pastStateName);
+	virtual void update(otus &otus);
+	virtual void render(otus &otus);
+};
+
+class otusHit : public otusState
 {
 public:
 	virtual void init(otus *otus);

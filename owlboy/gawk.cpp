@@ -80,6 +80,14 @@ void gawk::changeState(gawkState *state)
 	_state = state;
 	_state->enter(pastName);
 }
+void gawk::targetAttack()
+{
+	RECT rc;
+	if (IntersectRect(&rc, &_rc, &_target->getRect()))
+	{
+		_target->sendMessage(tagMessage("gawkAttack", 0, 0.0f, "", this));
+	}
+}
 
 //==============  상태 객체  =====================
 void gawkSleep::init(gawk *gawk)
@@ -159,6 +167,7 @@ void gawkWake::enter(string pastStateName)
 {
 	_time1 = TIMEMANAGER->getWorldTime();
 	_count1 = 0;
+	_start = false;
 
 	if (_gawk->_target)
 	{
@@ -180,6 +189,8 @@ void gawkWake::enter(string pastStateName)
 	{
 		_frame.x = _count1;
 	}
+
+	_gawk->_speed.y = 0.0f;
 }
 void gawkWake::update()
 {
@@ -188,6 +199,7 @@ void gawkWake::update()
 		_time1 = TIMEMANAGER->getWorldTime();
 		if (++_count1 >= 11)
 		{
+			_gawk->_speed.y = -5.0f;
 			_gawk->changeState(_gawk->_gawkFly);
 			return;
 		}
@@ -201,6 +213,23 @@ void gawkWake::update()
 			_frame.x = _count1;
 		}
 	}
+
+	if (!_start && _count1 >= 5)
+	{
+		_start = true;
+		_gawk->_speed.y = 4.0f;
+	}
+
+	if (_gawk->_speed.y < 0) _gawk->_speed.y = 0;
+	else
+	{
+		_gawk->_speed.y -= 0.1f;
+	}
+
+	_gawk->movePos(_gawk->_speed);
+	_gawk->putRectCenterToPos();
+
+	_gawk->targetAttack();
 }
 void gawkWake::render(float depthScale)
 {
@@ -291,6 +320,7 @@ void gawkFly::update()
 	//속도에 따라 이동
 	_gawk->movePos(_gawk->_speed);
 	_gawk->putRectCenterToPos();
+	_gawk->targetAttack();
 
 	//카운트에 따라 프레임 설정
 	if (_gawk->_bLeft)
@@ -398,7 +428,7 @@ void gawkDie::update()
 {
 	_time1 += TIMEMANAGER->getElapsedTime();
 
-	if (_time1 >= 0.9f)
+	if (_time1 >= 0.65f)
 	{
 		_gawk->setBLive(false);
 		new effExplosion(_gawk->_pos);
